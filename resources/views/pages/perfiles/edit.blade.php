@@ -7,38 +7,51 @@
         @csrf @method('PUT')
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
             {{-- CARD: Información del perfil --}}
-            <div class="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
-                <h3 class="text-lg font-semibold text-indigo-800 mb-4">Información del Perfil</h3>
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+                
+                <!-- Header interno -->
+                <div class="mb-6 text-center">
+                    <h1 class="text-2xl font-bold text-indigo-700">Información del Perfil</h1>
+                    <p class="text-gray-500 text-sm mt-1">Edita los datos del perfil y guarda los cambios.</p>
+                </div>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Nombre</label>
                     <input type="text" name="nombre" value="{{ $perfil->nombre }}"
-                        class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 px-4 py-2" required>
+                        class="w-full pl-3 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition px-4 py-2" required>
+                    @error('nombre')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Descripción</label>
                     <textarea name="descripcion"
-                        class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 px-4 py-2"
+                        class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 px-4 py-2 transition"
                         rows="3">{{ $perfil->descripcion }}</textarea>
+                    @error('descripcion')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
                 </div>
 
-                <div class="flex justify-end mt-6">
-                    <a href="{{ route('perfiles.index') }}"
-                        class="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition">
+                <div class="flex justify-end mt-6 gap-4">
+                    <a href="{{ route('usuarios.index') }}"
+                        class="inline-flex items-center px-5 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
                         Cancelar
                     </a>
                     <button
-                        class="ml-4 inline-flex items-center px-5 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
+                        class="inline-flex items-center px-6 py-2.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg font-semibold shadow-md hover:from-green-600 hover:to-emerald-700 transition">
                         Actualizar
                     </button>
                 </div>
             </div>
 
             {{-- CARD: Permisos asignados --}}
-            <div class="bg-white rounded-lg shadow-md p-6 h-fit">
-                <h3 class="text-lg font-semibold text-indigo-800 mb-4">Permisos Asignados</h3>
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 h-fit">
+                
+                <!-- Header interno permisos -->
+                <div class="mb-4 text-center">
+                    <h2 class="text-xl font-semibold text-indigo-700">Permisos Asignados</h2>
+                    <p class="text-gray-500 text-sm mt-1">Selecciona los permisos que se asignarán a este perfil.</p>
+                </div>
 
                 <div class="grid grid-cols-1 gap-4">
                     @foreach($permisos as $permiso)

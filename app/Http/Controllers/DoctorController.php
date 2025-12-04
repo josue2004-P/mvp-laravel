@@ -36,7 +36,7 @@ class DoctorController extends Controller
 
     public function edit(Doctor $doctor)
     {
-        return view('doctores.edit', compact('doctores'));
+        return view('doctores.edit', compact('doctor'));
     }
 
     public function update(Request $request, Doctor $doctor)

@@ -38,7 +38,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('usuarios', UsuarioController::class);
     Route::resource('clientes', ClienteController::class);
-    Route::resource('doctores', DoctorController::class);
+    Route::resource('doctores', DoctorController::class)->parameters([
+        'doctores' => 'doctor'
+    ]);
     Route::resource('tipo_analisis', TipoAnalisisController::class)
         ->parameters(['tipo_analisis' => 'tipoAnalisis']);
     Route::resource('tipo_metodo', TipoMetodoController::class);

@@ -9,8 +9,10 @@
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
             {{-- Columna 1: Datos del Usuario --}}
-            <div class="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
-                <h3 class="text-lg font-semibold text-indigo-800 mb-4">Datos del Usuario</h3>
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+                <!-- Header interno -->
+                <h3 class="text-xl font-semibold text-indigo-700 mb-6">Datos del Usuario</h3>
+                <p class="text-gray-500 text-sm mb-6">Edita la información principal del usuario.</p>
 
                 <div class="mb-4">
                     <label class="block font-medium text-gray-700 mb-1">Nombre</label>
@@ -24,21 +26,23 @@
                         class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 px-4 py-2" required>
                 </div>
 
-                <div class="flex justify-end mt-6">
+                <div class="flex justify-end mt-6 gap-4">
                     <a href="{{ route('usuarios.index') }}"
-                        class="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition">
+                        class="inline-flex items-center px-5 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
                         Cancelar
                     </a>
                     <button
-                        class="ml-4 inline-flex items-center px-5 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
+                        class="inline-flex items-center px-6 py-2.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg font-semibold shadow-md hover:from-green-600 hover:to-emerald-700 transition">
                         Actualizar
                     </button>
                 </div>
             </div>
 
             {{-- Columna 2-3: Perfiles asignados --}}
-            <div class="bg-white rounded-lg shadow-md p-6 h-fit">
-                <h3 class="text-lg font-semibold text-indigo-800 mb-4">Perfiles Asignados</h3>
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 h-fit">
+                <!-- Header interno -->
+                <h3 class="text-xl font-semibold text-indigo-700 mb-4">Perfiles Asignados</h3>
+                <p class="text-gray-500 text-sm mb-4">Selecciona los perfiles que deseas asignar al usuario.</p>
 
                 <div class="grid grid-cols-1 gap-4">
                     @foreach($perfiles as $perfil)

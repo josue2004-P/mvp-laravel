@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   app-la-piedad:
     build:
@@ -25,6 +23,7 @@ services:
 
 networks:
   la_piedad_net:
+    external: true   # Marca esta red como externa si ya existe
   la_piedad_proxy:
     external: true
 
