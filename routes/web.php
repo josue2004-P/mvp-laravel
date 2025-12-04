@@ -16,8 +16,7 @@ use App\Http\Controllers\AnalisisController;
 
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('home');
-Route::view('/contacto', 'contacto')->name('contacto');
+Route::view('/', 'pages.welcome')->name('home');
 
 Route::post('/contactar', function (\Illuminate\Http\Request $request) {
     $request->validate([
@@ -53,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('pages.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

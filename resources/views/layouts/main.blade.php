@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Panel Administrador') }}</title>
-
+    <title>@yield('title', 'Dashboard') | La Piedad</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -46,6 +45,10 @@
         </nav>
         </div>
     </header>
+
+    {{-- preloader --}}
+    <x-common.preloader/>
+    {{-- preloader end --}}
 
     {{-- Contenido principal --}}
     <main class="max-w-7xl mx-auto px-4 py-10">

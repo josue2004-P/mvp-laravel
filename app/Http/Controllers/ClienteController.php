@@ -16,7 +16,7 @@ class ClienteController extends Controller
     })
     ->paginate(10); // <- importante
 
-        return view('clientes.index', compact('clientes'));
+        return view('pages.clientes.index', compact('clientes'));
     }
 
     // Formulario para crear cliente
