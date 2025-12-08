@@ -38,8 +38,6 @@
                                 <div class="space-y-5">
                                     <!-- Email -->
                                     <div>
-                                        <x-form.text-input
-
                                      
                                         <x-form.input-label for="email" :value="__('Email')" />
 

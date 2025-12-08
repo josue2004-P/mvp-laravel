@@ -30,8 +30,8 @@
         </div>
     </div>
 
-    <div class="overflow-hidden">
-        <div class="max-w-full px-5 overflow-x-auto">
+    <div class="">
+        <div class="max-w-full px-5">
             <table class="min-w-full">
                 <thead>
                     <tr class="border-gray-200 border-y dark:border-gray-700">
@@ -66,30 +66,39 @@
                         </td>
                         <td class="px-4 py-4 text-sm font-medium text-right whitespace-nowrap">
                             {{-- Mantener la lógica de Alpine para el dropdown (si es compleja) es común --}}
-                            <div x-data="{ dropdownOpen: false }" class="flex justify-center relative">
-                                <button @click="dropdownOpen = !dropdownOpen" type="button" class="text-gray-500 dark:text-gray-400'">
-                                    <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> 
-                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.99902 10.245C6.96552 10.245 7.74902 11.0285 7.74902 11.995V12.005C7.74902 12.9715 6.96552 13.755 5.99902 13.755C5.03253 13.755 4.24902 12.9715 4.24902 12.005V11.995C4.24902 11.0285 5.03253 10.245 5.99902 10.245ZM17.999 10.245C18.9655 10.245 19.749 11.0285 19.749 11.995V12.005C19.749 12.9715 18.9655 13.755 17.999 13.755C17.0325 13.755 16.249 12.9715 16.249 12.005V11.995C16.249 11.0285 17.0325 10.245 17.999 10.245ZM13.749 11.995C13.749 11.0285 12.9655 10.245 11.999 10.245C11.0325 10.245 10.249 11.0285 10.249 11.995V12.005C10.249 12.9715 11.0325 13.755 11.999 13.755C12.9655 13.755 13.749 12.9715 13.749 12.005V11.995Z" fill="currentColor" />
-                                    </svg>
+                        <div x-data="{ dropdownOpen: false }" class="flex justify-center relative">
+                            <button @click="dropdownOpen = !dropdownOpen" type="button" class="text-gray-500 dark:text-gray-400">
+                                <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M5.99902 10.245C6.96552 10.245 7.74902 11.0285 7.74902 11.995V12.005C7.74902 12.9715 6.96552 13.755 5.99902 13.755C5.03253 13.755 4.24902 12.9715 4.24902 12.005V11.995C4.24902 11.0285 5.03253 10.245 5.99902 10.245ZM17.999 10.245C18.9655 10.245 19.749 11.0285 19.749 11.995V12.005C19.749 12.9715 18.9655 13.755 17.999 13.755C17.0325 13.755 16.249 12.9715 16.249 12.005V11.995C16.249 11.0285 17.0325 10.245 17.999 10.245ZM13.749 11.995C13.749 11.0285 12.9655 10.245 11.999 10.245C11.0325 10.245 10.249 11.0285 10.249 11.995V12.005C10.249 12.9715 11.0325 13.755 11.999 13.755C12.9655 13.755 13.749 12.9715 13.749 12.005V11.995Z"
+                                        fill="currentColor"/>
+                                </svg>
+                            </button>
+
+                            <div 
+                                x-show="dropdownOpen" 
+                                @click.away="dropdownOpen = false"
+                                x-transition
+                                class="absolute right-0 z-60 mt-10 w-44 rounded-xl border 
+                                    border-gray-200 bg-white shadow-lg py-1
+                                    dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200"
+                            >
+                                <a href="#" 
+                                class="flex w-full px-3 py-2 font-medium text-left text-gray-600 dark:text-gray-300 
+                                        rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" >
+                                    View More ({{ $cliente['id'] }})
+                                </a>
+
+                                <button 
+                                    wire:click="deleteTransaction({{ $cliente['id'] }})"
+                                    class="flex w-full px-3 py-2 font-medium text-left text-red-600 dark:text-red-400 
+                                        rounded-lg hover:bg-red-100 dark:hover:bg-red-500/20"
+                                >
+                                    Delete
                                 </button>
-                                <div x-show="dropdownOpen" @click.away="dropdownOpen = false" 
-                                     x-transition:enter="transition ease-out duration-100"
-                                     x-transition:enter-start="transform opacity-0 scale-95"
-                                     x-transition:enter-end="transform opacity-100 scale-100"
-                                     x-transition:leave="transition ease-in duration-75"
-                                     x-transition:leave-start="transform opacity-100 scale-100"
-                                     x-transition:leave-end="transform opacity-0 scale-95"
-                                     class="absolute right-0 z-50 mt-10 w-44 rounded-xl border border-gray-200 bg-white shadow-lg py-1 dark:border-gray-700 dark:bg-gray-800"
-                                     role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                    <a href="#" class="flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300" role="menuitem">
-                                        View More ({{ $cliente['id'] }})
-                                    </a>
-                                    {{-- Un ejemplo de cómo Livewire manejaría una acción --}}
-                                    <button wire:click="deleteTransaction({{ $cliente['id'] }})" type="button" class="flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-red-100 hover:text-red-700 dark:text-gray-400 dark:hover:bg-red-500/10 dark:hover:text-red-400" role="menuitem">
-                                        Delete
-                                    </button>
-                                </div>
                             </div>
+                        </div>
+
                         </td>
                     </tr>
                     @empty
