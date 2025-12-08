@@ -22,7 +22,7 @@ class ClienteController extends Controller
     // Formulario para crear cliente
     public function create()
     {
-        return view('clientes.create');
+        return view('pages.clientes.create');
     }
 
     // Guardar nuevo cliente

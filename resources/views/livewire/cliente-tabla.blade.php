@@ -39,7 +39,6 @@
                         <th scope="col" class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Nombre</th>
                         <th scope="col" class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Sexo</th>
                         <th scope="col" class="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 capitalize">Edad</th>
-                        <th scope="col" class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Status</th>
                         <th scope="col" class="relative px-4 py-3 capitalize">
                             <span class="sr-only">Actions</span>
                         </th>
@@ -47,30 +46,23 @@
                 </thead>
                 <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                     {{-- Livewire/Blade reemplaza a x-for --}}
-                    @forelse($clientes as $transaction)
+                    @forelse($clientes as $cliente)
                     <tr>
                         <td class="py-4 whitespace-nowrap">
                             <div class="flex items-center">
-                                <div class="shrink-0 w-8 h-8">
-                                    <img class="w-8 h-8 rounded-full" src="{{ $transaction['image'] }}" alt="">
-                                </div>
                                 <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $transaction['id'] }}</div>
+                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $cliente['id'] }}</div>
                                 </div>
                             </div>
                         </td>
                         <td class="px-4 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-500 dark:text-gray-400">{{ $transaction['nombre'] }}</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">{{ $cliente['nombre'] }}</div>
                         </td>
                         <td class="px-4 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-500 dark:text-gray-400">{{ $transaction['price'] }}</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">{{ $cliente['sexo'] }}</div>
                         </td>
                         <td class="px-4 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-500 dark:text-gray-400">{{ $transaction['category'] }}</div>
-                        </td>
-                        <td class="px-4 py-4 whitespace-nowrap">
-                            {{-- Llamada al método helper del componente Livewire --}}
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full >{{ $transaction['status'] }}</span>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">{{ $cliente['edad'] }}</div>
                         </td>
                         <td class="px-4 py-4 text-sm font-medium text-right whitespace-nowrap">
                             {{-- Mantener la lógica de Alpine para el dropdown (si es compleja) es común --}}
@@ -90,10 +82,10 @@
                                      class="absolute right-0 z-50 mt-10 w-44 rounded-xl border border-gray-200 bg-white shadow-lg py-1 dark:border-gray-700 dark:bg-gray-800"
                                      role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                                     <a href="#" class="flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300" role="menuitem">
-                                        View More ({{ $transaction['id'] }})
+                                        View More ({{ $cliente['id'] }})
                                     </a>
                                     {{-- Un ejemplo de cómo Livewire manejaría una acción --}}
-                                    <button wire:click="deleteTransaction({{ $transaction['id'] }})" type="button" class="flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-red-100 hover:text-red-700 dark:text-gray-400 dark:hover:bg-red-500/10 dark:hover:text-red-400" role="menuitem">
+                                    <button wire:click="deleteTransaction({{ $cliente['id'] }})" type="button" class="flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-red-100 hover:text-red-700 dark:text-gray-400 dark:hover:bg-red-500/10 dark:hover:text-red-400" role="menuitem">
                                         Delete
                                     </button>
                                 </div>

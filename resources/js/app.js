@@ -12,14 +12,14 @@ window.ApexCharts = ApexCharts;
 window.flatpickr = flatpickr;
 window.FullCalendar = Calendar;
 
-// window.Alpine = Alpine;
-// Alpine.start();
+window.Alpine = Alpine;
+Alpine.start();
 
 // Initialize components on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
     // Map imports
     if (document.querySelector('#mapOne')) {
-        import('./components/map').then(module => module.initMap());
+        import('./components/map').then(module => module.initMap());    
     }
 
     // Chart imports
