@@ -12,12 +12,12 @@ class UsuarioController extends Controller
     public function index()
     {
         $usuarios = User::all();
-        return view('usuarios.index', compact('usuarios'));
+        return view('pages.usuarios.index', compact('usuarios'));
     }
 
     public function create()
     {
-        return view('usuarios.create');
+        return view('pages.usuarios.create');
     }
 
     public function store(Request $request)
@@ -40,7 +40,7 @@ class UsuarioController extends Controller
     public function edit(User $usuario)
     {
         $perfiles = Perfil::all();
-        return view('usuarios.edit', compact('usuario', 'perfiles'));
+        return view('pages.usuarios.edit', compact('usuario', 'perfiles'));
     }
 
     public function update(Request $request, User $usuario)

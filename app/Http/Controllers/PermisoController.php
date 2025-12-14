@@ -10,12 +10,12 @@ class PermisoController extends Controller
     public function index()
     {
         $permisos = Permiso::all();
-        return view('permisos.index', compact('permisos'));
+        return view('pages.permisos.index', compact('permisos'));
     }
 
     public function create()
     {
-        return view('permisos.create');
+        return view('pages.permisos.create');
     }
 
     public function store(Request $request)
@@ -32,7 +32,7 @@ class PermisoController extends Controller
 
     public function edit(Permiso $permiso)
     {
-        return view('permisos.edit', compact('permiso'));
+        return view('pages.permisos.edit', compact('permiso'));
     }
 
     public function update(Request $request, Permiso $permiso)

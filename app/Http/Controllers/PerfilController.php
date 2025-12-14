@@ -12,12 +12,12 @@ class PerfilController extends Controller
     public function index()
     {
         $perfiles = Perfil::all();
-        return view('perfiles.index', compact('perfiles'));
+        return view('pages.perfiles.index', compact('perfiles'));
     }
 
     public function create()
     {
-        return view('perfiles.create');
+        return view('pages.perfiles.create');
     }
 
     public function store(Request $request)
@@ -35,7 +35,7 @@ class PerfilController extends Controller
     public function edit(Perfil $perfil)
     {
         $permisos = Permiso::all(); // <-- asegúrate de importar el modelo
-        return view('perfiles.edit', compact('perfil', 'permisos'));
+        return view('pages.perfiles.edit', compact('perfil', 'permisos'));
     }
 
     public function update(Request $request, Perfil $perfil)
