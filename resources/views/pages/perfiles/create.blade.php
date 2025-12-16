@@ -1,7 +1,8 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="text-2xl font-bold text-gray-900">Nuevo Perfil</h2>
-    </x-slot>
+@extends('layouts.app')
+
+@section('title', 'Crear Perfil')
+
+@section('content')
 
     <div class="max-w-xl mx-auto mt-8 bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
 
@@ -48,4 +49,4 @@
             </div>
         </form>
     </div>
-</x-app-layout>
+@endsection

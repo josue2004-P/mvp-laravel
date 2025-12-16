@@ -1,7 +1,8 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="text-2xl font-semibold text-gray-800">Editar Perfil</h2>
-    </x-slot>
+@extends('layouts.app')
+
+@section('title', 'Editar Perfil')
+
+@section('content')
 
     <form action="{{ route('perfiles.update', $perfil) }}" method="POST" class="max-w-7xl mx-auto">
         @csrf @method('PUT')
@@ -73,5 +74,4 @@
                 </div>
             </div>
         </div>
-    </form>
-</x-app-layout>
+@endsection
