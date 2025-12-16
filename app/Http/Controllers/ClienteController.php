@@ -48,16 +48,17 @@ class ClienteController extends Controller
     // Formulario para editar cliente
     public function edit(Cliente $cliente)
     {
-        return view('clientes.edit', compact('cliente'));
+        return view('pages.clientes.edit', compact('cliente'));
     }
 
     // Actualizar cliente
     public function update(Request $request, Cliente $cliente)
     {
+     
         $request->validate([
             'nombre' => 'required|string|max:100|unique:clientes,nombre,' . $cliente->id,
             'edad'   => 'required|integer|min:0',
-            'sexo'   => 'required|in:M,F',
+            'sexo'   => 'required|in:MASCULINO,FEMENINO',
         ]);
 
         $cliente->update($request->all());

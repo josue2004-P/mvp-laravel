@@ -83,7 +83,9 @@
                                     border-gray-200 bg-white shadow-lg py-1
                                     dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200"
                             >
-                                <a href="#" 
+                                <a 
+                                    href="{{ route('clientes.edit',$cliente['id']) }}"
+
                                 class="flex w-full px-3 py-2 font-medium text-left text-gray-600 dark:text-gray-300 
                                         rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" >
                                     View More ({{ $cliente['id'] }})

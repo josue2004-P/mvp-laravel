@@ -13,10 +13,14 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+<<<<<<< HEAD
 
     <!-- Alpine.js -->
      <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> 
     {{-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@latest/dist/cdn.min.js"></script> --}}
+=======
+     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> 
+>>>>>>> cc532e0e1ba0f5fc80147e2261f6270637ef874a
 
 </head>
 <body class="bg-gray-50 font-sans text-gray-800">
