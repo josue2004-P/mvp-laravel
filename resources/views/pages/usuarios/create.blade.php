@@ -11,7 +11,7 @@
     @csrf
         <!-- Elements -->
         <div>
-            <x-form.input-label for="name" :value="__('Nombre Completo:')" />
+            <x-form.input-label for="name" :value="__('Nombre Completo:')" required/>
             <x-form.text-input
                 type="text"
                 name="name"
@@ -24,7 +24,7 @@
 
         <!-- Elements -->
         <div>
-            <x-form.input-label for="email" :value="__('E-mail:')" />
+            <x-form.input-label for="email" :value="__('E-mail:')" required/>
             <x-form.text-input
                 type="text"
                 name="email"
@@ -37,7 +37,7 @@
 
         <!-- Elements -->
         <div>
-            <x-form.input-label for="password" :value="__('Contraseña:')" />
+            <x-form.input-label for="password" :value="__('Contraseña:')" required/>
             <x-form.text-input
                 type="password"
                 name="password"
@@ -50,7 +50,7 @@
 
         <!-- Elements -->
         <div>
-            <x-form.input-label for="password_confirmation" :value="__('Confirmar Contraseña:')" />
+            <x-form.input-label for="password_confirmation" :value="__('Confirmar Contraseña:')" required/>
             <x-form.text-input
                 type="password"
                 name="password_confirmation"

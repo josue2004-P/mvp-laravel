@@ -10,7 +10,7 @@
     @csrf
         <!-- Elements -->
         <div>
-            <x-form.input-label for="nombreCompleto" :value="__('Nombre Completo')" />
+            <x-form.input-label for="nombreCompleto" :value="__('Nombre Completo')" required/>
             <x-form.text-input
                 type="text"
                 name="nombre"
@@ -23,7 +23,7 @@
 
         <!-- Elements -->
         <div>
-            <x-form.input-label for="edad" :value="__('Edad')" />
+            <x-form.input-label for="edad" :value="__('Edad')" required/>
             <x-form.text-input
                 type="text"
                 name="edad"
@@ -37,7 +37,7 @@
         <!-- Elements -->
 
         <div>
-            <x-form.input-label for="sexo" :value="__('Sexo')" />
+            <x-form.input-label for="sexo" :value="__('Sexo')" required/>
             <x-form.input-select name="sexo" :messages="$errors->get('sexo')">
                 <option value="">Selecciona una Opción</option>
                 <option value="MASCULINO" {{ old('sexo') == 'MASCULINO' ? 'selected' : '' }}>Masculino</option>
