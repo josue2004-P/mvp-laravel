@@ -10,12 +10,12 @@ class DoctorController extends Controller
     public function index()
     {
         $doctores = Doctor::all();
-        return view('doctores.index', compact('doctores'));
+        return view('pages.doctores.index', compact('doctores'));
     }
 
     public function create()
     {
-        return view('doctores.create');
+        return view('pages.doctores.create');
     }
 
     public function store(Request $request)
@@ -36,7 +36,7 @@ class DoctorController extends Controller
 
     public function edit(Doctor $doctor)
     {
-        return view('doctores.edit', compact('doctor'));
+        return view('pages.doctores.edit', compact('doctor'));
     }
 
     public function update(Request $request, Doctor $doctor)

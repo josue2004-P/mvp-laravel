@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('clientes', ClienteController::class);
     Route::resource('doctores', DoctorController::class)->parameters([
         'doctores' => 'doctor'
+        
     ]);
     Route::resource('tipo_analisis', TipoAnalisisController::class)
         ->parameters(['tipo_analisis' => 'tipoAnalisis']);

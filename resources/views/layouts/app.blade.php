@@ -13,6 +13,8 @@
     'resources/js/app.js'
      ])
 
+    <script src="https://kit.fontawesome.com/698b0c3ebe.js" crossorigin="anonymous"></script>
+
     <!-- Alpine.js -->
     {{-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
 
@@ -126,7 +128,7 @@
             <!-- app header start -->
             @include('layouts.app-header')
             <!-- app header end -->
-<div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+            <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
                 @yield('content')
             </div>
         </div>
