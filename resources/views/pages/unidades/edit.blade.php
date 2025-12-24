@@ -1,43 +1,42 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="text-2xl font-bold text-gray-900">Editar Unidad</h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="max-w-2xl mx-auto mt-8 bg-white rounded-2xl shadow-lg border border-gray-100 p-10">
+@section('title', 'Editar Doctor')
 
-        <!-- Encabezado interno -->
-        <div class="mb-6 text-center">
-            <h1 class="text-3xl font-extrabold text-indigo-700">Editar Unidad</h1>
-            <p class="text-gray-500 text-sm mt-2">Modifica el nombre de la unidad y guarda los cambios.</p>
+@section('content')
+
+<x-common.component-card title="Editar Unidades" desc="Edita la información principal de la Unidad." class="max-w-5xl">
+    <form id="form-unidades" action="{{ route('unidades.update', $unidad) }}" method="POST" class="space-y-5">
+        @csrf
+        @method('PUT')
+
+         <!-- Elements -->
+        <div>
+            <x-form.input-label for="nombre" 
+                :value="__('Nombre:')" />
+            <x-form.text-input
+                type="text"
+                name="nombre"
+                placeholder="Escribe el nombre"
+                :value="$unidad->nombre " 
+                :messages="$errors->get('nombre')"
+            />    
+            <x-input-error :messages="$errors->get('nombre')" class="mt-2" />
         </div>
 
-        <form action="{{ route('unidades.update', $unidad) }}" method="POST" class="space-y-6">
-            @csrf
-            @method('PUT')
 
-            <!-- Nombre de la unidad -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Nombre de la Unidad</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">⚖️</span>
-                    <input type="text" name="nombre" value="{{ old('nombre', $unidad->nombre) }}"
-                           class="w-full pl-10 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-                           placeholder="Ej. g, mg, mL" required>
-                </div>
-                @error('nombre')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-            </div>
-
-            <!-- Botones -->
-            <div class="flex items-center justify-end gap-4 pt-4">
+                <!-- Botones -->
+        <x-slot:footer>
+            <div class="flex justify-end gap-2">
                 <a href="{{ route('unidades.index') }}"
-                   class="px-5 py-2.5 rounded-lg bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition">
+                    class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700  hover:bg-gray-200 transition">
                     Cancelar
                 </a>
-                <button type="submit"
-                        class="px-6 py-2.5 rounded-lg bg-gradient-to-r from-green-600 to-emerald-500 text-white font-semibold shadow-md hover:from-green-700 hover:to-emerald-600 transition">
-                    Actualizar Unidad
-                </button>
+                <x-ui.button size="sm" type="submit" form="form-unidades">
+                    Guardar
+                </x-ui.button>
             </div>
-        </form>
-    </div>
-</x-app-layout>
+        </x-slot:footer>
+    </form>
+</x-common.component-card>
+
+@endsection

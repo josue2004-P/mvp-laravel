@@ -10,12 +10,12 @@ class UnidadController extends Controller
     public function index()
     {
         $unidades = Unidad::all();
-        return view('unidades.index', compact('unidades'));
+        return view('pages.unidades.index', compact('unidades'));
     }
 
     public function create()
     {
-        return view('unidades.create');
+        return view('pages.unidades.create');
     }
 
     public function store(Request $request)
@@ -35,7 +35,7 @@ class UnidadController extends Controller
 
     public function edit(Unidad $unidad)
     {
-        return view('unidades.edit', compact('unidad'));
+        return view('pages.unidades.edit', compact('unidad'));
     }
 
     public function update(Request $request, Unidad $unidad)

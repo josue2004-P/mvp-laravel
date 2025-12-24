@@ -4,7 +4,7 @@
 
 @section('content')
 
-<x-common.component-card title="Editar Perfil" desc="Edita la información principal del pefil." class="max-w-5xl">
+<x-common.component-card title="Editar Doctor" desc="Edita la información principal del doctor." class="max-w-5xl">
     <form id="form-doctores" action="{{ route('doctores.update', $doctor) }}" method="POST" class="space-y-5">
         @csrf
         @method('PUT')
@@ -23,8 +23,7 @@
             <x-input-error :messages="$errors->get('nombre')" class="mt-2" />
         </div>
 
-
-                <!-- Botones -->
+        <!-- Botones -->
         <x-slot:footer>
             <div class="flex justify-end gap-2">
                 <a href="{{ route('doctores.index') }}"
