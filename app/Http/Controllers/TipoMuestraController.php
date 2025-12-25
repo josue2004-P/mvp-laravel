@@ -10,12 +10,12 @@ class TipoMuestraController extends Controller
     public function index()
     {
         $muestras = TipoMuestra::all();
-        return view('tipo_muestra.index', compact('muestras'));
+        return view('pages.tipo_muestra.index', compact('muestras'));
     }
 
     public function create()
     {
-        return view('tipo_muestra.create');
+        return view('pages.tipo_muestra.create');
     }
 
     public function store(Request $request)
@@ -31,7 +31,7 @@ class TipoMuestraController extends Controller
 
     public function edit(TipoMuestra $tipoMuestra)
     {
-        return view('tipo_muestra.edit', compact('tipoMuestra'));
+        return view('pages.tipo_muestra.edit', compact('tipoMuestra'));
     }
 
     public function update(Request $request, TipoMuestra $tipoMuestra)

@@ -3,7 +3,7 @@
 @section('title', 'Crear Doctor')
 
 @section('content')
-<x-common.component-card title="Crear Unidad" desc="Edita la información principal de la unidad." class="max-w-5xl">
+<x-common.component-card title="Formulario Unidades" desc="Completa la información para registrar una nueva Unidad." class="max-w-3xl">
     <form id="form-unidades" action="{{ route('unidades.store') }}" method="POST" class="space-y-6">
     @csrf
          <!-- Elements -->

@@ -1,42 +1,39 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="text-2xl font-bold text-gray-900">Crear Tipo de Análisis</h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="max-w-lg mx-auto mt-8 bg-white rounded-2xl shadow-lg border border-gray-100 p-10">
-        
-        <!-- Encabezado interno -->
-        <div class="mb-6 text-center">
-            <h1 class="text-3xl font-extrabold text-indigo-700">Nuevo Tipo de Análisis</h1>
-            <p class="text-gray-500 text-sm mt-2">Completa el siguiente formulario para registrar un nuevo tipo de análisis.</p>
+@section('title', 'Crear Tipo Analisis')
+
+@section('content')
+<x-common.component-card title="Formulario Tipo Analisis" desc="Completa la información para registrar un Tipo de Analisis." class="max-w-3xl">
+    <form id="form-tipo-analisis" action="{{ route('tipo_analisis.store') }}" method="POST" class="space-y-6">
+    @csrf
+         <!-- Elements -->
+        <div>
+            <x-form.input-label for="nombre" 
+                :value="__('Nombre:')" />
+            <x-form.text-input
+                type="text"
+                name="nombre"
+                placeholder="Escribe el nombre"
+                :value="old('nombre')"
+                :messages="$errors->get('nombre')"
+            />    
+            <x-input-error :messages="$errors->get('nombre')" class="mt-2" />
         </div>
 
-        <form action="{{ route('tipo_analisis.store') }}" method="POST" class="space-y-6">
-            @csrf
 
-            <!-- Nombre -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Nombre</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">🧪</span>
-                    <input type="text" name="nombre" value="{{ old('nombre') }}"
-                           class="w-full pl-10 rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-                           placeholder="Ej. Biometria Hematica" required>
-                </div>
-                @error('nombre')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-            </div>
-
-            <!-- Botones -->
-            <div class="flex items-center justify-end gap-4 pt-4">
+                <!-- Botones -->
+        <x-slot:footer>
+            <div class="flex justify-end gap-2">
                 <a href="{{ route('tipo_analisis.index') }}"
-                   class="px-5 py-2.5 rounded-lg bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition">
+                    class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700  hover:bg-gray-200 transition">
                     Cancelar
                 </a>
-                <button type="submit"
-                        class="px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-500 text-white font-semibold shadow-md hover:from-blue-700 hover:to-indigo-600 transition">
+                <x-ui.button size="sm" type="submit" form="form-tipo-analisis">
                     Guardar
-                </button>
+                </x-ui.button>
             </div>
-        </form>
-    </div>
-</x-app-layout>
+        </x-slot:footer>
+    </form>
+</x-common.component-card>
+@endsection
+

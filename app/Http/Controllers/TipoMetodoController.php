@@ -10,12 +10,12 @@ class TipoMetodoController extends Controller
     public function index()
     {
         $metodos = TipoMetodo::all();
-        return view('tipo_metodo.index', compact('metodos'));
+        return view('pages.tipo_metodo.index', compact('metodos'));
     }
 
     public function create()
     {
-        return view('tipo_metodo.create');
+        return view('pages.tipo_metodo.create');
     }
 
     public function store(Request $request)
@@ -31,7 +31,7 @@ class TipoMetodoController extends Controller
 
     public function edit(TipoMetodo $tipoMetodo)
     {
-        return view('tipo_metodo.edit', compact('tipoMetodo'));
+        return view('pages.tipo_metodo.edit', compact('tipoMetodo'));
     }
 
     public function update(Request $request, TipoMetodo $tipoMetodo)

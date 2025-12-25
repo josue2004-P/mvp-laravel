@@ -11,12 +11,12 @@ class TipoAnalisisController extends Controller
     public function index()
     {
         $tipos = TipoAnalisis::all();
-        return view('tipo_analisis.index', compact('tipos'));
+        return view('pages.tipo_analisis.index', compact('tipos'));
     }
 
     public function create()
     {
-        return view('tipo_analisis.create');
+        return view('pages.tipo_analisis.create');
     }
 
     public function store(Request $request)
@@ -34,7 +34,7 @@ class TipoAnalisisController extends Controller
     {
         $hemogramas = HemogramaCompleto::all();
         $tipoAnalisis->load('hemogramas'); // carga la relación muchos a muchos
-        return view('tipo_analisis.edit', compact('tipoAnalisis', 'hemogramas'));
+        return view('pages.tipo_analisis.edit', compact('tipoAnalisis', 'hemogramas'));
     }
 
     public function update(Request $request, TipoAnalisis $tipoAnalisis)

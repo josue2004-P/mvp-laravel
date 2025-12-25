@@ -10,12 +10,12 @@ class CategoriaHemogramaCompletoController extends Controller
     public function index()
     {
         $categorias = CategoriaHemogramaCompleto::all();
-        return view('categoria_hemograma_completo.index', compact('categorias'));
+        return view('pages.categoria_hemograma_completo.index', compact('categorias'));
     }
 
     public function create()
     {
-        return view('categoria_hemograma_completo.create');
+        return view('pages.categoria_hemograma_completo.create');
     }
 
     public function store(Request $request)
@@ -31,7 +31,7 @@ class CategoriaHemogramaCompletoController extends Controller
 
     public function edit(CategoriaHemogramaCompleto $categoriaHemogramaCompleto)
     {
-        return view('categoria_hemograma_completo.edit', compact('categoriaHemogramaCompleto'));
+        return view('pages.categoria_hemograma_completo.edit', compact('categoriaHemogramaCompleto'));
     }
 
     public function update(Request $request, CategoriaHemogramaCompleto $categoriaHemogramaCompleto)
