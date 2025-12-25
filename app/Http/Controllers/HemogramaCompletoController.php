@@ -25,7 +25,7 @@ class HemogramaCompletoController extends Controller
         // PAGINACIÓN
         $hemogramas = $query->orderBy('id', 'desc')->paginate(10)->withQueryString();
 
-        return view('hemograma_completo.index', compact('hemogramas'));
+        return view('pages.hemograma_completo.index', compact('hemogramas'));
     }
 
     public function create()
@@ -34,7 +34,7 @@ class HemogramaCompletoController extends Controller
         $unidades = Unidad::all();
         $tiposAnalisis = TipoAnalisis::all();
 
-        return view('hemograma_completo.create', compact('categorias', 'unidades', 'tiposAnalisis'));
+        return view('pages.hemograma_completo.create', compact('categorias', 'unidades', 'tiposAnalisis'));
     }
 
     public function store(Request $request)
@@ -57,7 +57,7 @@ class HemogramaCompletoController extends Controller
         $unidades = Unidad::all();
         $tiposAnalisis = TipoAnalisis::all();
 
-        return view('hemograma_completo.edit', compact('hemogramaCompleto', 'categorias', 'unidades', 'tiposAnalisis'));
+        return view('pages.hemograma_completo.edit', compact('hemogramaCompleto', 'categorias', 'unidades', 'tiposAnalisis'));
     }
 
     public function update(Request $request, HemogramaCompleto $hemogramaCompleto)
