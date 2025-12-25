@@ -1,7 +1,8 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="text-2xl font-bold text-gray-800">Crear Análisis</h2>
-    </x-slot>
+@extends('layouts.app')
+
+@section('title', 'Crear Analisis')
+
+@section('content')
 
     <div class="max-w-4xl mx-auto mt-8">
         <div class="bg-white shadow-lg rounded-2xl p-8 border border-gray-200">
@@ -110,4 +111,4 @@
             </form>
         </div>
     </div>
-</x-app-layout>
+@endsection

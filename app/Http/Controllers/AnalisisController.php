@@ -16,7 +16,7 @@ class AnalisisController extends Controller
     public function index()
     {
         $analisis = Analisis::with(['cliente','doctor','tipoAnalisis','tipoMetodo','tipoMuestra','usuarioCreacion'])->get();
-        return view('analisis.index', compact('analisis'));
+        return view('pages.analisis.index', compact('analisis'));
     }
 
     public function create()
@@ -27,7 +27,7 @@ class AnalisisController extends Controller
         $tiposMetodo = TipoMetodo::all();
         $tiposMuestra = TipoMuestra::all();
 
-        return view('analisis.create', compact('clientes','doctores','tiposAnalisis','tiposMetodo','tiposMuestra'));
+        return view('pages.analisis.create', compact('clientes','doctores','tiposAnalisis','tiposMetodo','tiposMuestra'));
     }
 
     public function store(Request $request)
@@ -61,7 +61,7 @@ class AnalisisController extends Controller
         $tiposMetodo   = TipoMetodo::all();
         $tiposMuestra  = TipoMuestra::all();
 
-        return view('analisis.edit', compact(
+        return view('pages.analisis.edit', compact(
             'analisi',
             'clientes',
             'doctores',
@@ -119,7 +119,7 @@ class AnalisisController extends Controller
         $analisis->load(['cliente', 'doctor', 'tipoAnalisis', 'tipoMetodo', 'tipoMuestra', 'hemogramas.categoria']);
 
         // Generar PDF desde la vista sin márgenes
-        $pdf = Pdf::loadView('analisis.pdf', compact('analisis'))
+        $pdf = Pdf::loadView('pages.analisis.pdf', compact('analisis'))
                 ->setPaper('A4', 'portrait')
                 ->setOptions([
                     'isHtml5ParserEnabled' => true,

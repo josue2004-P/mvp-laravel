@@ -1,7 +1,9 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="text-2xl font-bold text-gray-800">Editar Análisis</h2>
-    </x-slot>
+@extends('layouts.app')
+
+@section('title', 'Editar Analisis')
+
+@section('content')
+
 
     <div class="max-w-6xl mx-auto mt-8">
         <form action="{{ route('analisis.update', $analisi) }}" method="POST" class="grid grid-cols-1 xl:grid-cols-3 gap-6">
@@ -127,4 +129,4 @@
             </div>
         </form>
     </div>
-</x-app-layout>
+@endsection

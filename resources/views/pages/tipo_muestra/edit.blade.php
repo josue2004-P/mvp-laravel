@@ -4,7 +4,7 @@
 
 @section('content')
 
-<x-common.component-card title="Editar Tipo de Analisis" desc="Edita la información principal del Tipo de Analisis." class="max-w-5xl">
+<x-common.component-card title="Editar Tipo de Muestra" desc="Edita la información principal del Tipo de Muestra." class="max-w-5xl">
     <form id="form-tipo-muestra" action="{{ route('tipo_muestra.update', $tipoMuestra) }}" method="POST" class="space-y-5">
         @csrf
         @method('PUT')
