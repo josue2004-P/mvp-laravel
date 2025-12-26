@@ -4,111 +4,98 @@
 
 @section('content')
 
-    <div class="max-w-4xl mx-auto mt-8">
-        <div class="bg-white shadow-lg rounded-2xl p-8 border border-gray-200">
-            <!-- Título del formulario -->
-            <div class="mb-6 text-center">
-                <h1 class="text-3xl font-extrabold text-indigo-700">Registrar Análisis</h1>
-                <p class="text-gray-500 text-sm mt-2">Completa la información del análisis para continuar.</p>
-            </div>
-
-            <form action="{{ route('analisis.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                @csrf
-
-                <!-- Cliente -->
-                <div>
-                    <label class="block text-gray-700 font-medium mb-1">Cliente</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">👤</span>
-                        <select name="idCliente" class="w-full pl-10 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" required>
-                            <option value="">Selecciona un cliente</option>
-                            @foreach($clientes as $c)
-                                <option value="{{ $c->id }}" {{ old('idCliente') == $c->id ? 'selected' : '' }}>{{ $c->nombre }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('idCliente')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-                </div>
-
-                <!-- Doctor -->
-                <div>
-                    <label class="block text-gray-700 font-medium mb-1">Doctor</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">🩺</span>
-                        <select name="idDoctor" class="w-full pl-10 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" required>
-                            <option value="">Selecciona un doctor</option>
-                            @foreach($doctores as $d)
-                                <option value="{{ $d->id }}" {{ old('idDoctor') == $d->id ? 'selected' : '' }}>{{ $d->nombre }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('idDoctor')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-                </div>
-
-                <!-- Tipo de Análisis -->
-                <div>
-                    <label class="block text-gray-700 font-medium mb-1">Tipo de Análisis</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">🔬</span>
-                        <select name="idTipoAnalisis" class="w-full pl-10 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" required>
-                            <option value="">Selecciona un tipo</option>
-                            @foreach($tiposAnalisis as $t)
-                                <option value="{{ $t->id }}" {{ old('idTipoAnalisis') == $t->id ? 'selected' : '' }}>{{ $t->nombre }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('idTipoAnalisis')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-                </div>
-
-                <!-- Método -->
-                <div>
-                    <label class="block text-gray-700 font-medium mb-1">Método</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">⚙️</span>
-                        <select name="idTipoMetodo" class="w-full pl-10 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" required>
-                            <option value="">Selecciona un método</option>
-                            @foreach($tiposMetodo as $m)
-                                <option value="{{ $m->id }}" {{ old('idTipoMetodo') == $m->id ? 'selected' : '' }}>{{ $m->nombre }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('idTipoMetodo')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-                </div>
-
-                <!-- Muestra -->
-                <div>
-                    <label class="block text-gray-700 font-medium mb-1">Muestra</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">🧪</span>
-                        <select name="idTipoMuestra" class="w-full pl-10 border border-gray-300 rounded-lg px-8 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" required>
-                            <option value="">Selecciona una muestra</option>
-                            @foreach($tiposMuestra as $mu)
-                                <option value="{{ $mu->id }}" {{ old('idTipoMuestra') == $mu->id ? 'selected' : '' }}>{{ $mu->nombre }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('idTipoMuestra')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-                </div>
-
-                <!-- Nota (en ancho completo) -->
-                <div class="md:col-span-2">
-                    <label class="block text-gray-700 font-medium mb-1">Nota</label>
-                    <textarea name="nota" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" placeholder="Escribe alguna nota">{{ old('nota') }}</textarea>
-                    @error('nota')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-                </div>
-
-                <!-- Botones (en ancho completo) -->
-                <div class="md:col-span-2 flex items-center justify-end gap-4 pt-4 border-t border-gray-200">
-                    <a href="{{ route('analisis.index') }}" 
-                       class="px-5 py-2.5 rounded-lg bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition">
-                        Cancelar
-                    </a>
-                    <button type="submit"
-                            class="px-6 py-2.5 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-500 text-white font-semibold shadow-md hover:from-indigo-700 hover:to-blue-600 transition">
-                        Guardar Análisis
-                    </button>
-                </div>
-            </form>
+<x-common.component-card title="Formulario Analisis" desc="Completa la información para registrar un Analisi." class="max-w-5xl">
+    <form id="form-analisis" action="{{ route('analisis.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+    @csrf
+        <!-- Cliente -->
+        <div>
+            <x-form.input-label for="idCliente" :value="__('Cliente')" required/>
+            <x-form.input-select name="idCliente" :messages="$errors->get('idCliente')">
+                <option value="">Selecciona un cliente</option>
+                @foreach($clientes as $c)
+                    <option value="{{ $c->id }}" {{ old('idCliente') == $c->id ? 'selected' : '' }}>
+                        {{ $c->nombre }}
+                    </option>
+                @endforeach
+            </x-form.input-select>
         </div>
-    </div>
+        
+        <!-- Doctor -->
+        <div>
+            <x-form.input-label for="idDoctor" :value="__('Doctor')" required/>
+            <x-form.input-select name="idDoctor" :messages="$errors->get('idDoctor')">
+                <option value="">Selecciona un doctor</option>
+                @foreach($doctores as $d)
+                    <option value="{{ $d->id }}" {{ old('idDoctor') == $d->id ? 'selected' : '' }}>
+                        {{ $d->nombre }}
+                    </option>
+                @endforeach
+            </x-form.input-select>
+        </div>
+        
+        <!-- Tipo de Análisis -->
+        <div>
+            <x-form.input-label for="idTipoAnalisis" :value="__('Tipo de Análisis')" required/>
+            <x-form.input-select name="idTipoAnalisis" :messages="$errors->get('idTipoAnalisis')">
+                <option value="">Selecciona un tipo</option>
+                @foreach($tiposAnalisis as $t)
+                    <option value="{{ $t->id }}" {{ old('idTipoAnalisis') == $t->id ? 'selected' : '' }}>
+                        {{ $t->nombre }}
+                    </option>
+                @endforeach
+            </x-form.input-select>
+        </div>
+
+        <!-- Método -->
+        <div >
+            <x-form.input-label for="idTipoMetodo" :value="__('Tipo de Método')" required/>
+            <x-form.input-select name="idTipoMetodo" :messages="$errors->get('idTipoMetodo')">
+                <option value="">Selecciona un tipo</option>
+                @foreach($tiposMetodo as $tm)
+                    <option value="{{ $tm->id }}" {{ old('idTipoMetodo') == $tm->id ? 'selected' : '' }}>
+                        {{ $tm->nombre }}
+                    </option>
+                @endforeach
+            </x-form.input-select>
+        </div>
+
+
+        <!-- Muestra -->
+        <div >
+            <x-form.input-label for="idTipoMuestra" :value="__('Tipo de Muestra')" required/>
+            <x-form.input-select name="idTipoMuestra" :messages="$errors->get('idTipoMuestra')">
+                <option value="">Selecciona una muestra</option>
+                @foreach($tiposMuestra as $tm)
+                    <option value="{{ $tm->id }}" {{ old('idTipoMuestra') == $tm->id ? 'selected' : '' }}>
+                        {{ $tm->nombre }}
+                    </option>
+                @endforeach
+            </x-form.input-select>
+        </div>
+
+        <div class="col-span-2">
+            <x-form.input-label for="nota" :value="__('Nota')"/>
+            <x-form.text-input
+                type="text"
+                name="nota"
+                placeholder="Escribe la nota"
+                :value="old('nota')"
+                :messages="$errors->get('nota')"
+            />    
+            <x-input-error :messages="$errors->get('nota')" class="mt-2" />
+        </div>
+
+        <x-slot:footer>
+            <div class="flex justify-end gap-2">
+                <a href="{{ route('analisis.index') }}"
+                    class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700  hover:bg-gray-200 transition">
+                    Cancelar
+                </a>
+                <x-ui.button size="sm" type="submit" form="form-analisis">
+                    Guardar
+                </x-ui.button>
+            </div>
+        </x-slot:footer>
+    </form>
+</x-common.component-card>
 @endsection

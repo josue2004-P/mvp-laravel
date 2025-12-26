@@ -4,7 +4,7 @@
 
 @section('content')
 
-<x-common.component-card title="Formulario Clientes" desc="Completa la información para registrar un nuevo cliente." class="max-w-5xl">
+<x-common.component-card title="Formulario Clientes" desc="Completa la información para editar un nuevo cliente." class="max-w-5xl">
 
     <form id="form-clientes" action="{{ route('clientes.update', $cliente) }}" method="POST" class="grid grid-cols-2 gap-5">
     @csrf
