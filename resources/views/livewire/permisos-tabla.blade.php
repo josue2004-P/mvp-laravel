@@ -86,9 +86,9 @@
                                     View More ({{ $permiso['id'] }})
                                 </a>
 
-                                <button 
-                                    wire:click="deleteTransaction({{ $permiso['id'] }})"
-                                    class="flex w-full px-3 py-2 font-medium text-left text-red-600 dark:text-red-400 
+                               <button
+                                    wire:click="confirmDelete({{ $permiso['id'] }})"
+                                    class="flex w-full px-3 py-2 font-medium text-left text-red-600 dark:text-red-400
                                         rounded-lg hover:bg-red-100 dark:hover:bg-red-500/20"
                                 >
                                     Delete
