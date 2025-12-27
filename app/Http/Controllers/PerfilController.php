@@ -46,9 +46,23 @@ class PerfilController extends Controller
         ]);
 
         $perfil->update($request->only('nombre', 'descripcion'));
-        $perfil->permisos()->sync($request->input('permisos', []));
-        
-        return redirect()->route('perfiles.index')->with('success', 'Perfil actualizado.');
+
+        $permisos = [];
+
+        foreach ($request->input('permisos', []) as $permisoId => $acciones) {
+            $permisos[$permisoId] = [
+                'leer'       => isset($acciones['leer']),
+                'crear'      => isset($acciones['crear']),
+                'actualizar' => isset($acciones['actualizar']),
+                'eliminar'   => isset($acciones['eliminar']),
+            ];
+        }
+
+        $perfil->permisos()->sync($permisos);
+
+        return redirect()
+            ->route('perfiles.index')
+            ->with('success', 'Perfil actualizado correctamente.');
     }
 
     public function destroy(Perfil $perfil)

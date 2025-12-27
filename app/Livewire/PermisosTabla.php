@@ -30,6 +30,15 @@ class PermisosTabla extends Component
     #[On('delete-permiso')]
     public function deletePermiso($id)
     {
+        if (!checkPermiso('permisos.eliminar')) {
+            $this->dispatch('swal-init', [
+                'icon'  => 'error',
+                'title' => 'Acceso Denegado',
+                'text'  => 'No tienes permisos para eliminar este permiso'
+            ]);
+            return;
+        }
+
         Permiso::findOrFail($id)->delete();
 
         $this->dispatch('swal-init', [

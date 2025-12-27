@@ -57,28 +57,90 @@
                 </x-slot:footer>
             </x-common.component-card>
 
-            <x-common.component-card title="Perfiles Asignados" desc="Selecciona los perfiles que deseas asignar al usuario." class="max-w-5xl lg:col-span-2">
+            <x-common.component-card 
+                title="Perfiles Asignados"
+                desc="Selecciona los permisos y acciones disponibles para el perfil."
+                class="max-w-5xl lg:col-span-2"
+                >
+
 
                 <div class="grid grid-cols-1 gap-4">
                     @foreach($permisos as $permiso)
 
-                        <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] flex text-gray-800 dark:text-white/90 px-4 py-4 gap-4">
-                            <input 
-                                type="checkbox" 
-                                name="perfiles[]" 
-                                value="{{ $permiso->id }}" 
-                                {{ $perfil->permisos->contains($permiso->id) ? 'checked' : '' }}
-                                class="mt-1  accent-blue-600"
+                        @php
+                            $pivot = $perfil->permisos
+                                ->firstWhere('id', $permiso->id)
+                                ?->pivot;
+                        @endphp
+
+                        <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] 
+                                    text-gray-800 dark:text-white/90 px-4 py-4">
+
+                            <!-- Permiso principal -->
+                            <div class="flex items-start gap-4 mb-3">
+                                <input
+                                    type="checkbox"
+                                    name="permisos[{{ $permiso->id }}][activo]"
+                                    {{ $pivot ? 'checked' : '' }}
+                                    class="mt-1 accent-blue-600"
                                 >
+
                                 <div>
-                                    <p class="font-medium ">{{ $permiso->nombre }}</p>
-                                    <p class="text-sm ">{{ $permiso->descripcion }}</p>
+                                    <p class="font-medium">{{ $permiso->nombre }}</p>
+                                    <p class="text-sm opacity-80">{{ $permiso->descripcion }}</p>
                                 </div>
-                    
+                            </div>
+
+                            <!-- Acciones CRUD -->
+                            <div class="ml-8 grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+
+                                <label class="flex items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        name="permisos[{{ $permiso->id }}][leer]"
+                                        {{ $pivot?->leer ? 'checked' : '' }}
+                                        class="accent-green-600"
+                                    >
+                                    Leer
+                                </label>
+
+                                <label class="flex items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        name="permisos[{{ $permiso->id }}][crear]"
+                                        {{ $pivot?->crear ? 'checked' : '' }}
+                                        class="accent-blue-600"
+                                    >
+                                    Crear
+                                </label>
+
+                                <label class="flex items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        name="permisos[{{ $permiso->id }}][actualizar]"
+                                        {{ $pivot?->actualizar ? 'checked' : '' }}
+                                        class="accent-yellow-600"
+                                    >
+                                    Editar
+                                </label>
+
+                                <label class="flex items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        name="permisos[{{ $permiso->id }}][eliminar]"
+                                        {{ $pivot?->eliminar ? 'checked' : '' }}
+                                        class="accent-red-600"
+                                    >
+                                    Eliminar
+                                </label>
+
+                            </div>
                         </div>
+
                     @endforeach
                 </div>
             </x-common.component-card>
+
 
         </div>
 

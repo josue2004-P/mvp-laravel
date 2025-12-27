@@ -16,39 +16,43 @@ class MenuHelper
                 'icon' => 'book-medical',
                 'name' => 'Clientes',
                 'path' => '/clientes',
+                'permiso' => "clientes",
             ],
             [
                 'icon' => 'doctor',
                 'name' => 'Doctores',
                 'path' => '/doctores',
+                'permiso' => "doctores",
             ],
             [
                 'name' => 'Analisis',
                 'icon' => 'analysis',
+                'permiso' => "analisis",
                 'subItems' => [
-                    ['name' => 'Analisis', 'path' => '/analisis'],
-                    ['name' => 'Tipo de Analisis', 'path' => '/tipo_analisis'],
-                    ['name' => 'Tipo de Muestra', 'path' => '/tipo_muestra'],
-                    ['name' => 'Tipo de Metodo', 'path' => '/tipo_metodo'],
-                    ['name' => 'Unidades', 'path' => '/unidades'],
+                    ['name' => 'Analisis', 'path' => '/analisis','permiso' => "analisis",],
+                    ['name' => 'Tipo de Analisis', 'path' => '/tipo_analisis','permiso' => "tipo-analisis",],
+                    ['name' => 'Tipo de Muestra', 'path' => '/tipo_muestra','permiso' => "tipo-muestra",],
+                    ['name' => 'Tipo de Metodo', 'path' => '/tipo_metodo','permiso' => "tipo-metodo",],
+                    ['name' => 'Unidades', 'path' => '/unidades','permiso' => "unidades"],
                 ],
             ],
             [
                 'name' => 'Hemograma Completo',
                 'icon' => 'dna',
+                'permiso' => "hemograma-completo",
                 'subItems' => [
-                    ['name' => 'Hemograma Completo', 'path' => '/hemograma_completo'],
-                    ['name' => 'Categoria Hemograma Completo', 'path' => '/categoria_hemograma_completo'],
+                    ['name' => 'Hemograma Completo', 'path' => '/hemograma_completo','permiso' => "hemograma-completo",],
+                    ['name' => 'Categoria Hemograma Completo', 'path' => '/categoria_hemograma_completo','permiso' => "categoria-hemograma-completo",],
                 ],
             ],
             [
                 'name' => 'Usuarios',
                 'icon' => 'users',
+                'permiso' => 'usuarios', 
                 'subItems' => [
-                    ['name' => 'Usuarios', 'path' => '/usuarios'],
-                    ['name' => 'Perfiles', 'path' => '/perfiles'],
-                    ['name' => 'Permisos', 'path' => '/permisos'],
-
+                    ['name' => 'Usuarios', 'path' => '/usuarios', 'permiso' => 'usuarios'],
+                    ['name' => 'Perfiles', 'path' => '/perfiles', 'permiso' => 'perfiles'],
+                    ['name' => 'Permisos', 'path' => '/permisos', 'permiso' => 'permisos'],
                 ],
             ]
         ];

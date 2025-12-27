@@ -94,6 +94,20 @@
             }
         })();
     </script>
+
+    @if (session('swal'))
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Swal.fire({
+                icon: "{{ session('swal.icon') }}",
+                title: "{{ session('swal.title') }}",
+                text: "{{ session('swal.text') }}",
+                confirmButtonText: 'Aceptar'
+            });
+        });
+        </script>
+    @endif
+    
     @livewireStyles  
 </head>
 

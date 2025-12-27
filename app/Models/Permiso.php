@@ -16,6 +16,13 @@ class Permiso extends Model
 
     public function perfiles()
     {
-        return $this->belongsToMany(Perfil::class);
+        return $this->belongsToMany(
+            Perfil::class,
+            'perfil_permiso',
+            'permiso_id',
+            'perfil_id'
+        )
+        ->withPivot(['leer', 'crear', 'actualizar', 'eliminar'])
+        ->withTimestamps();
     }
 }
