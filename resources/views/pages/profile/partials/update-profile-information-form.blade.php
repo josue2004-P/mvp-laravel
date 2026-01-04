@@ -17,17 +17,35 @@
         @csrf
         @method('patch')
 
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
-        </div>
+                <div>
+                    <x-form.input-label for="name" 
+                        :value="__('Nombre:')" 
+                        />
+                    <x-form.text-input
+                        type="text"
+                        name="name"
+                        placeholder="Escribe el nombre"
+                        :value="$user->name " 
+                        :messages="$errors->get('name')"
+                    />    
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                </div>
 
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
-
+                <div>
+                    <x-form.input-label for="email" 
+                        :value="__('Email:')" 
+                        />
+                    <x-form.text-input
+                        type="text"
+                        name="email"
+                        placeholder="Escribe el email"
+                        :value="$user->email " 
+                        :messages="$errors->get('email')"
+                    />    
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                </div>
+                
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div>
                     <p class="text-sm mt-2 text-gray-800">
