@@ -87,7 +87,7 @@
                                 </a>
 
                                 <button 
-                                    wire:click="deleteTransaction({{ $perfil['id'] }})"
+                                    wire:click="confirmDelete({{ $perfil['id'] }})"
                                     class="flex w-full px-3 py-2 font-medium text-left text-red-600 dark:text-red-400 
                                         rounded-lg hover:bg-red-100 dark:hover:bg-red-500/20"
                                 >
