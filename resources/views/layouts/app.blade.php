@@ -265,6 +265,7 @@
 
     </div>
 
+    @include('partials.alerts')
     @livewireScripts 
     @stack('scripts')
 </body>

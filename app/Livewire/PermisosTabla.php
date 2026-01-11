@@ -18,12 +18,12 @@ class PermisosTabla extends Component
 
     public function confirmDelete($id)
     {
-
         $this->dispatch('swal-confirm', [
             'title' => '¿Eliminar permiso?',
             'text'  => 'Esta acción no se puede deshacer',
             'icon'  => 'warning',
             'id'    => $id,
+            'function'    => 'delete-permiso',
         ]);
     }
 

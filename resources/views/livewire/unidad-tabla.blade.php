@@ -83,7 +83,7 @@
                                 </a>
 
                                 <button 
-                                    wire:click="deleteTransaction({{ $unidad['id'] }})"
+                                    wire:click="confirmDelete({{ $unidad['id'] }})"
                                     class="flex w-full px-3 py-2 font-medium text-left text-red-600 dark:text-red-400 
                                         rounded-lg hover:bg-red-100 dark:hover:bg-red-500/20"
                                 >

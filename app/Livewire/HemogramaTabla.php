@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\HemogramaCompleto;
+use Livewire\Attributes\On;
 
 class HemogramaTabla extends Component
 {
@@ -14,6 +15,38 @@ class HemogramaTabla extends Component
 
     protected $updatesQueryString = ['search'];
     protected $paginationTheme = 'tailwind';
+
+    public function confirmDelete($id)
+    {
+        $this->dispatch('swal-confirm', [
+            'title' => '¿Eliminar hemograma?',
+            'text'  => 'Esta acción no se puede deshacer',
+            'icon'  => 'warning',
+            'id'    => $id,
+            'function'    => 'delete-hemograma',
+        ]);
+    }
+
+    #[On('delete-hemograma')]
+    public function deleteHemograma($id)
+    {
+        if (!checkPermiso('hemograma-completo.eliminar')) {
+            $this->dispatch('swal-init', [
+                'icon'  => 'error',
+                'title' => 'Acceso Denegado',
+                'text'  => 'No tienes permisos para eliminar este hemograma'
+            ]);
+            return;
+        }
+
+        HemogramaCompleto::findOrFail($id)->delete();
+
+        $this->dispatch('swal-init', [
+            'icon'  => 'success',
+            'title' => 'Eliminado',
+            'text'  => 'El hemograma fue eliminado correctamente'
+        ]);
+    }
 
     public function updatingSearch()
     {

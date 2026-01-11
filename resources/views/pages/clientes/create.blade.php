@@ -25,7 +25,7 @@
         <div>
             <x-form.input-label for="edad" :value="__('Edad')" required/>
             <x-form.text-input
-                type="text"
+                type="number"
                 name="edad"
                 placeholder="Escribe la edad"
                 :value="old('edad')"

@@ -24,6 +24,7 @@ class PerfilesTabla extends Component
             'text'  => 'Esta acción no se puede deshacer',
             'icon'  => 'warning',
             'id'    => $id,
+            'function'    => 'delete-perfil',
         ]);
     }
 

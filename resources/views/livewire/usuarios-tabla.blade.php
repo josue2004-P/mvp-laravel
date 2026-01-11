@@ -87,15 +87,13 @@
                                     View More ({{ $usuario['id'] }})
                                 </a>
 
-                                <form action="{{ route('usuarios.destroy', $usuario) }}" method="POST" class="inline">
-                                    @csrf @method('DELETE')
-                                    <button type="submit"
-                                        class="flex w-full px-3 py-2 font-medium text-left text-red-600 dark:text-red-400 
+                                <button
+                                    wire:click="confirmDelete({{ $usuario['id'] }})"
+                                    class="flex w-full px-3 py-2 font-medium text-left text-red-600 dark:text-red-400
                                         rounded-lg hover:bg-red-100 dark:hover:bg-red-500/20"
-                                    >
-                                        Delete
-                                    </button>
-                                </form>
+                                >
+                                    Delete
+                                </button>
                             </div>
                         </div>
                         </td>
