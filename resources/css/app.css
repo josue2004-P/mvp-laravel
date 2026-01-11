@@ -874,3 +874,11 @@ pre[class*='language-'] {
         fill: none !important;
     }
 }
+
+.swal2-container {
+    z-index: 100000 !important;
+}
+
+.dark .swal2-popup.swal2-toast {
+    border: 1px solid var(--s2-border);
+}
