@@ -6,6 +6,24 @@
             <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Analisis</h3>
         </div>
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <a href="{{ route('analisis-general.pdf', ['search' => $search, 'page' => $this->getPage()]) }}"
+                target="_blank"
+                class="flex items-center justify-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 focus:outline-none dark:bg-red-600 dark:hover:bg-green-red dark:focus:ring-green-red">
+                     <svg class="h-3.5 w-3.5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.93a1 1 0 1 0-1.41 1.41l4.93 4.93c.39.39 1.02.39 1.41 0l4.93-4.93a1 1 0 0 0-1.41-1.41L13 11.15Z" clip-rule="evenodd"/>
+                        <path fill-rule="evenodd" d="M9.657 15.828 7.343 13.515A1 1 0 0 0 5.929 14.93l2.314 2.313H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2h-3.243l2.314-2.313a1 1 0 0 0-1.414-1.414l-2.314 2.313a.4.4 0 0 1-.572 0Z" clip-rule="evenodd"/>
+                    </svg>
+                    Exportar PDF
+                </a>
+            <a href="{{ route('analisis.export') }}" 
+                class="flex items-center justify-center text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 focus:outline-none dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                    <svg class="h-3.5 w-3.5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.93a1 1 0 1 0-1.41 1.41l4.93 4.93c.39.39 1.02.39 1.41 0l4.93-4.93a1 1 0 0 0-1.41-1.41L13 11.15Z" clip-rule="evenodd"/>
+                        <path fill-rule="evenodd" d="M9.657 15.828 7.343 13.515A1 1 0 0 0 5.929 14.93l2.314 2.313H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2h-3.243l2.314-2.313a1 1 0 0 0-1.414-1.414l-2.314 2.313a.4.4 0 0 1-.572 0Z" clip-rule="evenodd"/>
+                    </svg>
+                    Exportar Excel
+                </a>
+
             <a 
                 href="{{ route('analisis.create') }}"
                 type="button" class="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 focus:outline-none dark:focus:ring-primary-800">
@@ -123,7 +141,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="px-6 py-3 text-center text-gray-500">
+                        <td colspan="8" class="px-6 py-3 text-center text-gray-500">
                             No se encontraron transacciones.
                         </td>
                     </tr>

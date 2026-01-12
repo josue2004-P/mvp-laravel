@@ -2,6 +2,8 @@ import './bootstrap';
 import Alpine from 'alpinejs';
 import ApexCharts from 'apexcharts';
 import Swal from 'sweetalert2';
+import $ from 'jquery';
+import select2 from 'select2';
 
 // Flatpickr
 import flatpickr from 'flatpickr';
@@ -14,7 +16,9 @@ window.ApexCharts = ApexCharts;
 window.flatpickr = flatpickr;
 window.FullCalendar = Calendar;
 window.Swal = Swal;
+window.jQuery = window.$ = $;
 
+select2();
 // window.Alpine = Alpine;
 // Alpine.start();
 

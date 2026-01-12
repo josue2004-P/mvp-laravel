@@ -4,17 +4,16 @@
 
 @section('content')
 
-<x-common.component-card title="Informacion General" desc="Informacion General del Analisis" class="max-w-7xl">
-    <form id="form-analisis" action="{{ route('analisis.update', $analisi) }}" method="POST" class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-    @csrf
-    @method('PUT')
- 
-        <x-common.component-card title="Datos Generales" desc="Datos Generales del Analisis" class="col-span-2">
-
+<form id="form-analisis" action="{{ route('analisis.update', $analisi) }}" method="POST" class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+    <x-common.component-card title="Informacion General" desc="Informacion General del Analisis" class="col-span-2 h-fit">
+        @csrf
+        @method('PUT')
+    
+        <div class=" space-y-3 md:space-y-0 md:grid md:grid-cols-2 gap-3">
             <!-- Cliente -->
             <div>
                 <x-form.input-label for="idCliente" :value="__('Cliente')" required/>
-                <x-form.input-select name="idCliente" :messages="$errors->get('idCliente')">
+                <x-form.input-select class="select2" name="idCliente" :messages="$errors->get('idCliente')">
                     <option value="">Selecciona un cliente</option>
                     @foreach($clientes as $c)
                         <option value="{{ $c->id }}" {{ old('idCliente', $analisi->idCliente) == $c->id ? 'selected' : '' }}>
@@ -27,7 +26,7 @@
             <!-- Doctor -->
             <div>
                 <x-form.input-label for="idDoctor" :value="__('Doctor')" required/>
-                <x-form.input-select name="idDoctor" :messages="$errors->get('idDoctor')">
+                <x-form.input-select class="select2" name="idDoctor" :messages="$errors->get('idDoctor')">
                     <option value="">Selecciona un doctor</option>
                     @foreach($doctores as $d)
                         <option value="{{ $d->id }}" {{ old('idDoctor', $analisi->idDoctor) == $d->id ? 'selected' : '' }}>
@@ -40,7 +39,7 @@
             <!-- Tipo de Análisis -->
             <div>
                 <x-form.input-label for="idTipoAnalisis" :value="__('Tipo de Análisis')" required/>
-                <x-form.input-select name="idTipoAnalisis" :messages="$errors->get('idTipoAnalisis')">
+                <x-form.input-select class="select2" name="idTipoAnalisis" :messages="$errors->get('idTipoAnalisis')">
                     <option value="">Selecciona un tipo</option>
                     @foreach($tiposAnalisis as $t)
                         <option value="{{ $t->id }}" {{  old('idTipoAnalisis', $analisi->idTipoAnalisis) == $t->id ? 'selected' : '' }}>
@@ -53,7 +52,7 @@
             <!-- Método -->
             <div >
                 <x-form.input-label for="idTipoMetodo" :value="__('Tipo de Método')" required/>
-                <x-form.input-select name="idTipoMetodo" :messages="$errors->get('idTipoMetodo')">
+                <x-form.input-select class="select2" name="idTipoMetodo" :messages="$errors->get('idTipoMetodo')">
                     <option value="">Selecciona un tipo</option>
                     @foreach($tiposMetodo as $tm)
                         <option value="{{ $tm->id }}" {{ old('idTipoMetodo', $analisi->idTipoMetodo) == $tm->id ? 'selected' : '' }}>
@@ -66,7 +65,7 @@
             <!-- Muestra -->
             <div >
                 <x-form.input-label for="idTipoMuestra" :value="__('Tipo de Muestra')" required/>
-                <x-form.input-select name="idTipoMuestra" :messages="$errors->get('idTipoMuestra')">
+                <x-form.input-select class="select2" name="idTipoMuestra" :messages="$errors->get('idTipoMuestra')">
                     <option value="">Selecciona una muestra</option>
                     @foreach($tiposMuestra as $tm)
                         <option value="{{ $tm->id }}" {{ old('idTipoMuestra', $analisi->idTipoMuestra) == $tm->id ? 'selected' : '' }}>
@@ -88,20 +87,19 @@
                 <x-input-error :messages="$errors->get('nota')" class="mt-2" />
             </div>
 
-            <x-slot:footer>
-                <div class="flex justify-end gap-2">
-                    <a href="{{ route('analisis.index') }}"
-                        class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700  hover:bg-gray-200 transition">
-                        Cancelar
-                    </a>
-                    <a href="{{ route('analisis.pdf', $analisi->id) }}" target="_blank" class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition">Descargar PDF</a>
+            <div class=" pt-4 border-t border-gray-100 dark:border-gray-800 rounded-b-2xl  col-span-2 md:flex md:justify-end gap-2 grid grid-cols-1">
+                <a href="{{ route('analisis.index') }}"
+                    class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 text-center hover:bg-gray-200 transition">
+                    Cancelar
+                </a>
+                <a href="{{ route('analisis.pdf', $analisi->id) }}" target="_blank" class="h-full px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition text-center">Descargar PDF</a>
 
-                    <x-ui.button size="sm" type="submit" form="form-analisis">
-                        Guardar
-                    </x-ui.button>
-                </div>
-            </x-slot:footer>
-        </x-common.component-card>
+                <x-ui.button size="sm" type="submit" form="form-analisis">
+                    Guardar
+                </x-ui.button>
+            </div>
+        </div>
+    </x-common.component-card>
 
         <x-common.component-card title="Hemogramas Completos" desc="Ingresa el resultado del analisis" class="">
 
@@ -146,6 +144,5 @@
 
         </x-common.component-card>
 
-    </form>
-</x-common.component-card>
+</form>
 @endsection

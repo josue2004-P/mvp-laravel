@@ -5,12 +5,15 @@
 @section('content')
 
 <x-common.component-card title="Formulario Analisis" desc="Completa la información para registrar un Analisi." class="max-w-5xl">
-    <form id="form-analisis" action="{{ route('analisis.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+    <form id="form-analisis" action="{{ route('analisis.store') }}" method="POST" class="md:grid grid-cols-1 md:grid-cols-2 gap-5">
     @csrf
         <!-- Cliente -->
         <div>
             <x-form.input-label for="idCliente" :value="__('Cliente')" required/>
-            <x-form.input-select name="idCliente" :messages="$errors->get('idCliente')">
+            <x-form.input-select name="idCliente" 
+            :messages="$errors->get('idCliente')"
+            class="select2"
+            >
                 <option value="">Selecciona un cliente</option>
                 @foreach($clientes as $c)
                     <option value="{{ $c->id }}" {{ old('idCliente') == $c->id ? 'selected' : '' }}>
@@ -23,7 +26,10 @@
         <!-- Doctor -->
         <div>
             <x-form.input-label for="idDoctor" :value="__('Doctor')" required/>
-            <x-form.input-select name="idDoctor" :messages="$errors->get('idDoctor')">
+            <x-form.input-select name="idDoctor" 
+            :messages="$errors->get('idDoctor')"
+            class="select2"
+            >
                 <option value="">Selecciona un doctor</option>
                 @foreach($doctores as $d)
                     <option value="{{ $d->id }}" {{ old('idDoctor') == $d->id ? 'selected' : '' }}>
@@ -36,7 +42,10 @@
         <!-- Tipo de Análisis -->
         <div>
             <x-form.input-label for="idTipoAnalisis" :value="__('Tipo de Análisis')" required/>
-            <x-form.input-select name="idTipoAnalisis" :messages="$errors->get('idTipoAnalisis')">
+            <x-form.input-select name="idTipoAnalisis" 
+            :messages="$errors->get('idTipoAnalisis')"
+            class="select2"
+            >
                 <option value="">Selecciona un tipo</option>
                 @foreach($tiposAnalisis as $t)
                     <option value="{{ $t->id }}" {{ old('idTipoAnalisis') == $t->id ? 'selected' : '' }}>
@@ -49,7 +58,10 @@
         <!-- Método -->
         <div >
             <x-form.input-label for="idTipoMetodo" :value="__('Tipo de Método')" required/>
-            <x-form.input-select name="idTipoMetodo" :messages="$errors->get('idTipoMetodo')">
+            <x-form.input-select name="idTipoMetodo"
+                :messages="$errors->get('idTipoMetodo')"
+                class="select2"
+                >
                 <option value="">Selecciona un tipo</option>
                 @foreach($tiposMetodo as $tm)
                     <option value="{{ $tm->id }}" {{ old('idTipoMetodo') == $tm->id ? 'selected' : '' }}>
@@ -63,7 +75,10 @@
         <!-- Muestra -->
         <div >
             <x-form.input-label for="idTipoMuestra" :value="__('Tipo de Muestra')" required/>
-            <x-form.input-select name="idTipoMuestra" :messages="$errors->get('idTipoMuestra')">
+            <x-form.input-select name="idTipoMuestra" 
+                :messages="$errors->get('idTipoMuestra')"
+                class="select2"
+                >
                 <option value="">Selecciona una muestra</option>
                 @foreach($tiposMuestra as $tm)
                     <option value="{{ $tm->id }}" {{ old('idTipoMuestra') == $tm->id ? 'selected' : '' }}>

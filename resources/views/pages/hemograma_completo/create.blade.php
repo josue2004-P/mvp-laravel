@@ -6,7 +6,6 @@
 <x-common.component-card title="Formulario Hemograma" desc="Completa la información para registrar un nuevo Hemograma." class="max-w-5xl">
     <form id="form-hemogramas" action="{{ route('hemograma_completo.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-1 gap-5">
     @csrf
-
         <!-- Elements -->
         <div>
             <x-form.input-label for="nombreCompleto" :value="__('Nombre Completo')" required/>
@@ -20,35 +19,35 @@
             <x-input-error :messages="$errors->get('nombre')" class="mt-2" />
         </div>
 
-<div>
-    <x-form.input-label for="idCategoriaHemogramaCompleto" :value="__('Categoría')" required/>
-    <x-form.input-select 
-        id="idCategoriaHemogramaCompleto" 
-        name="idCategoriaHemogramaCompleto"
-        class="select2-search" 
-    >
-        <option value="">Selecciona una categoría</option>
-        @foreach($categorias as $c)
-            <option value="{{ $c->id }}" {{ old('idCategoriaHemogramaCompleto') == $c->id ? 'selected' : '' }}>
-                {{ $c->nombre }}
-            </option>
-        @endforeach
-    </x-form.input-select>
-    <x-input-error :messages="$errors->get('idCategoriaHemogramaCompleto')" class="mt-2" />
-</div>
+        <div>
+            <x-form.input-label for="idCategoriaHemogramaCompleto" :value="__('Categoría')" required/>
+            <x-form.input-select 
+                id="idCategoriaHemogramaCompleto" 
+                name="idCategoriaHemogramaCompleto"
+                class="select2"
+            >
+                <option value="">Selecciona una categoría</option>
+                @foreach($categorias as $c)
+                    <option value="{{ $c->id }}" {{ old('idCategoriaHemogramaCompleto') == $c->id ? 'selected' : '' }}>
+                        {{ $c->nombre }}
+                    </option>
+                @endforeach
+            </x-form.input-select>
+            <x-input-error :messages="$errors->get('idCategoriaHemogramaCompleto')" class="mt-2" />
+        </div>
 
-<div>
-    <x-form.input-label for="idUnidad" :value="__('Unidad')" required/>
-    <x-form.input-select name="idUnidad" class="select2-search">
-        <option value="">Selecciona una unidad</option>
-        @foreach($unidades as $u)
-            <option value="{{ $u->id }}" {{ old('idUnidad') == $u->id ? 'selected' : '' }}>
-                {{ $u->nombre }}
-            </option>
-        @endforeach
-    </x-form.input-select>
-    <x-input-error :messages="$errors->get('idUnidad')" class="mt-2" />
-</div>
+        <div>
+            <x-form.input-label for="idUnidad" :value="__('Unidad')" required/>
+            <x-form.input-select name="idUnidad" class="select2">
+                <option value="">Selecciona una unidad</option>
+                @foreach($unidades as $u)
+                    <option value="{{ $u->id }}" {{ old('idUnidad') == $u->id ? 'selected' : '' }}>
+                        {{ $u->nombre }}
+                    </option>
+                @endforeach
+            </x-form.input-select>
+            <x-input-error :messages="$errors->get('idUnidad')" class="mt-2" />
+        </div>
 
         <!-- Elements -->
         <div>

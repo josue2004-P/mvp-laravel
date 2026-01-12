@@ -8,8 +8,10 @@ use App\Models\Doctor;
 use App\Models\TipoAnalisis;
 use App\Models\TipoMetodo;
 use App\Models\TipoMuestra;
+
 use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf; // Importar la clase
+
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AnalisisController extends Controller
 {
@@ -71,7 +73,6 @@ class AnalisisController extends Controller
         ));
     }
 
-
     public function update(Request $request, Analisis $analisi)
     {
         $validated = $request->validate([
@@ -104,14 +105,11 @@ class AnalisisController extends Controller
             ->with('success', 'Análisis actualizado correctamente');
     }
 
-
-
     public function destroy(Analisis $analisi)
     {
         $analisi->delete();
         return redirect()->route('analisis.index')->with('success', 'Análisis eliminado correctamente');
     }
-
 
     public function generarPdf(Analisis $analisis)
     {
@@ -119,7 +117,7 @@ class AnalisisController extends Controller
         $analisis->load(['cliente', 'doctor', 'tipoAnalisis', 'tipoMetodo', 'tipoMuestra', 'hemogramas.categoria']);
 
         // Generar PDF desde la vista sin márgenes
-        $pdf = Pdf::loadView('pages.analisis.pdf', compact('analisis'))
+        $pdf = Pdf::loadView('pdf.pdf', compact('analisis'))
                 ->setPaper('A4', 'portrait')
                 ->setOptions([
                     'isHtml5ParserEnabled' => true,
@@ -134,4 +132,22 @@ class AnalisisController extends Controller
         return $pdf->stream('analisis_'.$analisis->id.'.pdf');
     }
 
+    public function exportPdf(Request $request)
+    {
+        $search = $request->query('search');
+        $page = $request->query('page', 1);
+
+        $analisis = Analisis::with(['cliente', 'doctor', 'tipoAnalisis', 'tipoMetodo', 'tipoMuestra', 'usuarioCreacion'])
+            ->whereHas('cliente', function ($query) use ($search) {
+                $query->where('nombre', 'like', '%' . $search . '%');
+            })
+            ->paginate(10, ['*'], 'page', $page)
+            ->items(); 
+
+        // Esta línea busca el archivo en: resources/views/pdf/analisis.blade.php
+        $pdf = Pdf::loadView('pdf.analisis', compact('analisis'));
+        $pdf->setPaper('a4', 'landscape');
+
+        return $pdf->download('reporte-pagina-' . $page . '.pdf');
+    }
 }
