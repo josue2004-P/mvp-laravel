@@ -1,13 +1,21 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Maatwebsite\Excel\Facades\Excel; // Importante para la fachada
-use App\Exports\AnalisisExport;       // Importante para tu clase de exportación
+use Maatwebsite\Excel\Facades\Excel; 
+use App\Exports\AnalisisExport;      
+
+use Illuminate\Http\Request;
 
 Route::middleware('auth')->group(function () {
     
-    Route::get('analisis/export/excel', function () {
-        return Excel::download(new AnalisisExport, 'analisis.xlsx');
+    Route::get('analisis/export/excel', function (Request $request) {
+        return Excel::download(
+            new AnalisisExport(
+                $request->query('search'),
+                $request->query('doctorId'),
+                $request->query('tipoAnalisisId')
+            ), 
+            'analisis_filtrado.xlsx'
+        );
     })->name('analisis.export');
-
 });

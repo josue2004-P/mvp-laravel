@@ -10,21 +10,35 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class AnalisisExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
 {
+    protected $search;
+    protected $doctorId;
+    protected $tipoAnalisisId;
+
+    // Recibimos los filtros en el constructor
+    public function __construct($search = null, $doctorId = null, $tipoAnalisisId = null)
+    {
+        $this->search = $search;
+        $this->doctorId = $doctorId;
+        $this->tipoAnalisisId = $tipoAnalisisId;
+    }
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        // Usamos Eager Loading (with) para que la exportación sea rápida 
-        // y no haga cientos de consultas a la base de datos.
         return Analisis::with([
-            'cliente', 
-            'doctor', 
-            'tipoAnalisis', 
-            'tipoMetodo', 
-            'tipoMuestra', 
-            'usuarioCreacion'
-        ])->get();
+            'cliente', 'doctor', 'tipoAnalisis', 'tipoMetodo', 'tipoMuestra', 'usuarioCreacion'
+        ])
+        ->whereHas('cliente', function ($query) {
+            $query->where('nombre', 'like', '%' . $this->search . '%');
+        })
+        ->when($this->doctorId, function ($query) {
+            $query->where('idDoctor', $this->doctorId);
+        })
+        ->when($this->tipoAnalisisId, function ($query) {
+            $query->where('idTipoAnalisis', $this->tipoAnalisisId);
+        })
+        ->get();
     }
 
     /**

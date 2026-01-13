@@ -136,18 +136,28 @@ class AnalisisController extends Controller
     {
         $search = $request->query('search');
         $page = $request->query('page', 1);
+        // Capturamos los nuevos filtros
+        $doctorId = $request->query('doctorId');
+        $tipoAnalisisId = $request->query('tipoAnalisisId');
 
         $analisis = Analisis::with(['cliente', 'doctor', 'tipoAnalisis', 'tipoMetodo', 'tipoMuestra', 'usuarioCreacion'])
             ->whereHas('cliente', function ($query) use ($search) {
                 $query->where('nombre', 'like', '%' . $search . '%');
             })
+            // Filtro por Doctor
+            ->when($doctorId, function ($query) use ($doctorId) {
+                $query->where('idDoctor', $doctorId);
+            })
+            // Filtro por Tipo de Análisis
+            ->when($tipoAnalisisId, function ($query) use ($tipoAnalisisId) {
+                $query->where('idTipoAnalisis', $tipoAnalisisId);
+            })
             ->paginate(10, ['*'], 'page', $page)
             ->items(); 
 
-        // Esta línea busca el archivo en: resources/views/pdf/analisis.blade.php
         $pdf = Pdf::loadView('pdf.analisis', compact('analisis'));
         $pdf->setPaper('a4', 'landscape');
 
-        return $pdf->download('reporte-pagina-' . $page . '.pdf');
+        return $pdf->stream('reporte-analisis.pdf'); // 'stream' permite verlo antes de descargar
     }
 }

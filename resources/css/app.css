@@ -985,3 +985,26 @@ pre[class*='language-'] {
             background-color: var(--s2-highlight) !important;
             color: #ffffff !important;
         }
+
+        /* ===== SELECT2 DENTRO DE INPUT GROUP ===== */
+.input-group-select2
+.select2-container--default
+.select2-selection--single {
+    border: none !important;
+    border-radius: 0 !important;
+    height: 100% !important;
+    background-color: transparent !important;
+}
+
+.input-group-select2
+.select2-selection__rendered {
+    padding-left: 1rem !important;
+    padding-right: 3rem !important;
+    line-height: 44px !important;
+}
+
+.input-group-select2
+.select2-selection__clear {
+    right: 12px !important;
+}
+

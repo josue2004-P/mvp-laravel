@@ -6,7 +6,22 @@
             <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Analisis</h3>
         </div>
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <a href="{{ route('analisis-general.pdf', ['search' => $search, 'page' => $this->getPage()]) }}"
+            <button 
+                @click="$dispatch('toggle-filtros')" 
+                class="inline-flex items-center px-4 py-2 bg-[#008196] hover:bg-[#006a7c] text-white text-sm font-medium rounded-md shadow-sm transition-all"
+            >
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                </svg>
+                <span x-text="openFiltros ? 'Ocultar Filtros' : 'Mostrar Filtros'"></span>
+            </button>
+
+            <a href="{{ route('analisis-general.pdf', [
+                    'search' => $search, 
+                    'page' => $this->getPage(),
+                    'doctorId' => $doctorId, 
+                    'tipoAnalisisId' => $tipoAnalisisId
+                ]) }}"
                 target="_blank"
                 class="flex items-center justify-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 focus:outline-none dark:bg-red-600 dark:hover:bg-green-red dark:focus:ring-green-red">
                      <svg class="h-3.5 w-3.5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -14,8 +29,12 @@
                         <path fill-rule="evenodd" d="M9.657 15.828 7.343 13.515A1 1 0 0 0 5.929 14.93l2.314 2.313H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2h-3.243l2.314-2.313a1 1 0 0 0-1.414-1.414l-2.314 2.313a.4.4 0 0 1-.572 0Z" clip-rule="evenodd"/>
                     </svg>
                     Exportar PDF
-                </a>
-            <a href="{{ route('analisis.export') }}" 
+            </a>
+            <a href="{{ route('analisis.export', [
+                    'search' => $search, 
+                    'doctorId' => $doctorId, 
+                    'tipoAnalisisId' => $tipoAnalisisId
+                ]) }}"
                 class="flex items-center justify-center text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 focus:outline-none dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                     <svg class="h-3.5 w-3.5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                         <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.93a1 1 0 1 0-1.41 1.41l4.93 4.93c.39.39 1.02.39 1.41 0l4.93-4.93a1 1 0 0 0-1.41-1.41L13 11.15Z" clip-rule="evenodd"/>
@@ -48,6 +67,51 @@
         </div>
     </div>
     
+    <div 
+        x-data="{ show: false }" 
+        @toggle-filtros.window="show = !show; if(show) { setTimeout(() => initSelect2(), 100) }"
+        x-show="show"
+        x-cloak
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 -translate-y-4"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="opacity-0 -translate-y-4"
+        class="max-w-full mx-5 py-4 my-4 border-gray-200 border-y dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/30 rounded-lg px-4"
+    >
+        <div class="grid grid-cols-2 gap-4">
+            <div wire:ignore class="w-full"> 
+
+                <x-form.input-select-filter
+                    id="tipoAnalisisSelect" 
+                    name="tipoAnalisis" 
+                    dataModel="tipoAnalisisId" 
+                    label="Tipo de Analisis" >
+                    <option value="">Selecciona un Tipo de Analisis</option>
+                    @foreach($tipoAnalisis as $t)
+                        <option value="{{ $t->id }}" {{ old('idTipoAnalisis') == $t->id ? 'selected' : '' }}>
+                            {{ $t->nombre }}
+                        </option>
+                    @endforeach
+                </x-form.input-filter >
+            </div>
+
+            <div wire:ignore class="w-full"> 
+                <x-form.input-select-filter
+                    dataModel="doctorId"
+                    id="doctorSelect" 
+                    name="doctor" 
+                    label="Doctor" >
+                    <option value="">Selecciona un Doctor</option>
+                   @foreach($doctores as $d)
+                        <option value="{{ $d->id }}">{{ $d->nombre }}</option>
+                    @endforeach
+                </x-form.input-filter >
+            </div>
+        </div>
+    </div>
+
     <div class="">
         <div class="max-w-full px-5">
             <table class="min-w-full">
@@ -157,3 +221,32 @@
 </div>
 
           
+@push('scripts')
+<script>
+    function initGlobalSelect2() {
+        $('.select2-dynamic').each(function () {
+            const $el = $(this);
+            const modelName = $el.data('model'); // Lee 'tipoAnalisisId', 'doctorId', etc.
+            const placeholder = $el.data('placeholder') || 'Seleccionar...';
+
+            if ($el.data('select2')) { $el.select2('destroy'); }
+
+            $el.select2({
+                placeholder: placeholder,
+                allowClear: true,
+                width: '100%'
+            }).on('change', function () {
+                const value = $(this).val();
+                @this.set(modelName, value);
+            });
+        });
+    }
+
+    document.addEventListener('livewire:initialized', initGlobalSelect2);
+    document.addEventListener('livewire:navigated', initGlobalSelect2);
+    
+    window.addEventListener('toggle-filtros', () => {
+        setTimeout(initGlobalSelect2, 150);
+    });
+</script>
+@endpush
