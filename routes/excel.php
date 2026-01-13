@@ -13,7 +13,10 @@ Route::middleware('auth')->group(function () {
             new AnalisisExport(
                 $request->query('search'),
                 $request->query('doctorId'),
-                $request->query('tipoAnalisisId')
+                $request->query('tipoAnalisisId'),
+                $request->query('tipoMuestraId'),
+                $request->query('tipoMetodoId'),
+                $request->query('perPage', 10)
             ), 
             'analisis_filtrado.xlsx'
         );

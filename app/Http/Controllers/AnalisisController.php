@@ -134,30 +134,37 @@ class AnalisisController extends Controller
 
     public function exportPdf(Request $request)
     {
+        // Capturamos los parámetros de la URL
         $search = $request->query('search');
-        $page = $request->query('page', 1);
-        // Capturamos los nuevos filtros
+        $limite = $request->query('perPage', 10); // 10 por defecto
+        
         $doctorId = $request->query('doctorId');
         $tipoAnalisisId = $request->query('tipoAnalisisId');
+        $tipoMuestraId = $request->query('tipoMuestraId');
+        $tipoMetodoId = $request->query('tipoMetodoId');
 
-        $analisis = Analisis::with(['cliente', 'doctor', 'tipoAnalisis', 'tipoMetodo', 'tipoMuestra', 'usuarioCreacion'])
-            ->whereHas('cliente', function ($query) use ($search) {
-                $query->where('nombre', 'like', '%' . $search . '%');
+        $query = Analisis::with(['cliente', 'doctor', 'tipoAnalisis', 'tipoMetodo', 'tipoMuestra', 'usuarioCreacion'])
+            // Búsqueda por Cliente o por ID de análisis
+            ->where(function ($q) use ($search) {
+                if ($search) {
+                    $q->whereHas('cliente', function ($query) use ($search) {
+                        $query->where('nombre', 'like', '%' . $search . '%');
+                    })->orWhere('id', 'like', '%' . $search . '%');
+                }
             })
-            // Filtro por Doctor
-            ->when($doctorId, function ($query) use ($doctorId) {
-                $query->where('idDoctor', $doctorId);
-            })
-            // Filtro por Tipo de Análisis
-            ->when($tipoAnalisisId, function ($query) use ($tipoAnalisisId) {
-                $query->where('idTipoAnalisis', $tipoAnalisisId);
-            })
-            ->paginate(10, ['*'], 'page', $page)
-            ->items(); 
+            // Filtros dinámicos (se aplican solo si tienen valor)
+            ->when($doctorId, fn($q) => $q->where('idDoctor', $doctorId))
+            ->when($tipoAnalisisId, fn($q) => $q->where('idTipoAnalisis', $tipoAnalisisId))
+            ->when($tipoMuestraId, fn($q) => $q->where('idTipoMuestra', $tipoMuestraId))
+            ->when($tipoMetodoId, fn($q) => $q->where('idTipoMetodo', $tipoMetodoId));
+
+        // Obtenemos los datos limitados por el valor del select de la tabla
+        // Usamos ->get() porque el PDF requiere una colección, no un paginador
+        $analisis = $query->latest()->limit($limite)->get(); 
 
         $pdf = Pdf::loadView('pdf.analisis', compact('analisis'));
         $pdf->setPaper('a4', 'landscape');
 
-        return $pdf->stream('reporte-analisis.pdf'); // 'stream' permite verlo antes de descargar
+        return $pdf->stream('reporte-analisis.pdf');
     }
 }

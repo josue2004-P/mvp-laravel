@@ -13,9 +13,19 @@ class ClienteTabla extends Component
     use WithPagination;
 
     public $search = '';
+    public $perPage = 10;
+
+    // Esto mantiene los filtros en la URL del navegador
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'perPage' => ['except' => 10],
+    ];
 
     protected $updatesQueryString = ['search'];
     protected $paginationTheme = 'tailwind';
+
+    public function updatedSearch() { $this->resetPage(); }
+    public function updatedPerPage(){$this->resetPage();}
 
     public function confirmDelete($id)
     {
@@ -57,7 +67,7 @@ class ClienteTabla extends Component
     public function render()
     {
         $clientes = Cliente::where('nombre', 'like', '%'.$this->search.'%')
-            ->paginate(10);
+            ->paginate($this->perPage);
 
         return view('livewire.cliente-tabla', [
             'clientes' => $clientes,
