@@ -82,30 +82,30 @@
                     <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                         #{{ $key + 1 }}
                     </td>
-                    <td class="px-4 py-2 whitespace-nowrap">
+                    <td class="px-4 py-1 whitespace-nowrap">
                         <div class="text-sm text-gray-700 dark:text-gray-300 font-medium">{{ $a->cliente->nombre }}</div>
                     </td>
-                    <td class="px-4 py-2 whitespace-nowrap">
+                    <td class="px-4 py-1 whitespace-nowrap">
                         <div class="text-sm text-gray-500 dark:text-gray-400">{{ $a->doctor->nombre }}</div>
                     </td>
-                    <td class="px-4 py-2 whitespace-nowrap">
+                    <td class="px-4 py-1 whitespace-nowrap">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
                             {{ $a->tipoAnalisis->nombre }}
                         </span>
                     </td>
-                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 hidden md:table-cell">
+                    <td class="px-4 py-1 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 hidden md:table-cell">
                         {{ $a->tipoMetodo->nombre }}
                     </td>       
-                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 hidden lg:table-cell">
+                    <td class="px-4 py-1 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 hidden lg:table-cell">
                         {{ $a->tipoMuestra->nombre }}
                     </td>       
-                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 hidden xl:table-cell">
+                    <td class="px-4 py-1 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 hidden xl:table-cell">
                         {{ $a->usuarioCreacion->name }}
                     </td>       
-                    <td class="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 max-w-[150px] truncate">
+                    <td class="px-4 py-1 text-sm text-gray-500 dark:text-gray-400 max-w-[150px] truncate">
                         {{ $a->nota ?: '-' }}
                     </td>                                           
-                    <td class="px-4 py-2 text-center whitespace-nowrap text-sm font-medium">
+                    <td class="px-4 py-1 text-center whitespace-nowrap text-sm font-medium">
                         <div x-data="{ dropdownOpen: false }" class="inline-block">
                             <button 
                                 @click="dropdownOpen = !dropdownOpen" 

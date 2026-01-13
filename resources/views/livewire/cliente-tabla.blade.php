@@ -24,19 +24,19 @@
         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
             @forelse($clientes as $key  => $cliente)
                 <tr class="hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors">
-                    <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                    <td class="px-4 py-1 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                         #{{ $key + 1 }}
                     </td>
-                    <td class="px-4 py-2 whitespace-nowrap">
+                    <td class="px-4 py-1 whitespace-nowrap">
                         <div class="text-sm text-gray-700 dark:text-gray-300 font-medium">{{  $cliente['nombre']  }}</div>
                     </td>
-                    <td class="px-4 py-2 whitespace-nowrap">
+                    <td class="px-4 py-1 whitespace-nowrap">
                         <div class="text-sm text-gray-500 dark:text-gray-400">{{$cliente['sexo']  }}</div>
                     </td>
-                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 hidden md:table-cell">
+                    <td class="px-4 py-1 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 hidden md:table-cell">
                         {{$cliente['edad'] }}
                     </td>       
-                    <td class="px-4 py-2 text-center whitespace-nowrap text-sm font-medium">
+                    <td class="px-4 py-1 text-center whitespace-nowrap text-sm font-medium">
                         <div x-data="{ dropdownOpen: false }" class="inline-block">
                             <button 
                                 @click="dropdownOpen = !dropdownOpen" 
