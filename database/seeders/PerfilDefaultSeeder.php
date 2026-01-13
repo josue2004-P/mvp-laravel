@@ -9,9 +9,9 @@ class PerfilDefaultSeeder extends Seeder
 {
     public function run(): void
     {
-        if (!Perfil::where('nombre', 'Administrador')->exists()) {
+        if (!Perfil::where('nombre', 'administrador')->exists()) {
             Perfil::create([
-                'nombre' => 'Administrador',
+                'nombre' => 'administrador',
                 'descripcion' => 'Perfil con todos los permisos del sistema',
             ]);
         }

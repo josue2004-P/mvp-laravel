@@ -9,9 +9,9 @@ class PermisoDefaultSeeder extends Seeder
 {
     public function run(): void
     {
-        if (!Permiso::where('nombre', 'Administrador')->exists()) {
+        if (!Permiso::where('nombre', 'administrador')->exists()) {
             Permiso::create([
-                'nombre' => 'Administrador',
+                'nombre' => 'administrador',
                 'descripcion' => 'Permiso del sistema',
             ]);
         }

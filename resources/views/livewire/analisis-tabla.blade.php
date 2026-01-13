@@ -8,7 +8,20 @@
         </div>
 
         <div class="flex flex-col gap-3 sm:grid sm:grid-cols-2 lg:flex lg:flex-row lg:items-center w-full lg:w-auto">
-            
+
+            <div class="flex items-center gap-2">
+                <label class="text-sm text-gray-500 dark:text-gray-400 hidden sm:block">Mostrar:</label>
+                <select 
+                    wire:model.live="perPage" 
+                    class="h-[42px] text-sm rounded-lg border-gray-300 bg-white dark:bg-gray-900 dark:border-gray-700 dark:text-white focus:border-blue-500 focus:ring-blue-500/10 transition-all"
+                >
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+
             <button 
                 @click="$dispatch('toggle-filtros')" 
                 class="inline-flex items-center justify-center px-4 py-2 bg-[#008196] hover:bg-[#006a7c] text-white text-sm font-medium rounded-md shadow-sm transition-all w-full lg:w-fit"
@@ -67,7 +80,6 @@
         class="max-w-full mx-5 py-4 my-4 border-gray-200 border-y dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/30 rounded-lg px-4">
         <div class="grid md:grid-cols-2 gap-4">
             <div wire:ignore class="w-full"> 
-
                 <x-form.input-select-filter
                     id="tipoAnalisisSelect" 
                     name="tipoAnalisis" 
@@ -94,10 +106,34 @@
                     @endforeach
                 </x-form.input-filter >
             </div>
+            <div wire:ignore class="w-full"> 
+                <x-form.input-select-filter
+                    dataModel="tipoMuestraId"
+                    id="tipoMuestraSelect" 
+                    name="tipoMuesra" 
+                    label="Tipo de Muestra" >
+                    <option value="">Selecciona un tipo de muestra</option>
+                   @foreach($tipoMuestras as $tpmu)
+                        <option value="{{ $tpmu->id }}">{{ $tpmu->nombre }}</option>
+                    @endforeach
+                </x-form.input-filter >
+            </div>
+            <div wire:ignore class="w-full"> 
+                <x-form.input-select-filter
+                    dataModel="tipoMetodoId"
+                    id="tipoMetodoSelect" 
+                    name="tipoMetodo" 
+                    label="Tipo de Metodo" >
+                    <option value="">Selecciona un tipo de metodo</option>
+                   @foreach($tipoMetodos as $tpme)
+                        <option value="{{ $tpme->id }}">{{ $tpme->nombre }}</option>
+                    @endforeach
+                </x-form.input-filter >
+            </div>
         </div>
     </div>
 
-    <div class="overflow-x-auto  sm:pb-0"> <table class="min-w-full">
+    <div class="overflow-x-auto  sm:pb-0"> 
         <div class="max-w-full px-4 sm:px-5">
             <div class="overflow-x-auto custom-scrollbar"> 
                 <table class="min-w-full border-collapse">
@@ -115,10 +151,10 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                        @forelse($analisis as $a)
+                        @forelse($analisis as $key  => $a)
                         <tr class="hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors">
                             <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                                #{{ $a->id }}
+                                #{{ $key + 1 }}
                             </td>
                             <td class="px-4 py-2 whitespace-nowrap">
                                 <div class="text-sm text-gray-700 dark:text-gray-300 font-medium">{{ $a->cliente->nombre }}</div>
@@ -203,7 +239,6 @@
     </div>
 </div>
 
-          
 @push('scripts')
 <script>
     function initGlobalSelect2() {

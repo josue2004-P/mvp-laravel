@@ -6,6 +6,8 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Analisis;
 use App\Models\TipoAnalisis;
+use App\Models\TipoMetodo;
+use App\Models\TipoMuestra;
 use App\Models\Doctor;
 use Livewire\Attributes\On;
 
@@ -14,14 +16,20 @@ class AnalisisTabla extends Component
     use WithPagination;
 
     public $search = '';
-    public $tipoAnalisisId = '';
     public $doctorId = '';
+    public $tipoAnalisisId = '';
+    public $tipoMuestraId = '';
+    public $tipoMetodoId = '';
+    public $perPage = 10;
 
     // Esto mantiene los filtros en la URL del navegador
     protected $queryString = [
         'search' => ['except' => ''],
         'tipoAnalisisId' => ['except' => ''],
         'doctorId' => ['except' => ''],
+        'tipoMuestraId' => ['except' => ''],
+        'tipoMetodoId' => ['except' => ''],
+        'perPage' => ['except' => 10],
     ];
 
     protected $updatesQueryString = ['search'];
@@ -30,6 +38,9 @@ class AnalisisTabla extends Component
     public function updatedSearch() { $this->resetPage(); }
     public function updatedTipoAnalisisId() { $this->resetPage(); }
     public function updatedDoctorId() { $this->resetPage(); }
+    public function updatedTipoMuestraId() { $this->resetPage(); }
+    public function updatedTipoMetodoId() { $this->resetPage(); }
+    public function updatedPerPage(){$this->resetPage();}
 
     public function confirmDelete($id)
     {
@@ -67,6 +78,8 @@ class AnalisisTabla extends Component
     {
         $doctores = Doctor::all(); // Asegúrate de enviarlos a la vista
         $tipoAnalisis = TipoAnalisis::all();
+        $tipoMetodos = TipoMetodo::all();
+        $tipoMuestras = TipoMuestra::all();
 
         $analisis = Analisis::with(['cliente', 'doctor', 'tipoAnalisis'])
             ->whereHas('cliente', function ($query) {
@@ -78,8 +91,14 @@ class AnalisisTabla extends Component
             ->when($this->doctorId, function ($query) {
                 $query->where('idDoctor', $this->doctorId);
             })
-            ->paginate(10);
+            ->when($this->tipoMuestraId, function ($query) {
+                $query->where('idTipoMuestra', $this->tipoMuestraId);
+            })
+            ->when($this->tipoMetodoId, function ($query) {
+                $query->where('idTipoMetodo', $this->tipoMetodoId);
+            })
+            ->paginate($this->perPage);
 
-        return view('livewire.analisis-tabla', compact('analisis', 'tipoAnalisis', 'doctores'));
+        return view('livewire.analisis-tabla', compact('analisis', 'tipoAnalisis', 'doctores','tipoMetodos','tipoMuestras'));
     }
 }

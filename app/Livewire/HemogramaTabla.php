@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\HemogramaCompleto;
+use App\Models\CategoriaHemogramaCompleto;
 use Livewire\Attributes\On;
 
 class HemogramaTabla extends Component
@@ -12,10 +13,20 @@ class HemogramaTabla extends Component
     use WithPagination;
 
     public $search = '';
+    public $categoriaHemogramaCompletoId = '';
 
     protected $updatesQueryString = ['search'];
     protected $paginationTheme = 'tailwind';
 
+    // Esto mantiene los filtros en la URL del navegador
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'categoriaHemogramaCompletoId' => ['except' => ''],
+    ];
+
+    public function updatedSearch() { $this->resetPage(); }
+    public function updatedCategoriaHemogramaCompletoId() { $this->resetPage(); }
+    
     public function confirmDelete($id)
     {
         $this->dispatch('swal-confirm', [
@@ -55,12 +66,15 @@ class HemogramaTabla extends Component
 
     public function render()
     {
+        $categoriasHemogramaCompleto = CategoriaHemogramaCompleto::all();
         $hemogramas = HemogramaCompleto::with(['categoria', 'unidad'])
             ->where('nombre', 'like', '%'.$this->search.'%')
+            ->when($this->categoriaHemogramaCompletoId, function ($query) {
+                $query->where('idCategoriaHemogramaCompleto', $this->categoriaHemogramaCompletoId);
+            })
             ->paginate(10);
 
-        return view('livewire.hemograma-tabla', [
-            'hemogramas' => $hemogramas,
-        ]);
+        return view('livewire.hemograma-tabla', compact('hemogramas', 'categoriasHemogramaCompleto'));
+
     }
 }

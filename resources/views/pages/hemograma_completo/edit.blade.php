@@ -25,8 +25,9 @@
 
         <div>
             <x-form.input-label for="categoria" :value="__('Categoría')" required/>
-            <x-form.input-select name="idCategoriaHemogramaCompleto"         class="select2-search" 
- :messages="$errors->get('idCategoriaHemogramaCompleto')">
+            <x-form.input-select name="idCategoriaHemogramaCompleto"         
+                class="select2" 
+                :messages="$errors->get('idCategoriaHemogramaCompleto')">
                 <option value="">Selecciona una categoría</option>
                 @foreach($categorias as $c)
                     <option value="{{ $c->id }}" {{ $hemogramaCompleto->idCategoriaHemogramaCompleto == $c->id ? 'selected' : '' }}>
@@ -38,8 +39,9 @@
 
         <div>
             <x-form.input-label for="categoria" :value="__('Unidad')" required/>
-            <x-form.input-select name="idUnidad"         class="select2-search" 
- :messages="$errors->get('idUnidad')">
+            <x-form.input-select name="idUnidad"         
+                class="select2" 
+                :messages="$errors->get('idUnidad')">
                 <option value="">Selecciona una unidad</option>
                 @foreach($unidades as $u)
                     <option value="{{ $u->id }}" {{ $hemogramaCompleto->idUnidad == $u->id ? 'selected' : '' }}>
