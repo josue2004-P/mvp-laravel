@@ -46,6 +46,22 @@ class MenuHelper
                 ],
             ],
             [
+                'name' => 'Catalogo',
+                'icon' => 'catalog',
+                'permiso' => "catalog",
+                'subItems' => [
+                    ['name' => 'Estatus Analisis', 'path' => '/estatus-analisis','permiso' => "est-als",],
+                ],
+            ],
+            [
+                'name' => 'Configuración',
+                'icon' => 'gear',
+                'permiso' => "configuraciones",
+                'subItems' => [
+                    ['name' => 'Analisis', 'path' => '/configuracion-analisis','permiso' => "confg-est-als",],
+                ],
+            ],
+            [
                 'name' => 'Usuarios',
                 'icon' => 'users',
                 'permiso' => 'usuarios', 
@@ -126,7 +142,9 @@ class MenuHelper
 
             'doctor' => '<i class="text-xl fa-solid fa-user-doctor"></i>',
 
+            'gear' => '<i class="text-xl fa-solid fa-gear"></i>',
 
+            'catalog' => '<i class=" text-xl  fa-solid fa-square-poll-horizontal"></i>',
 
         ];
 

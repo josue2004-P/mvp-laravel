@@ -13,6 +13,7 @@ use App\Http\Controllers\TipoMuestraController;
 use App\Http\Controllers\CategoriaHemogramaCompletoController;
 use App\Http\Controllers\HemogramaCompletoController;
 use App\Http\Controllers\AnalisisController;
+use App\Http\Controllers\EstatusAnalisisController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -52,6 +53,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('analisis', AnalisisController::class);
     Route::get('/analisis/export/pdf', [AnalisisController::class, 'exportPdf'])->name('analisis-general.pdf');
     Route::get('/analisis/{analisis}/pdf', [AnalisisController::class, 'generarPdf'])->name('analisis.pdf');
+
+    Route::resource('estatus-analisis', EstatusAnalisisController::class);
 });
 
 Route::get('/dashboard', function () {
