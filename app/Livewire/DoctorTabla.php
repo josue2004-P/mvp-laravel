@@ -12,9 +12,18 @@ class DoctorTabla extends Component
     use WithPagination;
 
     public $search = '';
+    public $perPage = 10;
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'perPage' => ['except' => 10],
+    ];
 
     protected $updatesQueryString = ['search'];
     protected $paginationTheme = 'tailwind';
+
+    public function updatedSearch() { $this->resetPage(); }
+    public function updatedPerPage(){$this->resetPage();}
 
     public function confirmDelete($id)
     {
@@ -46,11 +55,6 @@ class DoctorTabla extends Component
             'title' => 'Eliminado',
             'text'  => 'El doctor fue eliminado correctamente'
         ]);
-    }
-
-    public function updatingSearch()
-    {
-        $this->resetPage(); 
     }
 
     public function render()

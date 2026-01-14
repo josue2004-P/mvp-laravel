@@ -14,18 +14,20 @@ class HemogramaTabla extends Component
 
     public $search = '';
     public $categoriaHemogramaCompletoId = '';
+    public $perPage = 10;
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'categoriaHemogramaCompletoId' => ['except' => ''],
+        'perPage' => ['except' => 10],
+    ];
 
     protected $updatesQueryString = ['search'];
     protected $paginationTheme = 'tailwind';
 
-    // Esto mantiene los filtros en la URL del navegador
-    protected $queryString = [
-        'search' => ['except' => ''],
-        'categoriaHemogramaCompletoId' => ['except' => ''],
-    ];
-
     public function updatedSearch() { $this->resetPage(); }
     public function updatedCategoriaHemogramaCompletoId() { $this->resetPage(); }
+    public function updatedPerPage(){$this->resetPage();}
     
     public function confirmDelete($id)
     {

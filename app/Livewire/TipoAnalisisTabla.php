@@ -12,6 +12,12 @@ class TipoAnalisisTabla extends Component
     use WithPagination;
 
     public $search = '';
+    public $perPage = 10;
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'perPage' => ['except' => 10],
+    ];
 
     protected $updatesQueryString = ['search'];
     protected $paginationTheme = 'tailwind';

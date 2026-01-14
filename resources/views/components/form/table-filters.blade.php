@@ -96,3 +96,44 @@
         {{ $slot }}
     </div>
 </div>
+
+
+@push('scripts')
+<script>
+    function initGlobalSelect2() {
+        $('.select2-dynamic').each(function () {
+            const $el = $(this);
+            const modelName = $el.data('model');
+            const placeholder = $el.data('placeholder') || 'Seleccionar...';
+
+            if ($el.data('select2')) { $el.select2('destroy'); }
+
+            $el.select2({
+                placeholder: placeholder,
+                allowClear: true,
+                width: '100%'
+            });
+
+            // --- NUEVO: Sincronizar valor inicial de Livewire a Select2 ---
+            // Leemos el valor actual de la propiedad en el componente Livewire
+            let valorActual = @this.get(modelName);
+            if(valorActual) {
+                $el.val(valorActual).trigger('change.select2');
+            }
+            // -------------------------------------------------------------
+
+            $el.on('change', function () {
+                const value = $(this).val();
+                @this.set(modelName, value);
+            });
+        });
+    }
+
+    document.addEventListener('livewire:initialized', initGlobalSelect2);
+    document.addEventListener('livewire:navigated', initGlobalSelect2);
+    
+    window.addEventListener('toggle-filtros', () => {
+        setTimeout(initGlobalSelect2, 150);
+    });
+</script>
+@endpush
