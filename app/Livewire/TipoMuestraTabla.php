@@ -12,9 +12,18 @@ class TipoMuestraTabla extends Component
     use WithPagination;
 
     public $search = '';
+    public $perPage = 10;
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'perPage' => ['except' => 10],
+    ];
 
     protected $updatesQueryString = ['search'];
     protected $paginationTheme = 'tailwind';
+
+    public function updatedSearch() { $this->resetPage(); }
+    public function updatedPerPage(){$this->resetPage();}
 
     public function confirmDelete($id)
     {
@@ -46,11 +55,6 @@ class TipoMuestraTabla extends Component
             'title' => 'Eliminado',
             'text'  => 'El tipo de muestra fue eliminado correctamente'
         ]);
-    }
-
-    public function updatingSearch()
-    {
-        $this->resetPage(); // Resetea la paginación cuando cambias el texto de búsqueda
     }
 
     public function render()
