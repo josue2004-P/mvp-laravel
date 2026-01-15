@@ -1,41 +1,81 @@
 @extends('layouts.app')
 
-@section('title', 'Editar Doctor')
+@section('title', 'Editar Estatus Analisis')
 
 @section('content')
+<form id="form-estatus-analisis" action="{{ route('estatus-analisis.update', ['estatus' => $estatus->id]) }}" method="POST">
+    @csrf
+    @method('PUT')
 
-<x-common.component-card title="Editar Doctor" desc="Edita la información principal del doctor." class="max-w-5xl">
-    <form id="form-doctores" action="{{ route('doctores.update', $doctor) }}" method="POST" class="space-y-5">
-        @csrf
-        @method('PUT')
+    <x-common.component-card title="Editar Estatus Analisis" desc="Modifica la información del estatus." class="max-w-3xl">
 
-         <!-- Elements -->
-        <div>
-            <x-form.input-label for="nombre" 
-                :value="__('Nombre:')" />
-            <x-form.text-input
-                type="text"
-                name="nombre"
-                placeholder="Escribe el nombre"
-                :value="$doctor->nombre " 
-                :messages="$errors->get('nombre')"
-            />    
-            <x-input-error :messages="$errors->get('nombre')" class="mt-2" />
+        <div class="space-y-4">
+            <div>
+                <x-form.input-label for="nombreCorto" :value="__('Nombre Corto:')" required/>
+                <x-form.text-input
+                    name="nombreCorto"
+                    :value="old('nombreCorto', $estatus->nombreCorto)"
+                    :messages="$errors->get('nombreCorto')"
+                />
+            </div>
+
+            <div>
+                <x-form.input-label for="descripcion" :value="__('Descripcion:')" />
+                <x-form.text-input
+                    name="descripcion"
+                    :value="old('descripcion', $estatus->descripcion)"
+                    :messages="$errors->get('descripcion')"
+                />
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-3">
+                <div>
+                    <x-form.input-label for="colorTexto" :value="__('Color Texto (Hex):')" />
+                    <x-form.color-input
+                        name="colorTexto"
+                        :value="old('colorTexto', $estatus->colorTexto)"
+                        :color="old('colorTexto', $estatus->colorTexto ?? '#000000')"
+                    />
+                </div>
+                <div>
+                    <x-form.input-label for="colorFondo" :value="__('Color Fondo (Hex):')" />
+                    <x-form.color-input
+                        name="colorFondo"
+                        :value="old('colorFondo', $estatus->colorFondo)"
+                        :color="old('colorFondo', $estatus->colorFondo ?? '#FFFFFF')"
+                    />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-3 mt-4">
+                <div class="col-span-2">
+                    <x-form.input-label :value="__('Estado del Análisis:')" />
+                </div>
+                <div class="col-span-1">
+                    <x-form.checkbox-input 
+                        label="Abierto" 
+                        name="analsisAbierto" 
+                        value="1" 
+                        :checked="old('analsisAbierto', $estatus->analsisAbierto) == 1"
+                    />
+                </div>
+                <div class="col-span-1">
+                    <x-form.checkbox-input 
+                        label="Cerrado" 
+                        name="analisisCerrado" 
+                        value="1" 
+                        :checked="old('analisisCerrado', $estatus->analisisCerrado) == 1"
+                    />
+                </div>
+            </div>
         </div>
 
-        <!-- Botones -->
         <x-slot:footer>
             <div class="flex justify-end gap-2">
-                <a href="{{ route('doctores.index') }}"
-                    class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700  hover:bg-gray-200 transition">
-                    Cancelar
-                </a>
-                <x-ui.button size="sm" type="submit" form="form-doctores">
-                    Guardar
-                </x-ui.button>
+                <a href="{{ route('estatus-analisis.index') }}" class="px-4 py-2 bg-gray-100 rounded-lg">Cancelar</a>
+                <x-ui.button type="submit">Guardar Cambios</x-ui.button>
             </div>
         </x-slot:footer>
-    </form>
-</x-common.component-card>
-
+    </x-common.component-card>
+</form>
 @endsection

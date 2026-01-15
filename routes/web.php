@@ -54,7 +54,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/analisis/export/pdf', [AnalisisController::class, 'exportPdf'])->name('analisis-general.pdf');
     Route::get('/analisis/{analisis}/pdf', [AnalisisController::class, 'generarPdf'])->name('analisis.pdf');
 
-    Route::resource('estatus-analisis', EstatusAnalisisController::class);
+    Route::resource('estatus-analisis', EstatusAnalisisController::class)
+     ->parameters(['estatus-analisis' => 'estatus']);
 });
 
 Route::get('/dashboard', function () {

@@ -20,46 +20,48 @@ class EstatusAnalisisController extends Controller
         return view('pages.estatus-analisis.create');
     }
 
-    // Guardar nuevo registro
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'descripcion'     => 'required|string|max:30',
-            'nombreCorto'     => 'required|string|max:10',
-            'colorTexto'      => 'nullable|string|max:10',
-            'colorFondo'      => 'nullable|string|max:10',
-            'analsisAbierto'  => 'boolean',
-            'analisisCerrado' => 'boolean',
+        EstatusAnalisis::create([
+            'nombreCorto'     => $request->nombreCorto,
+            'descripcion'     => $request->descripcion,
+            'colorTexto'      => $request->colorTexto, // Usando CamelCase como en tu DB
+            'colorFondo'      => $request->colorFondo,
+            'analsisAbierto'  => $request->has('analsisAbierto') ? 1 : 0,
+            'analisisCerrado' => $request->has('analisisCerrado') ? 1 : 0,
         ]);
 
-        EstatusAnalisis::create($validated);
-
-        return redirect()->route('estatus-analisis.index')
-                         ->with('success', 'Estatus creado correctamente.');
+        return redirect()->route('estatus-analisis.index');
     }
 
     // Mostrar formulario de edición
-    public function edit(EstatusAnalisis $estatusAnalise)
+    public function edit(EstatusAnalisis $estatus)
     {
-        return view('pages.estatus-analisis.edit', ['estatus' => $estatusAnalise]);
+        return view('pages.estatus-analisis.edit', ['estatus' => $estatus]);
     }
 
-    // Actualizar registro
-    public function update(Request $request, EstatusAnalisis $estatusAnalise)
+    public function update(Request $request, EstatusAnalisis $estatus)
     {
+        // Validar los datos
         $validated = $request->validate([
-            'descripcion'     => 'required|string|max:30',
-            'nombreCorto'     => 'required|string|max:10',
-            'colorTexto'      => 'nullable|string|max:10',
-            'colorFondo'      => 'nullable|string|max:10',
-            'analsisAbierto'  => 'boolean',
-            'analisisCerrado' => 'boolean',
+            'nombreCorto' => 'required|max:50',
+            'descripcion' => 'nullable|string',
+            'colorTexto'  => 'nullable|string|max:7',
+            'colorFondo'  => 'nullable|string|max:7',
         ]);
 
-        $estatusAnalise->update($validated);
+        // Actualizar el registro mapeando manualmente a las columnas de la DB
+        $estatus->update([
+            'nombreCorto'     => $request->nombreCorto,
+            'descripcion'     => $request->descripcion,
+            'colorTexto'      => $request->colorTexto,
+            'colorFondo'      => $request->colorFondo,
+            'analsisAbierto'  => $request->has('analsisAbierto') ? 1 : 0,
+            'analisisCerrado' => $request->has('analisisCerrado') ? 1 : 0,
+        ]);
 
         return redirect()->route('estatus-analisis.index')
-                         ->with('success', 'Estatus actualizado.');
+            ->with('success', 'Estatus actualizado correctamente.');
     }
 
     // Eliminar registro
