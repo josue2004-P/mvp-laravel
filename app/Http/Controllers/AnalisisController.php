@@ -8,6 +8,8 @@ use App\Models\Doctor;
 use App\Models\TipoAnalisis;
 use App\Models\TipoMetodo;
 use App\Models\TipoMuestra;
+use App\Models\ConfiguracionAnalisis;
+use App\Models\EstatusAnalisis;
 
 use Illuminate\Http\Request;
 
@@ -28,8 +30,20 @@ class AnalisisController extends Controller
         $tiposAnalisis = TipoAnalisis::all();
         $tiposMetodo = TipoMetodo::all();
         $tiposMuestra = TipoMuestra::all();
+        $estatusAnalisis = EstatusAnalisis::all();
 
-        return view('pages.analisis.create', compact('clientes','doctores','tiposAnalisis','tiposMetodo','tiposMuestra'));
+        $configuracion = ConfiguracionAnalisis::find(1);
+        $estatusInicialId = $configuracion ? $configuracion->inicialEstatusId : null;
+
+        return view('pages.analisis.create', compact(
+            'clientes', 
+            'doctores', 
+            'tiposAnalisis', 
+            'tiposMetodo', 
+            'tiposMuestra', 
+            'estatusInicialId',
+            'estatusAnalisis'
+        ));
     }
 
     public function store(Request $request)
@@ -53,15 +67,51 @@ class AnalisisController extends Controller
 
     public function edit(Analisis $analisi)
     {
-        // Precarga los hemogramas ya ligados a este análisis
         $analisi->load('hemogramas');
 
-        // Trae también las relaciones necesarias para pintar categorías y hemogramas
         $clientes      = Cliente::all();
         $doctores      = Doctor::all();
         $tiposAnalisis = TipoAnalisis::with('hemogramas.categoria')->get();
         $tiposMetodo   = TipoMetodo::all();
         $tiposMuestra  = TipoMuestra::all();
+        $estatusAnalisis = EstatusAnalisis::all();
+
+$estatusActualId = 5; // ATENDER
+    $configuracionId = 1;
+    $slugPermisoMaestro = 'mod-est-anl';
+    $misPerfilesIds = auth()->user()->perfiles->pluck('id')->toArray();
+
+    // 1. Validamos permiso maestro
+    $tienePermisoMaestro = auth()->user()->perfiles()
+        ->whereHas('permisos', fn($q) => $q->where('nombre', $slugPermisoMaestro))
+        ->exists();
+
+    // 2. CONSULTA CLAVE: Traer destinos que estén en el FLUJO 
+    // Y que además tengan el CHECK de MODIFICAR para tu perfil
+    $estatusPermitidos = [];
+    
+    if ($tienePermisoMaestro) {
+        $estatusPermitidos = \DB::table('configuracion_flujo_estatus_analisis as flujo')
+            ->join('estatus_analises as e', 'flujo.siguienteEstatusId', '=', 'e.id')
+            ->join('configuracion_perfil_estatus_analisis as p', function($join) use ($misPerfilesIds, $configuracionId) {
+                $join->on('e.id', '=', 'p.estatusId')
+                     ->whereIn('p.perfilId', $misPerfilesIds)
+                     ->where('p.configuracionAnalisisId', $configuracionId)
+                     ->where('p.modificar', 1); // <--- AQUÍ FILTRAMOS EL CHECK AZUL
+            })
+            ->where('flujo.configuracionEstatusId', $configuracionId)
+            ->where('flujo.estatusId', $estatusActualId)
+            ->select('e.id', 'e.descripcion')
+            ->distinct()
+            ->get();
+    }
+
+    // 3. Verificar si puedes modificar el actual para habilitar/deshabilitar el select
+    $puedeModificarActual = \DB::table('configuracion_perfil_estatus_analisis')
+        ->whereIn('perfilId', $misPerfilesIds)
+        ->where('estatusId', $estatusActualId)
+        ->where('modificar', 1)
+        ->exists();
 
         return view('pages.analisis.edit', compact(
             'analisi',
@@ -69,7 +119,12 @@ class AnalisisController extends Controller
             'doctores',
             'tiposAnalisis',
             'tiposMetodo',
-            'tiposMuestra'
+            'tiposMuestra',
+            'estatusActualId', 
+            'estatusPermitidos', 
+            'puedeModificarActual',
+            'tienePermisoMaestro',
+            'estatusAnalisis'      
         ));
     }
 

@@ -36,6 +36,32 @@
                 </x-form.input-select>
             </div>
 
+            <!-- Estatus -->
+            <div class="space-y-1">
+                <x-form.input-label for="estatusId" :value="__('Estatus Actualizado')" required/>
+                <div class="relative">
+                    <x-form.input-select 
+                        name="estatusId" 
+                        id="estatusId"
+                        class="select2 {{ !$puedeModificarActual ? 'pointer-events-none bg-gray-100 opacity-70' : '' }}"
+                    >
+                        {{-- Solo el actual --}}
+                        @foreach($estatusAnalisis->where('id', $estatusActualId) as $actual)
+                            <option value="{{ $actual->id }}" selected>
+                                {{ $actual->descripcion }} 
+                            </option>
+                        @endforeach
+
+                        {{-- Aquí SOLO entrarán los que pasaron el filtro del join con el check de modificar --}}
+                        @foreach($estatusPermitidos as $permitido)
+                            <option value="{{ $permitido->id }}">
+                                {{ $permitido->descripcion }}
+                            </option>
+                        @endforeach
+                    </x-form.input-select>
+                </div>
+            </div>
+
             <!-- Tipo de Análisis -->
             <div>
                 <x-form.input-label for="idTipoAnalisis" :value="__('Tipo de Análisis')" required/>

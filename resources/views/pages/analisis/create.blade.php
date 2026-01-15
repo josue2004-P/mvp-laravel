@@ -38,6 +38,38 @@
                 @endforeach
             </x-form.input-select>
         </div>
+
+        <!-- Estatus -->
+        <div class="space-y-1">
+            <x-form.input-label for="estatusId" :value="__('Estatus')" required/>
+            
+            <div class="relative">
+                {{-- El select se mantiene con su nombre original para que se envíe el dato --}}
+                <x-form.input-select 
+                    name="estatusId" 
+                    id="estatusId"
+                    :messages="$errors->get('estatusId')"
+                    {{-- Clases para simular readonly y evitar interacción --}}
+                    class="select2 pointer-events-none bg-gray-100 dark:bg-gray-800 opacity-70"
+                    tabindex="-1"
+                >
+                    <option value="">Selecciona un estatus</option>
+                    @foreach($estatusAnalisis as $value)
+                        <option value="{{ $value->id }}" 
+                            @selected(old('estatusId', $estatusInicialId) == $value->id)>
+                            {{ $value->descripcion }}
+                        </option>
+                    @endforeach
+                </x-form.input-select>
+                
+                {{-- Overlay transparente para bloquear clics si Select2 no respeta pointer-events --}}
+                <div class="absolute inset-0 z-10 cursor-not-allowed"></div>
+            </div>
+
+            <p class="mt-1 text-[10px] text-blue-500 font-semibold uppercase italic dark:text-blue-400">
+                <i class="fas fa-info-circle mr-1"></i> Estatus inicial bloqueado por configuración
+            </p>
+        </div>
         
         <!-- Tipo de Análisis -->
         <div>
