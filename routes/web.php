@@ -14,6 +14,7 @@ use App\Http\Controllers\CategoriaHemogramaCompletoController;
 use App\Http\Controllers\HemogramaCompletoController;
 use App\Http\Controllers\AnalisisController;
 use App\Http\Controllers\EstatusAnalisisController;
+use App\Http\Controllers\ConfiguracionAnalisisController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -56,6 +57,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('estatus-analisis', EstatusAnalisisController::class)
      ->parameters(['estatus-analisis' => 'estatus']);
+
+    Route::resource('configuracion-analisis', ConfiguracionAnalisisController::class);
+
 });
 
 Route::get('/dashboard', function () {

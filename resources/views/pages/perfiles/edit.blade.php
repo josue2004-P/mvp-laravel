@@ -62,8 +62,6 @@
                 desc="Selecciona los permisos y acciones disponibles para el perfil."
                 class="max-w-5xl lg:col-span-2"
                 >
-
-
                 <div class="grid grid-cols-1 gap-4">
                     @foreach($permisos as $permiso)
 

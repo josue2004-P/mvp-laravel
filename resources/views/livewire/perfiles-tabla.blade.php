@@ -2,7 +2,7 @@
     title="Listado de Pefiles"
     :search="$search"
     :perPage="$perPage"
-    :createRoute="route('permisos.create')"
+    :createRoute="route('perfiles.create')"
     {{-- :exportPdf="route('analisis-general.pdf', ['search' => $search, 'perPage'  => $perPage])" --}}
     {{-- :exportExcel="route('analisis.export', ['search' => $search, 'perPage'  => $perPage])" --}}
 >
@@ -56,7 +56,7 @@
                                     class="z-[999] w-48 rounded-xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900"
                                 >
                                     <div class="p-1">
-                                        <a href="{{ route('permisos.edit', $value->id) }}" class="flex items-center px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+                                        <a href="{{ route('perfiles.edit', $value->id) }}" class="flex items-center px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
                                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                             Ver detalles
                                         </a>

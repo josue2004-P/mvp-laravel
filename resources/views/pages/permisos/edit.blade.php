@@ -6,7 +6,7 @@
 
 <form id="form-permisos"  action="{{ route('permisos.update', $permiso) }}" method="POST" >
 
-    <x-common.component-card title="Editar Perfil" desc="Edita la información principal del perfil." class="max-w-xl">
+    <x-common.component-card title="Editar Permiso" desc="Edita la información principal del permiso." class="max-w-xl">
 
         @csrf
         @method('PUT')
