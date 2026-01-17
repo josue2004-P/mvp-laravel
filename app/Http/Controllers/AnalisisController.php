@@ -76,7 +76,7 @@ class AnalisisController extends Controller
         $tiposMuestra  = TipoMuestra::all();
         $estatusAnalisis = EstatusAnalisis::all();
 
-$estatusActualId = 5; // ATENDER
+    $estatusActualId = 13; // ATENDER
     $configuracionId = 1;
     $slugPermisoMaestro = 'mod-est-anl';
     $misPerfilesIds = auth()->user()->perfiles->pluck('id')->toArray();

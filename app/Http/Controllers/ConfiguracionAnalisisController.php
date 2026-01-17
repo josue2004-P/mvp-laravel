@@ -16,7 +16,12 @@ class ConfiguracionAnalisisController extends Controller
             $q->where('nombre', 'mod-est-anl');
         })->get();
         
-        $estatus = EstatusAnalisis::all();
+        $estatus = EstatusAnalisis::where(function ($query) {
+            $query->where('analsisAbierto', 1)
+                  ->orWhere('analisisCerrado', 1);
+        })
+        ->orderBy('nombreCorto', 'asc')
+        ->get();
 
         $configuracionPerfiles = \DB::table('configuracion_perfil_estatus_analisis')->get();
 
@@ -36,8 +41,14 @@ class ConfiguracionAnalisisController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+        'inicialEstatusId' => 'required|integer|exists:estatus_analises,id', // Reemplaza 'estatus' por el nombre real de tu tabla de estatus
+    ]);
+
         try {
+
             \DB::transaction(function () use ($request) {
+
                 $configuracionId = 1; // ID de tu configuración global
                 $usuarioId = auth()->id();
 
@@ -47,6 +58,7 @@ class ConfiguracionAnalisisController extends Controller
                     [
                         'inicialEstatusId' => $request->inicialEstatusId,
                         'usuarioIdActualizacion'   => $usuarioId,
+                        'usuarioIdCreacion'      => $usuarioId,
                     ]
                 );
 
