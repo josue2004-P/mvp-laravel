@@ -77,7 +77,8 @@
                         href="{{ $createRoute }}" 
                         class="w-full lg:w-auto shadow-sm"
                     >
-                        Nuevo
+                    <i class="fa-solid fa-plus mr-1"></i>
+                        Nuevo Usuario
                     </x-form.button-primary>
                 @endif
             </div>
