@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Doctor extends Model
 {
@@ -26,16 +28,10 @@ class Doctor extends Model
         'is_activo' => 'boolean',
     ];
 
-    // OBTENER ESPECIALIDADES
-    public function especialidad(): BelongsTo
-    {
-        return $this->belongsTo(Especialidad::class, 'especialidad_id');
-    }
 
-    // OBTENER NOMBRE COMPLETO
-    public function getNombreCompletoAttribute(): string
-    {
-        return "Dr. {$this->nombre} {$this->apellido_paterno} {$this->apellido_materno}";
-    }
+    public function especialidad(): BelongsTo{return $this->belongsTo(Especialidad::class, 'especialidad_id');}
 
+    public function analisis(): HasMany{return $this->hasMany(Analisis::class, 'doctor_id');}
+
+    public function getNombreCompletoAttribute(): string{return "Dr(a). {$this->nombre} {$this->apellido_paterno} {$this->apellido_materno}";}
 }

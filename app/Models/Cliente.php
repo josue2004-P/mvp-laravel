@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Cliente extends Model
 {
     use HasFactory;
+
+    protected $table = 'clientes';
 
     protected $fillable = [
         'nombre',
@@ -34,11 +37,9 @@ class Cliente extends Model
         'edad' => 'integer',
     ];
 
-    // OBTENER NOMBRE COMPLETO
-    public function getNombreCompletoAttribute()
-    {
-        return "{$this->nombre} {$this->apellido_paterno} {$this->apellido_materno}";
-    }
+    public function analisis(): HasMany{return $this->hasMany(Analisis::class, 'cliente_id');}
 
+    public function getNombreCompletoAttribute(): string{return "{$this->nombre} {$this->apellido_paterno} {$this->apellido_materno}";}
 
+    public function scopeActivos($query){return $query->where('is_activo', true);}
 }

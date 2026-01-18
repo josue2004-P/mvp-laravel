@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('cliente_id')->constrained('clientes');
             $table->foreignId('doctor_id')->constrained('doctores');
             $table->foreignId('tipo_analisis_id')->constrained('tipo_analisis');
-            $table->foreignId('tipo_metodo_id')->constrained('tipo_metodo');
-            $table->foreignId('tipo_muestra_id')->constrained('tipo_muestra');
+            $table->foreignId('tipo_metodo_id')->constrained('tipo_metodos');
+            $table->foreignId('tipo_muestra_id')->constrained('tipo_muestras');
             $table->foreignId('usuario_creacion_id')->constrained('users');
 
             $table->string('nota', 255)->nullable();

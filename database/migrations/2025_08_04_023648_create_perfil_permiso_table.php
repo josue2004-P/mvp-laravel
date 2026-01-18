@@ -15,10 +15,10 @@ return new class extends Migration
             $table->foreignId('permiso_id')->constrained('permisos')->onDelete('cascade');
 
             // Atributos de la matriz de permisos
-            $table->boolean('is_leer')->default(false);
-            $table->boolean('is_crear')->default(false);
-            $table->boolean('is_actualizar')->default(false);
-            $table->boolean('is_eliminar')->default(false);
+            $table->boolean('is_read')->default(false);
+            $table->boolean('is_create')->default(false);
+            $table->boolean('is_update')->default(false);
+            $table->boolean('is_delete')->default(false);
             
             $table->timestamps();
 

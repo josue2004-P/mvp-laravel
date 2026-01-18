@@ -11,6 +11,8 @@ class TipoMuestra extends Model
 
     protected $table = 'tipo_muestra';
 
-    protected $fillable = ['nombre','descripcion'];
-
+    protected $fillable = [
+        'nombre',
+        'descripcion',
+    ];
 }

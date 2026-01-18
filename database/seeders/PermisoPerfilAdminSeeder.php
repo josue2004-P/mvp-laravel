@@ -20,10 +20,10 @@ class PermisoPerfilAdminSeeder extends Seeder
                 'permiso_id'  => 1,
 
                 // PERMISOS CRUD
-                'leer'        => true,
-                'crear'       => true,
-                'actualizar'  => true,
-                'eliminar'    => true,
+                'is_read'        => true,
+                'is_create'       => true,
+                'is_update'  => true,
+                'is_delete'    => true,
 
                 'created_at'  => now(),
                 'updated_at'  => now(),
