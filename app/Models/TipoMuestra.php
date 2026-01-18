@@ -9,7 +9,8 @@ class TipoMuestra extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'nombre',
-    ];
+    protected $table = 'tipo_muestra';
+
+    protected $fillable = ['nombre','descripcion'];
+
 }

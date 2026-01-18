@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('tipo_analisis', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 100)->unique(); 
+            $table->string('nombre')->unique();
+            $table->string('descripcion')->nullable();
             $table->timestamps();
         });
     }

@@ -7,20 +7,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Perfil extends Model
 {
+    protected $table = 'perfiles';
+
     use HasFactory;
 
     protected $fillable = ['nombre', 'descripcion'];
 
-    public function permisos()
+    public function permisos(): BelongsToMany
     {
-        return $this->belongsToMany(
-            Permiso::class,
-            'perfil_permiso',   
-            'perfil_id',        
-            'permiso_id'       
-        )
-        ->withPivot(['leer', 'crear', 'actualizar', 'eliminar'])
-        ->withTimestamps();
+        return $this->belongsToMany(Permiso::class, 'perfil_permiso')
+                    ->withPivot(['is_leer', 'is_crear', 'is_actualizar', 'is_eliminar'])
+                    ->withTimestamps();
     }
 
     public function usuarios()

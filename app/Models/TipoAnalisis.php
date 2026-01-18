@@ -11,9 +11,7 @@ class TipoAnalisis extends Model
 
     protected $table = 'tipo_analisis';
 
-    protected $fillable = [
-        'nombre',
-    ];
+    protected $fillable = ['nombre','descripcion'];
 
     public function hemogramas()
     {

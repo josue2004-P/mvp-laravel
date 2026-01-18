@@ -13,25 +13,27 @@ class HemogramaCompleto extends Model
 
     protected $fillable = [
         'nombre',
-        'idCategoriaHemogramaCompleto',
-        'idUnidad',
+        'categoria_hemograma_completo_id',
+        'unidad_id',
         'referencia',
     ];
 
     public function categoria()
     {
-        return $this->belongsTo(CategoriaHemogramaCompleto::class, 'idCategoriaHemogramaCompleto');
+        return $this->belongsTo(CategoriaHemogramaCompleto::class, 'categoria_hemograma_completo_id');
     }
 
     public function unidad()
     {
-        return $this->belongsTo(Unidad::class, 'idUnidad');
+        return $this->belongsTo(Unidad::class, 'unidad_id');
     }
 
     public function tiposAnalisis()
     {
-        return $this->belongsToMany(TipoAnalisis::class, 'hemograma_completo_tipo_analisis');
+        return $this->belongsToMany(TipoAnalisis::class, 'hemograma_completo_tipo_analisis')
+                    ->withTimestamps();
     }
+    
     public function analisis()
     {
         return $this->belongsToMany(

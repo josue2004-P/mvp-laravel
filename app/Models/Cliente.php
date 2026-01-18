@@ -11,12 +11,34 @@ class Cliente extends Model
 
     protected $fillable = [
         'nombre',
+        'apellido_paterno',
+        'apellido_materno',
+        'email',
         'edad',
+        'fecha_nacimiento',
         'sexo',
-        'activo',
+        'calle',
+        'no_exterior',
+        'no_interior',
+        'colonia',
+        'codigo_postal',
+        'ciudad',
+        'estado',
+        'referencia',
+        'is_activo',
     ];
 
     protected $casts = [
-        'activo' => 'boolean',
+        'fecha_nacimiento' => 'date',
+        'is_activo' => 'boolean',
+        'edad' => 'integer',
     ];
+
+    // OBTENER NOMBRE COMPLETO
+    public function getNombreCompletoAttribute()
+    {
+        return "{$this->nombre} {$this->apellido_paterno} {$this->apellido_materno}";
+    }
+
+
 }

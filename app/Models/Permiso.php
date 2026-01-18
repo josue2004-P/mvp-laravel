@@ -14,15 +14,10 @@ class Permiso extends Model
         'descripcion',
     ];
 
-    public function perfiles()
+    public function perfiles(): BelongsToMany
     {
-        return $this->belongsToMany(
-            Perfil::class,
-            'perfil_permiso',
-            'permiso_id',
-            'perfil_id'
-        )
-        ->withPivot(['leer', 'crear', 'actualizar', 'eliminar'])
-        ->withTimestamps();
+        return $this->belongsToMany(Perfil::class, 'perfil_permiso')
+                    ->withPivot(['is_leer', 'is_crear', 'is_actualizar', 'is_eliminar'])
+                    ->withTimestamps();
     }
 }

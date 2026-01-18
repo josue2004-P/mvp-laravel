@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('categoria_hemograma_completo', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 100)->unique(); 
+            $table->string('nombre')->unique();
+            $table->string('descripcion')->nullable();
             $table->timestamps();
-
         });
     }
 

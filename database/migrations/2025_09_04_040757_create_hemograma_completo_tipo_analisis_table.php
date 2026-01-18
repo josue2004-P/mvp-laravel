@@ -11,19 +11,19 @@ return new class extends Migration
         Schema::create('hemograma_completo_tipo_analisis', function (Blueprint $table) {
             $table->id();
 
-            // Columnas y llaves foráneas
+            // Relación con hemograma_completo
             $table->foreignId('hemograma_completo_id')
                   ->constrained('hemograma_completo')
-                  ->cascadeOnDelete();
+                  ->onDelete('cascade');
 
+            // Relación con tipo_analisis
             $table->foreignId('tipo_analisis_id')
                   ->constrained('tipo_analisis')
-                  ->cascadeOnDelete();
+                  ->onDelete('cascade');
 
             $table->timestamps();
 
-            // Índice único para evitar duplicados
-            $table->unique(['hemograma_completo_id', 'tipo_analisis_id'], 'hc_tipo_unique');
+            $table->unique(['hemograma_completo_id', 'tipo_analisis_id'], 'hc_ta_unique');
         });
     }
 

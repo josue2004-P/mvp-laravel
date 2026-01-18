@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('estatus_analises', function (Blueprint $table) {
-            $table->smallIncrements('id'); 
+            $table->id(); 
             
-            $table->string('descripcion', 30);
-            $table->string('nombreCorto', 10);
+            $table->string('nombre');
+            $table->string('descripcion');
+
+            $table->string('color_texto', 10)->nullable();
+            $table->string('color_fondo', 10)->nullable();
             
-            $table->string('colorTexto', 10)->nullable();
-            $table->string('colorFondo', 10)->nullable();
-            
-            $table->boolean('analsisAbierto')->default(0);
-            $table->boolean('analisisCerrado')->default(0);
+            $table->boolean('analisis_abierto')->default(0);
+            $table->boolean('analisis_cerrado')->default(0);
 
             $table->timestamps();
         });

@@ -10,28 +10,20 @@ return new class extends Migration
     {
         Schema::create('perfil_permiso', function (Blueprint $table) {
 
-            $table->unsignedBigInteger('perfil_id');
-            $table->unsignedBigInteger('permiso_id');
+            // Relaciones
+            $table->foreignId('perfil_id')->constrained('perfiles')->onDelete('cascade');
+            $table->foreignId('permiso_id')->constrained('permisos')->onDelete('cascade');
 
-            // PERMISOS CRUD
-            $table->boolean('leer')->default(false);
-            $table->boolean('crear')->default(false);
-            $table->boolean('actualizar')->default(false);
-            $table->boolean('eliminar')->default(false);
-
+            // Atributos de la matriz de permisos
+            $table->boolean('is_leer')->default(false);
+            $table->boolean('is_crear')->default(false);
+            $table->boolean('is_actualizar')->default(false);
+            $table->boolean('is_eliminar')->default(false);
+            
             $table->timestamps();
 
-            $table->foreign('perfil_id')
-                ->references('id')
-                ->on('perfils')
-                ->onDelete('cascade');
+            $table->primary(['perfil_id', 'permiso_id'],'pk_perfil_permiso_matriz');
 
-            $table->foreign('permiso_id')
-                ->references('id')
-                ->on('permisos')
-                ->onDelete('cascade');
-
-            $table->primary(['perfil_id', 'permiso_id']);
         });
     }
 

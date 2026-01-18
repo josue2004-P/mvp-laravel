@@ -9,7 +9,11 @@ class TipoMetodo extends Model
 {
     use HasFactory;
 
+    protected $table = 'tipo_metodos';
+
     protected $fillable = [
         'nombre',
+        'descripcion',
     ];
+
 }

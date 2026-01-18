@@ -9,9 +9,16 @@ return new class extends Migration {
     {
         Schema::create('perfil_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('perfil_id')->constrained()->onDelete('cascade');
+
+            // Relaciones
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('perfil_id')->constrained('perfiles')->onDelete('cascade');
+
             $table->timestamps();
+
+            // Definición de la Clave Primaria Compuesta
+            $table->primary(['user_id', 'permiso_id'],'pk_usuario_permiso_matriz');
+
         });
     }
 

@@ -4,48 +4,24 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
-    public function up(): void
-    {
+return new class extends Migration {
+    public function up(): void {
         Schema::create('configuracion_flujo_estatus_analisis', function (Blueprint $table) {
-            $table->unsignedBigInteger('configuracionEstatusId');
-            $table->unsignedSmallInteger('estatusId');
-            $table->unsignedSmallInteger('siguienteEstatusId');
-
-            // CAMBIO AQUÍ: Debe ser unsignedBigInteger para ser compatible con la tabla users
-            $table->unsignedBigInteger('usuarioIdCreacion');
+            $table->foreignId('configuracion_analisis_id')->constrained('configuracion_analisis')->onDelete('cascade');
+            $table->foreignId('estatus_id')->constrained('estatus_analisis')->onDelete('cascade');
+            $table->foreignId('estatus_siguiente_id')->constrained('estatus_analisis')->onDelete('cascade');
             
-            $table->datetime('fechaCreacion')->useCurrent();
+            $table->foreignId('usuario_creacion_id')->constrained('users');
+            $table->foreignId('usuario_actualizacion_id')->constrained('users');
+            $table->timestamps();
 
-            // --- LLAVES FORÁNEAS ---
-
-            $table->foreign('configuracionEstatusId', 'fk_flujo_conf_id')
-                ->references('id')->on('configuracion_analisis')
-                ->onDelete('cascade');
-
-            $table->foreign('estatusId', 'fk_flujo_est_orig')
-                ->references('id')->on('estatus_analises')
-                ->onDelete('cascade');
-
-            $table->foreign('siguienteEstatusId', 'fk_flujo_est_dest')
-                ->references('id')->on('estatus_analises')
-                ->onDelete('cascade');
-
-            // Ahora sí será compatible con la tabla users por defecto de Laravel
-            $table->foreign('usuarioIdCreacion', 'fk_flujo_usu_crea')
-                ->references('id')->on('users')
-                ->onDelete('restrict');
-
-            $table->unique(
-                ['configuracionEstatusId', 'estatusId', 'siguienteEstatusId'], 
-                'uk_flujo_analisis_unico'
-            );
+            $table->primary(['configuracion_analisis_id', 'estatus_id', 'estatus_siguiente_id'], 'pk_conf_flujo_estatus');
+            
+            $table->index('estatus_id', 'idx_flujo_origen');
         });
     }
 
-    public function down(): void
-    {
+    public function down(): void {
         Schema::dropIfExists('configuracion_flujo_estatus_analisis');
     }
 };

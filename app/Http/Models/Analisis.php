@@ -9,56 +9,37 @@ class Analisis extends Model
 {
     use HasFactory;
 
-    protected $table = 'analisis';
-
+    protected $table = 'analisis'; 
+    
     protected $fillable = [
-        'idCliente',
-        'idDoctor',
-        'idTipoAnalisis',
-        'idTipoMetodo',
-        'idTipoMuestra',
-        'idUsuarioCreacion',
-        'nota',
+        'estatus_id', 'cliente_id', 'doctor_id', 'tipo_analisis_id', 
+        'tipo_metodo_id', 'tipo_muestra_id', 'usuario_creacion_id', 'nota'
     ];
 
-    public function cliente()
-    {
-        return $this->belongsTo(Cliente::class, 'idCliente');
-    }
+    // Relaciones
+    public function cliente() { return $this->belongsTo(Cliente::class); }
+    public function doctor() { return $this->belongsTo(Doctor::class); }
+    public function estatus() { return $this->belongsTo(EstatusAnalisis::class, 'estatus_id'); }
+    public function tipoAnalisis() { return $this->belongsTo(TipoAnalisis::class, 'estatus_id'); }
+    public function tipoMetodo() { return $this->belongsTo(TipoMetodo::class, 'tipo_metodo_id'); }
+    public function tipoMuestra() { return $this->belongsTo(TipoMuestra::class, 'tipo_muestra_id'); }
+    public function usuarioCreacion() { return $this->belongsTo(User::class, 'usuario_creacion_id'); }
 
-    public function doctor()
-    {
-        return $this->belongsTo(Doctor::class, 'idDoctor');
-    }
+    public function resultados() { return $this->hasMany(ResultadoAnalisisHemograma::class); }
 
-    public function tipoAnalisis()
-    {
-        return $this->belongsTo(TipoAnalisis::class, 'idTipoAnalisis');
-    }
-
-    public function tipoMetodo()
-    {
-        return $this->belongsTo(TipoMetodo::class, 'idTipoMetodo');
-    }
-
-    public function tipoMuestra()
-    {
-        return $this->belongsTo(TipoMuestra::class, 'idTipoMuestra');
-    }
-
-    public function usuarioCreacion()
-    {
-        return $this->belongsTo(User::class, 'idUsuarioCreacion');
-    }
-
-    public function hemogramas()
+    public function hemogramas(): BelongsToMany
     {
         return $this->belongsToMany(
-            \App\Models\HemogramaCompleto::class,
-            'analisis_hemograma',    // tabla pivot
-            'idAnalisis',            // FK en pivot hacia Analisis
-            'idHemograma'            // FK en pivot hacia HemogramaCompleto
-        )->withPivot('resultado')
+            HemogramaCompleto::class,
+            'resultado_analisis_hemograma',
+            'analisis_id',                  
+            'hemograma_completo_id'         
+        )
+        ->withPivot([
+            'resultado', 
+            'usuario_creacion_id', 
+            'usuario_actualizacion_id'
+        ])
         ->withTimestamps();
     }
 

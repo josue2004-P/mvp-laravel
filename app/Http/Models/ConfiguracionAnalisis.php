@@ -3,25 +3,26 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ConfiguracionAnalisis extends Model
 {
     protected $table = 'configuracion_analisis';
 
-    public $timestamps = false;
-
     protected $fillable = [
-        'inicialEstatusId',
-        'usuarioCreacionEliminarPartidas',
-        'usuarioIdCreacion',
-        'usuarioIdActualizacion',
-        'fechaCreacion',
-        'fechaActualizacion'
+        'inicial_estatus_id',
+        'usuario_creacion_id',
+        'usuario_actualizacion_id'
     ];
 
-    // Relación con el estatus inicial
-    public function estatusInicial()
+    public function estatusInicial(): BelongsTo
     {
-        return $this->belongsTo(EstatusAnalisis::class, 'inicialEstatusId');
+        return $this->belongsTo(EstatusAnalisis::class, 'inicial_estatus_id');
+    }
+
+    public function reglasPerfiles(): HasMany
+    {
+        return $this->hasMany(ConfiguracionPerfilEstatus::class, 'configuracion_analisis_id');
     }
 }

@@ -11,7 +11,5 @@ class CategoriaHemogramaCompleto extends Model
 
     protected $table = 'categoria_hemograma_completo';
 
-    protected $fillable = [
-        'nombre',
-    ];
+    protected $fillable = ['nombre', 'descripcion'];
 }

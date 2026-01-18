@@ -8,31 +8,28 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Eliminamos si existe para limpiar errores anteriores
-        Schema::dropIfExists('configuracion_analisis');
-
         Schema::create('configuracion_analisis', function (Blueprint $table) {
-            $table->id(); // int [pk, increment]
-            
-            // Relación con el estatus (debe ser el mismo tipo que estatus_analises.id)
-            $table->unsignedSmallInteger('inicialEstatusId');
-            
-            // Auditoría (IDs de usuario)
-            $table->unsignedInteger('usuarioIdCreacion');
-            $table->unsignedInteger('usuarioIdActualizacion');
-            
-            // Fechas
-            $table->datetime('fechaCreacion')->useCurrent();
-            $table->datetime('fechaActualizacion')->useCurrent()->useCurrentOnUpdate();
+            $table->id();
 
-            // Llave foránea para el estatus inicial
-            $table->foreign('inicialEstatusId')
-                  ->references('id')
-                  ->on('estatus_analises')
+            $table->foreignId('inicial_estatus_id')
+                  ->constrained('estatus_analisis')
                   ->onDelete('restrict');
+
+            $table->foreignId('usuario_creacion_id')
+                  ->constrained('users')
+                  ->onDelete('restrict');
+
+            $table->foreignId('usuario_actualizacion_id')
+                  ->constrained('users')
+                  ->onDelete('restrict');
+
+            $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('configuracion_analisis');

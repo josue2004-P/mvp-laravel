@@ -12,21 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('hemograma_completo', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre', 100);
+            $table->id(); 
+            $table->string('nombre');
 
-            // Relación muchos a uno con CategoriaHemogramaCompleto
-            $table->foreignId('idCategoriaHemogramaCompleto')
-                ->constrained('categoria_hemograma_completo')
-                ->cascadeOnDelete();
-
-            // Relación muchos a uno con Unidad
-            $table->foreignId('idUnidad')
-                ->constrained('unidades')
-                ->cascadeOnDelete();
-
-            $table->string('referencia', 100);
+            // RELACIONES
+            $table->foreignId('categoria_hemograma_completo_id')->constrained('categoria_hemograma_completo')->onDelete('cascade');
+            $table->foreignId('unidad_id')->constrained('unidades')->onDelete('restrict');
+            
+            $table->string('referencia')->nullable(); 
             $table->timestamps();
+
+            $table->index(['categoria_hemograma_completo_id', 'unidad_id'],'idx_hemograma_cat_unid');
         });
     }
 
