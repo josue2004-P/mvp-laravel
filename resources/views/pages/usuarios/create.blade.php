@@ -4,7 +4,6 @@
 
 @section('content')
 
-
 <x-common.component-card title="Formulario Usuarios" desc="Completa la información para registrar un nuevo usuario." class="max-w-5xl">
 
     <form id="form-clientes" action="{{ route('usuarios.store') }}" method="POST" class="grid grid-cols-2 gap-5">
@@ -19,7 +18,7 @@
                 :value="old('name')"
                 :messages="$errors->get('name')"
             />    
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <x-form.input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
         <!-- Elements -->
@@ -32,7 +31,7 @@
                 :value="old('email')"
                 :messages="$errors->get('email')"
             />    
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-form.input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Elements -->
@@ -45,7 +44,7 @@
                 :value="old('password')"
                 :messages="$errors->get('password')"
             />    
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <x-form.input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <!-- Elements -->
@@ -58,7 +57,7 @@
                 :value="old('password_confirmation')"
                 :messages="$errors->get('password_confirmation')"
             />    
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+            <x-form.input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
         <x-slot:footer>

@@ -29,7 +29,7 @@ class PerfilController extends Controller
 
         Perfil::create($request->only('nombre', 'descripcion'));
 
-        return redirect()->route('perfiles.index')->with('success', 'Perfil creado.');
+        return redirect()->route('perfiles.index')->with('success', 'Perfil Actualizado.');
     }
 
     public function edit(Perfil $perfil)

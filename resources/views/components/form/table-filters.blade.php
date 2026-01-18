@@ -7,133 +7,146 @@
     'title' => 'Registros'
 ])
 
-<div class="rounded-2xl border border-gray-200 bg-white pt-4 dark:border-gray-800 dark:bg-white/[0.03]">
-    {{-- BARRA SUPERIOR --}}
-    <div class="flex flex-col gap-4 px-5 mb-4 lg:flex-row lg:items-center lg:justify-between sm:px-6">
-        <div>
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">{{ $title }}</h3>
-        </div>
+<div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] shadow-sm overflow-hidden">
+    
+    {{-- BARRA SUPERIOR ESTRUCUTRADA --}}
+    <div class="p-5 border-b border-gray-100 dark:border-gray-800">
+        <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            
+            {{-- Título y Buscador --}}
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4 flex-grow">
+                <div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ $title }}</h3>
+                </div>
 
-        <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-            {{-- Selector de cantidad --}}
-            @if($perPage !== null)
-            <div class="flex items-center gap-2">
-                <select wire:model.live="perPage" class="h-[42px] text-sm rounded-lg border-gray-300 dark:bg-gray-900 dark:border-gray-700 dark:text-white">
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                </select>
-            </div>
-            @endif
-            {{-- Botón Toggle Filtros (Solo si hay contenido en el slot de filtros) --}}
-            @if($filters->isNotEmpty())
-            <button @click="$dispatch('toggle-filtros')" class="inline-flex items-center justify-center px-4 py-2 bg-[#008196] hover:bg-[#006a7c] text-white text-sm font-medium rounded-md transition-all">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-                Filtros
-            </button>
-            @endif
-
-            {{-- Botones de exportación y nuevo --}}
-            <div class="flex items-center gap-2">
-                @if($exportPdf)
-                    <a href="{{ $exportPdf }}"
-                        target="_blank"
-                        class="flex items-center justify-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 w-full lg:w-auto">
-                        <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.93a1 1 0 1 0-1.41 1.41l4.93 4.93c.39.39 1.02.39 1.41 0l4.93-4.93a1 1 0 0 0-1.41-1.41L13 11.15Z"/><path d="M9.657 15.828 7.343 13.515A1 1 0 0 0 5.929 14.93l2.314 2.313H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2h-3.243l2.314-2.313a1 1 0 0 0-1.414-1.414l-2.314 2.313a.4.4 0 0 1-.572 0Z"/></svg>
-                        Importar PDF
-                    </a>
+                @if($search !== null)
+                <div class="relative w-full sm:w-72 group">
+                    <input 
+                        type="text" 
+                        wire:model.live.debounce.300ms="search" 
+                        placeholder="Buscar en registros..." 
+                        class="h-[42px] w-full rounded-xl border-gray-200 bg-gray-50/50 pl-11 pr-4 text-sm transition-all focus:bg-white focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-700 dark:bg-gray-900/50 dark:text-white dark:focus:border-indigo-500"
+                    >
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-500 transition-colors">
+                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    </div>
+                </div>
                 @endif
+            </div>
+
+            {{-- Acciones y Controles --}}
+            <div class="flex flex-wrap items-center gap-3">
                 
-                 @if($exportExcel)
-                    <a href="{{  $exportExcel }}"
-                        class="flex items-center justify-center text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 w-full lg:w-auto">
-                        <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.93a1 1 0 1 0-1.41 1.41l4.93 4.93c.39.39 1.02.39 1.41 0l4.93-4.93a1 1 0 0 0-1.41-1.41L13 11.15Z"/><path d="M9.657 15.828 7.343 13.515A1 1 0 0 0 5.929 14.93l2.314 2.313H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2h-3.243l2.314-2.313a1 1 0 0 0-1.414-1.414l-2.314 2.313a.4.4 0 0 1-.572 0Z"/></svg>
-                        Importar Excel
-                    </a>
+                {{-- Exportaciones (Estilo Compacto) --}}
+                <div class="flex items-center rounded-xl bg-gray-100 dark:bg-gray-800 p-1">
+                    @if($exportPdf)
+                        <a href="{{ $exportPdf }}" target="_blank" title="Exportar PDF"
+                            class="p-2 text-gray-500 hover:text-red-600 hover:bg-white dark:hover:bg-gray-700 rounded-lg transition-all">
+                            <i class="fa-solid fa-file-pdf text-lg"></i>
+                        </a>
+                    @endif
+                    @if($exportExcel)
+                        <a href="{{ $exportExcel }}" title="Exportar Excel"
+                            class="p-2 text-gray-500 hover:text-green-600 hover:bg-white dark:hover:bg-gray-700 rounded-lg transition-all">
+                            <i class="fa-solid fa-file-excel text-lg"></i>
+                        </a>
+                    @endif
+                </div>
+
+                @if($perPage !== null)
+                <select wire:model.live="perPage" class="h-[42px] text-xs font-semibold rounded-xl border-gray-200 bg-white px-3 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-300 focus:ring-indigo-500/20">
+                    <option value="10">10 Filas</option>
+                    <option value="25">25 Filas</option>
+                    <option value="50">50 Filas</option>
+                </select>
+                @endif
+
+                @if($filters->isNotEmpty())
+                <button 
+                    @click="$dispatch('toggle-filtros')" 
+                    class="h-[42px] inline-flex items-center px-4 rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-900/20 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-800/50 transition-all font-bold text-sm"
+                >
+                    <i class="fa-solid fa-filter mr-2"></i>
+                    Filtros
+                </button>
                 @endif
 
                 @if($createRoute)
-                    <a href="{{ $createRoute  }}"
-                        class="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 w-full lg:w-auto">
-                        <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+                    <x-form.button-primary 
+                        tag="a" 
+                        href="{{ $createRoute }}" 
+                        class="w-full lg:w-auto shadow-sm"
+                    >
                         Nuevo
-                    </a>
+                    </x-form.button-primary>
                 @endif
             </div>
-
-            {{-- Buscador --}}
-            @if($search !== null)
-            <div class="relative flex-grow lg:flex-grow-0">
-                <input type="text" wire:model.live.debounce.300ms="search" placeholder="Buscar..." class="h-[42px] w-full lg:w-[250px] rounded-lg border-gray-300 bg-transparent pl-10 pr-4 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-white">
-                <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                </div>
-            </div>
-            @endif
         </div>
     </div>
 
-    {{-- FILTROS CONTENEDOR --}}
+    {{-- FILTROS PANEL DESPLEGABLE --}}
     <div 
         x-data="{ show: false }" 
-        @toggle-filtros.window="show = !show; if(show) { setTimeout(() => initSelect2(), 100) }"
+        @toggle-filtros.window="show = !show"
         x-show="show"
         x-cloak
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 -translate-y-4"
-        x-transition:enter-end="opacity-100 translate-y-0"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100 translate-y-0"
-        x-transition:leave-end="opacity-0 -translate-y-4"
-        class="max-w-full mx-5 py-4 my-4 border-gray-200 border-y dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/30 rounded-lg px-4">
-        <div class="grid md:grid-cols-2 gap-4">
-            {{ $filters }}
+        x-collapse {{-- Requiere el plugin Collapse de Alpine --}}
+        class="bg-gray-50/50 dark:bg-white/[0.01] border-b border-gray-100 dark:border-gray-800"
+    >
+        <div class="p-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {{ $filters }}
+            </div>
         </div>
     </div>
 
-    {{-- TABLA (CONTENIDO PRINCIPAL) --}}
-    <div class="overflow-x-auto">
-        {{ $slot }}
+    {{-- TABLA --}}
+    <div class="relative">
+        {{-- Loading Overlay --}}
+        <div wire:loading class="absolute inset-0 z-10 bg-white/50 dark:bg-gray-900/50 backdrop-blur-[1px] flex items-center justify-center">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+        </div>
+        
+        <div class="overflow-x-auto">
+            {{ $slot }}
+        </div>
     </div>
 </div>
 
-
 @push('scripts')
 <script>
-    function initGlobalSelect2() {
-        $('.select2-dynamic').each(function () {
-            const $el = $(this);
-            const modelName = $el.data('model');
-            const placeholder = $el.data('placeholder') || 'Seleccionar...';
+    document.addEventListener('livewire:navigated', () => {
+        const initSelect2 = () => {
+            $('.select2-dynamic').each(function () {
+                const $el = $(this);
+                const modelName = $el.data('model');
+                
+                // Evitar duplicados
+                if ($el.data('select2')) { $el.select2('destroy'); }
 
-            if ($el.data('select2')) { $el.select2('destroy'); }
+                $el.select2({
+                    placeholder: $el.data('placeholder') || 'Seleccionar...',
+                    allowClear: true,
+                    width: '100%',
+                    dropdownParent: $el.closest('.rounded-2xl') // Mantiene el dropdown dentro del contexto visual
+                });
 
-            $el.select2({
-                placeholder: placeholder,
-                allowClear: true,
-                width: '100%'
+                // Sincronizar valor inicial
+                let currentVal = @this.get(modelName);
+                if(currentVal) $el.val(currentVal).trigger('change.select2');
+
+                // Escuchar cambios
+                $el.on('change', function () {
+                    @this.set(modelName, $(this).val());
+                });
             });
+        };
 
-            // --- NUEVO: Sincronizar valor inicial de Livewire a Select2 ---
-            // Leemos el valor actual de la propiedad en el componente Livewire
-            let valorActual = @this.get(modelName);
-            if(valorActual) {
-                $el.val(valorActual).trigger('change.select2');
-            }
-            // -------------------------------------------------------------
+        initSelect2();
 
-            $el.on('change', function () {
-                const value = $(this).val();
-                @this.set(modelName, value);
-            });
-        });
-    }
-
-    document.addEventListener('livewire:initialized', initGlobalSelect2);
-    document.addEventListener('livewire:navigated', initGlobalSelect2);
-    
-    window.addEventListener('toggle-filtros', () => {
-        setTimeout(initGlobalSelect2, 150);
+        // Re-inicializar cuando se abren los filtros o Livewire actualiza el DOM
+        window.addEventListener('toggle-filtros', () => setTimeout(initSelect2, 100));
+        Livewire.hook('morph.updated', () => initSelect2());
     });
 </script>
 @endpush
