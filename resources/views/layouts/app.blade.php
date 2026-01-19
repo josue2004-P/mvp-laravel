@@ -60,27 +60,41 @@
 
             Alpine.store('sidebar', {
                 // Initialize based on screen size
-                isExpanded: window.innerWidth >= 1280, // true for desktop, false for mobile
+                isExpanded: window.innerWidth >= 1280,
                 isMobileOpen: false,
                 isHovered: false,
+                isApplicationMenuOpen: false, // <-- 1. Agregamos el estado del Header aquí
 
                 toggleExpanded() {
                     this.isExpanded = !this.isExpanded;
-                    // When toggling desktop sidebar, ensure mobile menu is closed
                     this.isMobileOpen = false;
+                    // Al expandir en desktop, nos aseguramos de que nada tape la vista
+                    if (this.isExpanded) this.isApplicationMenuOpen = false;
                 },
 
                 toggleMobileOpen() {
                     this.isMobileOpen = !this.isMobileOpen;
-                    // Don't modify isExpanded when toggling mobile menu
+                    // 2. SI SE ABRE EL SIDEBAR, CERRAMOS EL HEADER automáticamente
+                    if (this.isMobileOpen) {
+                        this.isApplicationMenuOpen = false;
+                    }
+                },
+
+                // 3. Nueva función para controlar el Header desde el mismo Store
+                toggleApplicationMenu() {
+                    this.isApplicationMenuOpen = !this.isApplicationMenuOpen;
+                    // SI SE ABRE EL HEADER, CERRAMOS EL SIDEBAR automáticamente
+                    if (this.isApplicationMenuOpen) {
+                        this.isMobileOpen = false;
+                    }
                 },
 
                 setMobileOpen(val) {
                     this.isMobileOpen = val;
+                    if (val) this.isApplicationMenuOpen = false;
                 },
 
                 setHovered(val) {
-                    // Only allow hover effects on desktop when sidebar is collapsed
                     if (window.innerWidth >= 1280 && !this.isExpanded) {
                         this.isHovered = val;
                     }

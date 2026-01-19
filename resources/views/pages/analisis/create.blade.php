@@ -129,7 +129,7 @@
                 :value="old('nota')"
                 :messages="$errors->get('nota')"
             />    
-            <x-input-error :messages="$errors->get('nota')" class="mt-2" />
+            <x-form.input-error :messages="$errors->get('nota')" class="mt-2" />
         </div>
 
         <x-slot:footer>

@@ -25,7 +25,7 @@
                             <div class="flex items-center gap-3">
                                 <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center border border-indigo-200 dark:border-indigo-800">
                                     <span class="text-indigo-700 dark:text-indigo-400 font-bold text-sm">
-                                        {{ substr($usuario->name, 0, 1) }}
+                                        {{ strtoupper(substr(trim($usuario->name), 0, 1)) }}
                                     </span>
                                 </div>
                                 <div>

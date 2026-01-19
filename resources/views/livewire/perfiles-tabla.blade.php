@@ -1,91 +1,98 @@
 <x-form.table-filters 
-    title="Listado de Pefiles"
+    title="Gestión de Perfiles"
     :search="$search"
     :perPage="$perPage"
     :createRoute="route('perfiles.create')"
-    {{-- :exportPdf="route('analisis-general.pdf', ['search' => $search, 'perPage'  => $perPage])" --}}
-    {{-- :exportExcel="route('analisis.export', ['search' => $search, 'perPage'  => $perPage])" --}}
 >
    {{-- Slot de Filtros Específicos --}}
     <x-slot:filters>
     </x-slot:filters>
 
-    {{-- El Slot por defecto es la tabla --}}
-    <table class="min-w-full">
-        <thead>
-            <tr class="border-y border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-white/[0.02]">
-                <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">Id</th>
-                <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">Nombre</th>
-                <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">Descripcion</th>
-                <th scope="col" class="relative px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Acciones</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-            @forelse($perfiles as $key  => $value)
-                <tr class="hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors">
-                    <td class="px-4 py-1 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                        #{{ $key + 1 }}
-                    </td>
-                    <td class="px-4 py-1 whitespace-nowrap">
-                        <div class="text-sm text-gray-700 dark:text-gray-300 font-medium">{{  $value['nombre']  }}</div>
-                    </td>
-                    <td class="px-4 py-1 whitespace-nowrap">
-                        <div class="text-sm text-gray-700 dark:text-gray-300 font-medium">{{  $value['descripcion']  }}</div>
-                    </td>
-                    <td class="px-4 py-1 text-center whitespace-nowrap text-sm font-medium">
-                        <div x-data="{ dropdownOpen: false }" class="inline-block">
-                            <button 
-                                @click="dropdownOpen = !dropdownOpen" 
-                                x-ref="button" {{-- Referencia para posicionar el menú --}}
-                                type="button" 
-                                class="p-2 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
-                            >
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 10.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM12 4.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM12 16.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" />
-                             </svg>
-                            </button>
-
-                            <template x-teleport="body">
-                                <div 
-                                    x-show="dropdownOpen" 
-                                    @click.away="dropdownOpen = false"
-                                    x-anchor.bottom-end.offset.5="$refs.button" {{-- Requiere plugin Anchor de Alpine --}}
-                                    x-transition:enter="transition ease-out duration-100"
-                                    x-transition:enter-start="transform opacity-0 scale-95"
-                                    x-transition:enter-end="transform opacity-100 scale-100"
-                                    class="z-[999] w-48 rounded-xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900"
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+            <thead>
+                <tr class="bg-gray-50/50 dark:bg-white/[0.02]">
+                    <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">ID</th>
+                    <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Nombre del Perfil</th>
+                    <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Descripción</th>
+                    <th scope="col" class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-transparent">
+                @forelse($perfiles as $perfil)
+                    <tr class="hover:bg-gray-50/80 dark:hover:bg-white/[0.01] transition-all duration-200">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200">
+                                #{{ $perfil->id }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="h-9 w-9 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center mr-3">
+                                    <i class="fa-solid fa-id-badge text-indigo-600 dark:text-indigo-400"></i>
+                                </div>
+                                <span class="text-sm font-semibold text-gray-700 dark:text-gray-200 lowercase">
+                                    {{ $perfil->nombre }}
+                                </span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <p class="text-sm text-gray-500 dark:text-gray-400 truncate max-w-xs">
+                                {{ $perfil->descripcion ?: 'Sin descripción adicional' }}
+                            </p>
+                        </td>
+                        <td class="px-6 py-4 text-center whitespace-nowrap">
+                            <div x-data="{ dropdownOpen: false }" class="relative inline-block">
+                                <button 
+                                    @click="dropdownOpen = !dropdownOpen" 
+                                    x-ref="button"
+                                    class="p-2 rounded-xl text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-all"
                                 >
-                                    <div class="p-1">
-                                        <a href="{{ route('perfiles.edit', $value->id) }}" class="flex items-center px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                            Ver detalles
+                                    <i class="fa-solid fa-ellipsis-vertical text-lg"></i>
+                                </button>
+
+                                <template x-teleport="body">
+                                    <div 
+                                        x-show="dropdownOpen" 
+                                        @click.away="dropdownOpen = false"
+                                        x-anchor.bottom-end.offset.8="$refs.button"
+                                        x-transition:enter="transition ease-out duration-150"
+                                        x-transition:enter-start="opacity-0 scale-95"
+                                        x-transition:enter-end="opacity-100 scale-100"
+                                        class="z-[9999] w-48 rounded-2xl border border-gray-200 bg-white p-1.5 shadow-xl dark:border-gray-700 dark:bg-gray-900"
+                                    >
+                                        <a href="{{ route('perfiles.edit', $perfil->id) }}" class="group flex items-center px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-xl transition-colors">
+                                            <i class="fa-solid fa-user-gear mr-3 text-gray-400 group-hover:text-indigo-600"></i>
+                                            Gestionar Perfil
                                         </a>
-                                        <button wire:click="confirmDelete({{ $value->id }})" class="flex w-full items-center px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-left">
-                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        <div class="my-1 border-t border-gray-100 dark:border-gray-800"></div>
+                                        <button 
+                                            wire:click="confirmDelete({{ $perfil->id }})" 
+                                            class="group flex w-full items-center px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors"
+                                        >
+                                            <i class="fa-solid fa-trash-can mr-3 text-red-400 group-hover:text-red-600"></i>
                                             Eliminar
                                         </button>
                                     </div>
-                                </div>
-                            </template>
-                        </div>
-                    </td>
-                </tr>
-            @empty
-                 <tr>
-                    <td colspan="9" class="px-6 py-10 text-center">
-                        <div class="flex flex-col items-center">
-                            <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">No se encontraron resultados para la búsqueda.</p>
-                        </div>
-                    </td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+                                </template>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4" class="px-6 py-16 text-center">
+                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-white/[0.02] mb-4">
+                                <i class="fa-solid fa-users-slash text-2xl text-gray-300"></i>
+                            </div>
+                            <p class="text-gray-500 dark:text-gray-400 font-medium">No hay perfiles registrados.</p>
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 
-    {{-- Paginación al final --}}
-    <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+    <div class="px-6 py-4 bg-gray-50/30 dark:bg-transparent border-t border-gray-100 dark:border-gray-800">
         {{ $perfiles->links() }}
     </div>
 </x-form.table-filters>
-

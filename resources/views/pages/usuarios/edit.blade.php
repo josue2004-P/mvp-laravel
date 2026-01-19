@@ -51,9 +51,13 @@
                                 <i class="fa-solid fa-arrow-left mr-1"></i> Volver a la lista
                             </a>
                             <div class="flex gap-2">
-                                <x-ui.button size="sm" type="submit" form="form-usuarios">
+                                <x-form.button-primary 
+                                    type="submit"
+                                    form="form-usuarios"
+                                    class="w-full lg:w-auto shadow-sm"
+                                >
                                     <i class="fa-solid fa-floppy-disk mr-2"></i> Guardar Cambios
-                                </x-ui.button>
+                                </x-form.button-primary>
                             </div>
                         </div>
                     </x-slot:footer>

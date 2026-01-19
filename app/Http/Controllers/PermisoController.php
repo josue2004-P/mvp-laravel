@@ -9,7 +9,7 @@ class PermisoController extends Controller
 {
     public function index()
     {
-    if (!checkPermiso('permisos.leer')) {
+        if (!checkPermiso('permisos.leer')) {
             abort(403, 'Operación sin permisos');
         }
         $permisos = Permiso::all();
@@ -35,6 +35,10 @@ class PermisoController extends Controller
             'descripcion' => 'nullable|string'
         ]);
 
+        $request->merge([
+            'nombre' => strtolower(trim($request->nombre))
+        ]);
+
         Permiso::create($request->only('nombre', 'descripcion'));
 
         return redirect()->route('permisos.index')->with('success', 'Permiso creado.');
@@ -53,6 +57,10 @@ class PermisoController extends Controller
         if (!checkPermiso('permisos.actualizar')) {
             abort(403, 'Operación sin permisos');
         }
+
+        $request->merge([
+            'nombre' => strtolower(trim($request->nombre))
+        ]);
         
         $request->validate([
             'nombre' => 'required|unique:permisos,nombre,' . $permiso->id,

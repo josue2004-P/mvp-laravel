@@ -16,7 +16,7 @@
                 :value="old('nombre')"
                 :messages="$errors->get('nombre')"
             />    
-            <x-input-error :messages="$errors->get('nombre')" class="mt-2" />
+            <x-form.input-error :messages="$errors->get('nombre')" class="mt-2" />
         </div>
 
         <div>
@@ -33,7 +33,7 @@
                     </option>
                 @endforeach
             </x-form.input-select>
-            <x-input-error :messages="$errors->get('idCategoriaHemogramaCompleto')" class="mt-2" />
+            <x-form.input-error :messages="$errors->get('idCategoriaHemogramaCompleto')" class="mt-2" />
         </div>
 
         <div>
@@ -46,7 +46,7 @@
                     </option>
                 @endforeach
             </x-form.input-select>
-            <x-input-error :messages="$errors->get('idUnidad')" class="mt-2" />
+            <x-form.input-error :messages="$errors->get('idUnidad')" class="mt-2" />
         </div>
 
         <!-- Elements -->
@@ -59,7 +59,7 @@
                 :value="old('referencia')"
                 :messages="$errors->get('referencia')"
             />    
-            <x-input-error :messages="$errors->get('referencia')" class="mt-2" />
+            <x-form.input-error :messages="$errors->get('referencia')" class="mt-2" />
         </div>
 
         <x-slot:footer>

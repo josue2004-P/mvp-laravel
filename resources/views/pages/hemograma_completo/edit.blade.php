@@ -20,7 +20,7 @@
                 :value="$hemogramaCompleto->nombre"
                 :messages="$errors->get('nombre')"
             />    
-            <x-input-error :messages="$errors->get('nombre')" class="mt-2" />
+            <x-form.input-error :messages="$errors->get('nombre')" class="mt-2" />
         </div>
 
         <div>
@@ -61,7 +61,7 @@
                 :value="$hemogramaCompleto->referencia "
                 :messages="$errors->get('referencia')"
             />    
-            <x-input-error :messages="$errors->get('referencia')" class="mt-2" />
+            <x-form.input-error :messages="$errors->get('referencia')" class="mt-2" />
         </div>
 
         <x-slot:footer>

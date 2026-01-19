@@ -23,10 +23,14 @@ class PerfilController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|unique:perfils,nombre',
+            'nombre' => 'required|unique:perfiles,nombre',
             'descripcion' => 'nullable|string',
         ]);
 
+        $request->merge([
+            'nombre' => strtolower(trim($request->nombre))
+        ]);
+        
         Perfil::create($request->only('nombre', 'descripcion'));
 
         return redirect()->route('perfiles.index')->with('success', 'Perfil Actualizado.');
@@ -40,29 +44,32 @@ class PerfilController extends Controller
 
     public function update(Request $request, Perfil $perfil)
     {
+        $request->merge([
+            'nombre' => strtolower(trim($request->nombre))
+        ]);
+
         $request->validate([
-            'nombre' => 'required|unique:perfils,nombre,' . $perfil->id,
+            'nombre' => 'required|unique:perfiles,nombre,' . $perfil->id,
             'descripcion' => 'nullable|string',
         ]);
 
         $perfil->update($request->only('nombre', 'descripcion'));
 
-        $permisos = [];
+        $permisosInput = $request->input('permisos', []);
+        $permisosData = [];
 
-        foreach ($request->input('permisos', []) as $permisoId => $acciones) {
-            $permisos[$permisoId] = [
-                'leer'       => isset($acciones['leer']),
-                'crear'      => isset($acciones['crear']),
-                'actualizar' => isset($acciones['actualizar']),
-                'eliminar'   => isset($acciones['eliminar']),
+        foreach ($permisosInput as $permisoId => $acciones) {
+            $permisosData[$permisoId] = [
+                'is_read'       => isset($acciones['is_read']),
+                'is_create'      => isset($acciones['is_create']),
+                'is_update' => isset($acciones['is_update']),
+                'is_delete'   => isset($acciones['is_delete']),
             ];
         }
 
-        $perfil->permisos()->sync($permisos);
+        $perfil->permisos()->sync($permisosData);
 
-        return redirect()
-            ->route('perfiles.index')
-            ->with('success', 'Perfil actualizado correctamente.');
+        return back()->with('success', 'Perfil actualizado correctamente.');
     }
 
     public function destroy(Perfil $perfil)

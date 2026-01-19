@@ -110,7 +110,7 @@
                     :value="old('nota', $analisi->nota)"
                     :messages="$errors->get('nota')"
                 />    
-                <x-input-error :messages="$errors->get('nota')" class="mt-2" />
+                <x-form.input-error :messages="$errors->get('nota')" class="mt-2" />
             </div>
 
             <div class=" pt-4 border-t border-gray-100 dark:border-gray-800 rounded-b-2xl  col-span-2 md:flex md:justify-end gap-2 grid grid-cols-1">

@@ -17,7 +17,7 @@
                 :value="old('nombre')"
                 :messages="$errors->get('nombre')"
             />    
-            <x-input-error :messages="$errors->get('nombre')" class="mt-2" />
+            <x-form.input-error :messages="$errors->get('nombre')" class="mt-2" />
         </div>
 
         <!-- Botones -->

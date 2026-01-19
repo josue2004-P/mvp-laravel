@@ -60,9 +60,15 @@ foreach ($menuGroups as $group) {
         },
         toggleSubmenu(groupIndex, itemIndex) {
             const key = groupIndex + '-' + itemIndex;
-            const newState = !this.openSubmenus[key];
-            if (newState) this.openSubmenus = {};
-            this.openSubmenus[key] = newState;
+            
+            // Si el menú que clickeamos ya está abierto, lo cerramos
+            if (this.openSubmenus[key]) {
+                this.openSubmenus = {};
+            } else {
+                // Si está cerrado, reseteamos todos los demás y abrimos solo este
+                this.openSubmenus = {};
+                this.openSubmenus[key] = true;
+            }
         },
         isSubmenuOpen(groupIndex, itemIndex) {
             const key = groupIndex + '-' + itemIndex;
@@ -115,7 +121,7 @@ foreach ($menuGroups as $group) {
                         <li>
                             @if (isset($item['subItems']) && count($item['subItems']) > 0)
                                 <!-- Menu Item with Submenu -->
-                                <button @click="toggleSubmenu({{ $groupIndex }}, {{ $itemIndex }})"
+                                <button @click.stop="toggleSubmenu({{ $groupIndex }}, {{ $itemIndex }})"
                                     class="menu-item group w-full"
                                     :class="[
                                         isSubmenuOpen({{ $groupIndex }}, {{ $itemIndex }}) ? 'menu-item-active' : 'menu-item-inactive',

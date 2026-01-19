@@ -54,7 +54,11 @@
                 </div>
 
                 @if($perPage !== null)
-                <select wire:model.live="perPage" class="h-[42px] text-xs font-semibold rounded-xl border-gray-200 bg-white px-3 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-300 focus:ring-indigo-500/20">
+                <select 
+                    wire:model.live="perPage" 
+                    class="h-[42px] text-xs font-semibold rounded-xl border-gray-200 bg-white pl-4 pr-10 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-300 focus:ring-indigo-500/20 cursor-pointer appearance-none 
+                    bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.5rem_center] bg-no-repeat"
+                >
                     <option value="10">10 Filas</option>
                     <option value="25">25 Filas</option>
                     <option value="50">50 Filas</option>
@@ -77,8 +81,8 @@
                         href="{{ $createRoute }}" 
                         class="w-full lg:w-auto shadow-sm"
                     >
-                    <i class="fa-solid fa-plus mr-1"></i>
-                        Nuevo Usuario
+                        <i class="fa-solid fa-plus mr-1"></i>
+                        Nuevo Registro
                     </x-form.button-primary>
                 @endif
             </div>

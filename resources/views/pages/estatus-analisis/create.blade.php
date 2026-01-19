@@ -18,7 +18,7 @@
                 :value="old('nombreCorto')"
                 :messages="$errors->get('nombreCorto')"
             />    
-            <x-input-error :messages="$errors->get('nombreCorto')" class="mt-2" />
+            <x-form.input-error :messages="$errors->get('nombreCorto')" class="mt-2" />
         </div>
 
         <!-- Elements -->
@@ -31,7 +31,7 @@
                 :value="old('descripcion')"
                 :messages="$errors->get('descripcion')"
             />    
-            <x-input-error :messages="$errors->get('descripcion')" class="mt-2" />
+            <x-form.input-error :messages="$errors->get('descripcion')" class="mt-2" />
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-3">
