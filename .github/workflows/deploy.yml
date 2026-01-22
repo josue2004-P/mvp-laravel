@@ -16,6 +16,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}2
           script: |
             echo "Conexión exitosa al servidor"
 
@@ -30,4 +31,5 @@ jobs:
             npm run build
             php artisan migrate
 
+            echo "✅ Despliegue completado en $HOSTNAME"
             echo "✅ Despliegue completado en $HOSTNAME"
