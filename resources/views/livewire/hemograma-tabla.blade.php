@@ -1,21 +1,18 @@
-
 <x-form.table-filters 
-    title="Listado de Hemogramas"
+    title="Parámetros de Hemograma"
     :search="$search"
     :perPage="$perPage"
     :createRoute="route('hemograma_completo.create')"
-    {{-- :exportPdf="route('analisis-general.pdf', ['search' => $search, 'perPage'  => $perPage])" --}}
-    {{-- :exportExcel="route('analisis.export', ['search' => $search, 'perPage'  => $perPage])" --}}
 >
    {{-- Slot de Filtros Específicos --}}
     <x-slot:filters>
-        <div wire:ignore class="w-full"> 
+        <div wire:ignore class="w-full sm:w-72"> 
             <x-form.input-select-filter
                 id="categoriaHemogramaCompletoSelect" 
                 name="categoriaHemogramaCompleto" 
                 dataModel="categoriaHemogramaCompletoId" 
-                label="Tipo de Categoria Hemograma " >
-                <option value="">Selecciona una Categoria de Hemograma</option>
+                label="Filtrar por Categoría" >
+                <option value="">Todas las categorías</option>
                 @foreach($categoriasHemogramaCompleto as $chcm)
                     <option value="{{ $chcm->id }}">
                         {{ $chcm->nombre }}
@@ -25,92 +22,120 @@
         </div>
     </x-slot:filters>
 
-    {{-- El Slot por defecto es la tabla --}}
-  <table class="min-w-full border-collapse">
-                    <thead>
-                        <tr class="border-y border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-white/[0.02]">
-                            <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">Id</th>
-                            <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">Nombre</th>
-                            <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">Categoria</th>
-                            <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">Unidad</th>
-                            <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400 ">Referencia</th>
-                            <th scope="col" class="relative px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                        @forelse($hemogramas as $hemograma)
-                        <tr class="hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors">
-                            <td class="px-4 py-1 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                                #{{ $hemograma['id']  }}
-                            </td>
-                            <td class="px-4 py-1 whitespace-nowrap">
-                                <div class="text-sm text-gray-700 dark:text-gray-300 font-medium">{{ $hemograma['nombre']  }}</div>
-                            </td>
-                            <td class="px-4 py-1 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                                    {{ $hemograma->categoria->nombre  }}
-                                </span>
-                            </td>
-                              <td class="px-4 py-1 whitespace-nowrap">
-                                <div class="text-sm text-gray-700 dark:text-gray-300 font-medium">{{ $hemograma->unidad->nombre  }}</div>
-                            </td>
-                              <td class="px-4 py-1 whitespace-nowrap">
-                                <div class="text-sm text-gray-700 dark:text-gray-300 font-medium">{{ $hemograma->referencia }}</div>
-                            </td>
-                            <td class="px-4 py-1 text-center whitespace-nowrap text-sm font-medium">
-                                <div x-data="{ dropdownOpen: false }" class="inline-block">
-                                    <button 
-                                        @click="dropdownOpen = !dropdownOpen" 
-                                        x-ref="button" {{-- Referencia para posicionar el menú --}}
-                                        type="button" 
-                                        class="p-2 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead>
+                <tr class="bg-gray-50/50 dark:bg-white/[0.02]">
+                    <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">ID</th>
+                    <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Parámetro Analítico</th>
+                    <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Categoría</th>
+                    <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Unidad</th>
+                    <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Rango de Referencia</th>
+                    <th scope="col" class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-gray-800 bg-white dark:bg-transparent">
+                @forelse($hemogramas as $hemograma)
+                    <tr class="group hover:bg-red-50/30 dark:hover:bg-red-900/10 transition-all duration-200">
+                        {{-- ID --}}
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-400">
+                            #{{ str_pad($hemograma->id, 3, '0', STR_PAD_LEFT) }}
+                        </td>
+
+                        {{-- Nombre --}}
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="h-9 w-9 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600 dark:text-red-400 font-bold text-xs mr-3 border border-red-200 dark:border-red-800/50">
+                                    <i class="fa-solid fa-droplet"></i>
+                                </div>
+                                <div class="text-sm font-bold text-gray-900 dark:text-gray-100 group-hover:text-red-600 transition-colors">
+                                    {{ $hemograma->nombre }}
+                                </div>
+                            </div>
+                        </td>
+
+                        {{-- Categoría con Badge --}}
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400 border border-blue-100 dark:border-blue-800">
+                                <i class="fa-solid fa-tag mr-1.5 opacity-50"></i>
+                                {{ $hemograma->categoria->nombre }}
+                            </span>
+                        </td>
+
+                        {{-- Unidad con estilo Mono --}}
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="text-xs font-mono font-bold px-2 py-1 rounded bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-white/10">
+                                {{ $hemograma->unidad->nombre }}
+                            </span>
+                        </td>
+
+                        {{-- Referencia --}}
+                        <td class="px-6 py-4">
+                            <div class="text-sm font-medium text-indigo-600 dark:text-indigo-400 italic font-mono">
+                                {{ $hemograma->referencia ?? 'Pendiente de definir' }}
+                            </div>
+                        </td>
+
+                        {{-- Acciones Dropdown --}}
+                        <td class="px-6 py-4 text-center whitespace-nowrap">
+                            <div x-data="{ dropdownOpen: false }" class="relative inline-block text-left">
+                                <button 
+                                    @click="dropdownOpen = !dropdownOpen" 
+                                    x-ref="button"
+                                    type="button" 
+                                    class="p-2 rounded-xl text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
+                                >
+                                    <i class="fa-solid fa-ellipsis-vertical text-lg"></i>
+                                </button>
+
+                                <template x-teleport="body">
+                                    <div 
+                                        x-show="dropdownOpen" 
+                                        @click.away="dropdownOpen = false"
+                                        x-anchor.bottom-end.offset.5="$refs.button"
+                                        x-transition:enter="transition ease-out duration-150"
+                                        x-transition:enter-start="opacity-0 scale-95"
+                                        x-transition:enter-end="opacity-100 scale-100"
+                                        class="z-[999] w-52 rounded-2xl border border-gray-200 bg-white/95 backdrop-blur-sm shadow-2xl dark:border-gray-700 dark:bg-gray-900/95 p-1.5"
                                     >
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 10.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM12 4.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM12 16.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" />
-                                        </svg>
-                                    </button>
-
-                                    <template x-teleport="body">
-                                        <div 
-                                            x-show="dropdownOpen" 
-                                            @click.away="dropdownOpen = false"
-                                            x-anchor.bottom-end.offset.5="$refs.button" {{-- Requiere plugin Anchor de Alpine --}}
-                                            x-transition:enter="transition ease-out duration-100"
-                                            x-transition:enter-start="transform opacity-0 scale-95"
-                                            x-transition:enter-end="transform opacity-100 scale-100"
-                                            class="z-[999] w-48 rounded-xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900"
-                                        >
-                                            <div class="p-1">
-                                                <a href="{{ route('hemograma_completo.edit',$hemograma['id'])  }}" class="flex items-center px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                                    Ver detalles
-                                                </a>
-                                                <button wire:click="confirmDelete({{ $hemograma->id }})" class="flex w-full items-center px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-left">
-                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                                    Eliminar
-                                                </button>
-                                            </div>
+                                        <div class="px-3 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-50 dark:border-gray-800 mb-1.5">
+                                            Hematología
                                         </div>
-                                    </template>
+                                        <a href="{{ route('hemograma_completo.edit', $hemograma->id) }}" class="flex items-center px-3 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 rounded-xl transition-colors">
+                                            <i class="fa-solid fa-pen-to-square mr-3 text-gray-400 group-hover:text-red-500"></i>
+                                            Editar Parámetro
+                                        </a>
+                                        <div class="my-1 border-t border-gray-50 dark:border-gray-800"></div>
+                                        <button wire:click="confirmDelete({{ $hemograma->id }})" class="flex w-full items-center px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors">
+                                            <i class="fa-solid fa-trash-can mr-3 text-red-400"></i>
+                                            Eliminar Registro
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" class="px-6 py-16 text-center">
+                            <div class="flex flex-col items-center">
+                                <div class="h-16 w-16 bg-red-50 dark:bg-red-900/10 rounded-full flex items-center justify-center mb-4">
+                                    <i class="fa-solid fa-microscope text-2xl text-red-300 dark:text-red-700"></i>
                                 </div>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="9" class="px-6 py-10 text-center">
-                                <div class="flex flex-col items-center">
-                                    <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">No se encontraron resultados para la búsqueda.</p>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-
-    {{-- Paginación al final --}}
-    <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
-        {{ $hemogramas->links() }}
+                                <p class="text-gray-500 dark:text-gray-400 font-bold italic text-lg">Sin parámetros configurados</p>
+                                <p class="text-xs text-gray-400 mt-1 max-w-xs mx-auto">Comienza agregando los elementos de la biometría hemática (Hemoglobina, Hematocrito, etc.)</p>
+                            </div>
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
-</x-form.table-filters>
 
+    {{-- Paginación --}}
+    @if($hemogramas->hasPages())
+        <div class="px-6 py-4 bg-gray-50/30 dark:bg-white/[0.01] border-t border-gray-200 dark:border-gray-700">
+            {{ $hemogramas->links() }}
+        </div>
+    @endif
+</x-form.table-filters>

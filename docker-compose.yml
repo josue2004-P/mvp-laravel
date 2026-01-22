@@ -1,31 +1,31 @@
 services:
-  app-la-piedad:
+  app_lab_piedad:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: app-la-piedad
+    container_name: app_lab_piedad
     ports:
     - "8080:80"
 
-  bd_mysql_la_piedad:
+  bd_mysql_lab_piedad:
     image: mysql:8.0
-    container_name: bd_mysql_la_piedad
+    container_name: bd_mysql_lab_piedad
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: bd_mysql_la_piedad
+      MYSQL_DATABASE: bd_mysql_lab_piedad
     ports:
       - '3306:3306'
     volumes:
-      - vol__la_piedad:/var/lib/mysql  
+      - vol_lab_piedad:/var/lib/mysql  
     networks:
-      - la_piedad_net
-      - la_piedad_proxy
+      - lab_piedad_net
+      - lab_piedad_proxy
 
 networks:
-  la_piedad_net:
+  lab_piedad_net:
     external: true   # Marca esta red como externa si ya existe
-  la_piedad_proxy:
+  lab_piedad_proxy:
     external: true
 
 volumes:
-  vol__la_piedad:
+  vol_lab_piedad:

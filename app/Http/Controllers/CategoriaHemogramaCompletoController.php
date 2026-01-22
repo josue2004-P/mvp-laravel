@@ -20,13 +20,18 @@ class CategoriaHemogramaCompletoController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100|unique:categoria_hemograma_completo,nombre',
+        $validated = $request->validate([
+            'nombre'      => 'required|string|max:100|unique:categoria_hemograma_completo,nombre',
+            'descripcion' => 'nullable|string|max:500',
         ]);
 
-        CategoriaHemogramaCompleto::create($request->all());
-
-        return redirect()->route('categoria_hemograma_completo.index')->with('success', 'Categoría creada correctamente');
+        try {
+            CategoriaHemogramaCompleto::create($validated);
+            return redirect()->route('categoria_hemograma_completo.index')
+                ->with('success', 'Categoría registrada correctamente.');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Error al guardar la categoría.');
+        }
     }
 
     public function edit(CategoriaHemogramaCompleto $categoriaHemogramaCompleto)

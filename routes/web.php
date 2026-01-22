@@ -15,6 +15,7 @@ use App\Http\Controllers\HemogramaCompletoController;
 use App\Http\Controllers\AnalisisController;
 use App\Http\Controllers\EstatusAnalisisController;
 use App\Http\Controllers\ConfiguracionAnalisisController;
+use App\Http\Controllers\EspecialidadController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,10 @@ Route::middleware(['auth'])->group(function () {
         'doctores' => 'doctor'
         
     ]);
+    Route::resource('especialidades', EspecialidadController::class)->parameters([
+        'especialidades' => 'especialidad'
+    ]);
+
     Route::resource('tipo_analisis', TipoAnalisisController::class)
         ->parameters(['tipo_analisis' => 'tipoAnalisis']);
     Route::resource('tipo_metodo', TipoMetodoController::class);

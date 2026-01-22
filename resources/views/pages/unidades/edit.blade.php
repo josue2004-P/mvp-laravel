@@ -1,42 +1,58 @@
 @extends('layouts.app')
 
-@section('title', 'Editar Doctor')
+@section('title', 'Editar Unidad')
 
 @section('content')
+<div class="max-w-4xl mx-auto">
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Editar Unidad</h1>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+            Modificando la unidad: <span class="font-bold text-indigo-600">{{ $unidad->nombre }}</span>
+        </p>
+    </div>
 
-<x-common.component-card title="Editar Unidades" desc="Edita la información principal de la Unidad." class="max-w-5xl">
-    <form id="form-unidades" action="{{ route('unidades.update', $unidad) }}" method="POST" class="space-y-5">
+    <form id="form-unidades" action="{{ route('unidades.update', $unidad->id) }}" method="POST">
         @csrf
         @method('PUT')
+        
+        <x-common.component-card title="Actualizar Información" desc="Cualquier cambio afectará la visualización en los reportes de resultados." class="shadow-theme-md">
+            
+            <div class="grid grid-cols-1 gap-6">
+                <div>
+                    <x-form.input-label for="nombre" :value="__('Símbolo o Nombre de la Unidad')" required/>
+                    <x-form.text-input
+                        id="nombre"
+                        type="text"
+                        name="nombre"
+                        class="w-full mt-1 font-bold text-indigo-600"
+                        :value="old('nombre', $unidad->nombre)"
+                    />
+                    <x-form.input-error :messages="$errors->get('nombre')" class="mt-2" />
+                </div>
 
-         <!-- Elements -->
-        <div>
-            <x-form.input-label for="nombre" 
-                :value="__('Nombre:')" />
-            <x-form.text-input
-                type="text"
-                name="nombre"
-                placeholder="Escribe el nombre"
-                :value="$unidad->nombre " 
-                :messages="$errors->get('nombre')"
-            />    
-            <x-form.input-error :messages="$errors->get('nombre')" class="mt-2" />
-        </div>
-
-
-                <!-- Botones -->
-        <x-slot:footer>
-            <div class="flex justify-end gap-2">
-                <a href="{{ route('unidades.index') }}"
-                    class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700  hover:bg-gray-200 transition">
-                    Cancelar
-                </a>
-                <x-ui.button size="sm" type="submit" form="form-unidades">
-                    Guardar
-                </x-ui.button>
+                <div>
+                    <x-form.input-label for="descripcion" :value="__('Descripción Técnica')" />
+                    <textarea 
+                        name="descripcion" 
+                        rows="4"
+                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm text-sm p-3"
+                    >{{ old('descripcion', $unidad->descripcion) }}</textarea>
+                </div>
             </div>
-        </x-slot:footer>
-    </form>
-</x-common.component-card>
 
+            <x-slot:footer>
+                <div class="flex items-center justify-between">
+                    <a href="{{ route('unidades.index') }}"
+                        class="inline-flex items-center text-sm font-semibold text-gray-500 hover:text-red-500 dark:text-gray-400 transition-colors">
+                        <i class="fa-solid fa-xmark mr-2"></i> Descartar
+                    </a>
+                    
+                    <x-ui.button size="sm" type="submit" form="form-unidades">
+                        <i class="fa-solid fa-arrows-rotate mr-2"></i> Actualizar Unidad
+                    </x-ui.button>
+                </div>
+            </x-slot:footer>
+        </x-common.component-card>
+    </form>
+</div>
 @endsection

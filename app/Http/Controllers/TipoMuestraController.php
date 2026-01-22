@@ -20,13 +20,25 @@ class TipoMuestraController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100|unique:tipo_muestras,nombre',
+        $validated = $request->validate([
+            'nombre'      => 'required|string|max:100|unique:tipo_muestras,nombre',
+            'descripcion' => 'nullable|string|max:1000',
         ]);
 
-        TipoMuestra::create($request->all());
+        try {
+            TipoMuestra::create($validated);
 
-        return redirect()->route('tipo_muestra.index')->with('success', 'Tipo de muestra creado correctamente');
+            return redirect()
+                ->route('tipo_muestra.index')
+                ->with('success', 'El tipo de muestra "' . $request->nombre . '" se ha registrado correctamente.');
+
+        } catch (\Exception $e) {
+            Log::error("Error al crear tipo_muestra: " . $e->getMessage());
+
+            return back()
+                ->withInput()
+                ->with('error', 'Ocurrió un problema al guardar la información. Por favor, intente de nuevo.');
+        }
     }
 
     public function edit(TipoMuestra $tipoMuestra)
@@ -36,13 +48,25 @@ class TipoMuestraController extends Controller
 
     public function update(Request $request, TipoMuestra $tipoMuestra)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100|unique:tipo_muestras,nombre,' . $tipoMuestra->id,
+        $validated = $request->validate([
+            'nombre'      => 'required|string|max:100|unique:tipo_muestras,nombre,' . $tipoMuestra->id,
+            'descripcion' => 'nullable|string|max:1000',
         ]);
 
-        $tipoMuestra->update($request->all());
+        try {
+            $tipoMuestra->update($validated);
 
-        return redirect()->route('tipo_muestra.index')->with('success', 'Tipo de muestra actualizado correctamente');
+            return redirect()
+                ->route('tipo_muestra.index')
+                ->with('success', 'La información de la muestra ha sido actualizada exitosamente.');
+
+        } catch (\Exception $e) {
+            Log::error("Error al actualizar tipo_muestra ID {$tipoMuestra->id}: " . $e->getMessage());
+
+            return back()
+                ->withInput()
+                ->with('error', 'No se pudieron guardar los cambios en el registro.');
+        }
     }
 
     public function destroy(TipoMuestra $tipoMuestra)

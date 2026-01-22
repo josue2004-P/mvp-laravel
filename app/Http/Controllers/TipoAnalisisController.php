@@ -33,24 +33,36 @@ class TipoAnalisisController extends Controller
     public function edit(TipoAnalisis $tipoAnalisis)
     {
         $hemogramas = HemogramaCompleto::all();
-        $tipoAnalisis->load('hemogramas'); // carga la relación muchos a muchos
+        $tipoAnalisis->load('parametrosHemograma'); 
         return view('pages.tipo_analisis.edit', compact('tipoAnalisis', 'hemogramas'));
     }
 
     public function update(Request $request, TipoAnalisis $tipoAnalisis)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'hemogramas' => 'array', // opcional
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:100|unique:tipo_analisis,nombre,' . $tipoAnalisis->id,
+            'hemogramas' => 'nullable|array',
             'hemogramas.*' => 'integer|exists:hemograma_completo,id'
         ]);
 
-        $tipoAnalisis->update($request->only('nombre'));
+        try {
+            $tipoAnalisis->update([
+                'nombre' => $validated['nombre']
+            ]);
 
-        // Sincroniza la relación muchos a muchos
-        $tipoAnalisis->hemogramas()->sync($request->hemogramas ?? []);
+            $tipoAnalisis->parametrosHemograma()->sync($request->input('hemogramas', []));
 
-        return redirect()->route('tipo_analisis.index')->with('success', 'Tipo de análisis actualizado correctamente.');
+            return redirect()
+                ->route('tipo_analisis.index')
+                ->with('success', 'El perfil "' . $tipoAnalisis->nombre . '" y sus parámetros se actualizaron correctamente.');
+
+        } catch (\Exception $e) {
+            \Log::error("Error al actualizar TipoAnalisis ID {$tipoAnalisis->id}: " . $e->getMessage());
+
+            return back()
+                ->withInput()
+                ->with('error', 'Ocurrió un error inesperado al procesar la actualización.');
+        }
     }
 
     public function destroy(TipoAnalisis $tipoAnalisis)

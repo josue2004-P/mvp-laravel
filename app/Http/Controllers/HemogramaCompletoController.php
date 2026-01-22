@@ -39,16 +39,27 @@ class HemogramaCompletoController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100',
-            'idCategoriaHemogramaCompleto' => 'required|exists:categoria_hemograma_completo,id',
-            'idUnidad' => 'required|exists:unidades,id',
-            'referencia' => 'required|string|max:100',
+        $validated = $request->validate([
+            'nombre'                             => 'required|string|max:255',
+            'categoria_hemograma_completo_id'    => 'required|exists:categoria_hemograma_completo,id',
+            'unidad_id'                          => 'required|exists:unidades,id',
+            'referencia'                         => 'nullable|string|max:255',
         ]);
 
-        HemogramaCompleto::create($request->all());
+        try {
+            HemogramaCompleto::create($validated);
 
-        return redirect()->route('hemograma_completo.index')->with('success', 'Hemograma creado correctamente');
+            return redirect()
+                ->route('hemograma_completo.index')
+                ->with('success', 'El parámetro "' . $request->nombre . '" ha sido configurado exitosamente.');
+
+        } catch (\Exception $e) {
+            \Log::error("Error al crear hemograma_completo: " . $e->getMessage());
+
+            return back()
+                ->withInput()
+                ->with('error', 'Ocurrió un error al intentar guardar el parámetro.');
+        }
     }
 
     public function edit(HemogramaCompleto $hemogramaCompleto)
@@ -62,16 +73,27 @@ class HemogramaCompletoController extends Controller
 
     public function update(Request $request, HemogramaCompleto $hemogramaCompleto)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100',
-            'idCategoriaHemogramaCompleto' => 'required|exists:categoria_hemograma_completo,id',
-            'idUnidad' => 'required|exists:unidades,id',
-            'referencia' => 'required|string|max:100',
+        $validated = $request->validate([
+            'nombre'                             => 'required|string|max:255',
+            'categoria_hemograma_completo_id'    => 'required|exists:categoria_hemograma_completo,id',
+            'unidad_id'                          => 'required|exists:unidades,id',
+            'referencia'                         => 'nullable|string|max:255',
         ]);
 
-        $hemogramaCompleto->update($request->all());
+        try {
+            $hemogramaCompleto->update($validated);
 
-        return redirect()->route('hemograma_completo.index')->with('success', 'Hemograma actualizado correctamente');
+            return redirect()
+                ->route('hemograma_completo.index')
+                ->with('success', 'La configuración del parámetro se actualizó correctamente.');
+
+        } catch (\Exception $e) {
+            \Log::error("Error al actualizar hemograma_completo ID {$hemogramaCompleto->id}: " . $e->getMessage());
+
+            return back()
+                ->withInput()
+                ->with('error', 'No se pudieron procesar los cambios.');
+        }
     }
 
     public function destroy(HemogramaCompleto $hemogramaCompleto)
