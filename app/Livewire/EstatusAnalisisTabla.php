@@ -59,7 +59,7 @@ class EstatusAnalisisTabla extends Component
 
     public function render()
     {
-        $estatusAnalisis = EstatusAnalisis::where('nombreCorto', 'like', '%'.$this->search.'%')
+        $estatusAnalisis = EstatusAnalisis::where('nombre', 'like', '%'.$this->search.'%')
             ->paginate(10);
         return view('livewire.estatus-analisis-tabla',[
             'estatusAnalisis' => $estatusAnalisis,

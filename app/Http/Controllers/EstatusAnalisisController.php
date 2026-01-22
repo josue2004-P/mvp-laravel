@@ -22,16 +22,37 @@ class EstatusAnalisisController extends Controller
 
     public function store(Request $request)
     {
-        EstatusAnalisis::create([
-            'nombreCorto'     => $request->nombreCorto,
-            'descripcion'     => $request->descripcion,
-            'colorTexto'      => $request->colorTexto, // Usando CamelCase como en tu DB
-            'colorFondo'      => $request->colorFondo,
-            'analsisAbierto'  => $request->has('analsisAbierto') ? 1 : 0,
-            'analisisCerrado' => $request->has('analisisCerrado') ? 1 : 0,
+        $validated = $request->validate([
+            'nombre'          => 'required|string|max:255',
+            'descripcion'     => 'nullable|string|max:255',
+            'colorTexto'      => 'nullable|string|max:10',
+            'colorFondo'      => 'nullable|string|max:10',
+            'analsisAbierto'  => 'nullable',
+            'analisisCerrado' => 'nullable',
         ]);
 
-        return redirect()->route('estatus-analisis.index');
+        try {
+            EstatusAnalisis::create([
+                'nombre'           => $validated['nombre'],
+                'descripcion'      => $validated['descripcion'] ?? '',
+                
+                'color_texto'      => $validated['colorTexto'] ?? '#000000',
+                'color_fondo'      => $validated['colorFondo'] ?? '#FFFFFF',
+                
+                'analisis_abierto' => $request->has('analsisAbierto') ? 1 : 0,
+                'analisis_cerrado' => $request->has('analisisCerrado') ? 1 : 0,
+            ]);
+
+            return redirect()
+                ->route('estatus-analisis.index')
+                ->with('success', 'Estatus de análisis registrado con éxito.');
+
+        } catch (\Exception $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', 'Ocurrió un error al guardar: ' . $e->getMessage());
+        }
     }
 
     // Mostrar formulario de edición
@@ -42,26 +63,32 @@ class EstatusAnalisisController extends Controller
 
     public function update(Request $request, EstatusAnalisis $estatus)
     {
-        // Validar los datos
         $validated = $request->validate([
-            'nombreCorto' => 'required|max:50',
-            'descripcion' => 'nullable|string',
-            'colorTexto'  => 'nullable|string|max:7',
-            'colorFondo'  => 'nullable|string|max:7',
+            'nombreCorto'     => 'required|string|max:255',
+            'descripcion'     => 'required|string|max:255',
+            'colorTexto'      => 'nullable|string|max:10',
+            'colorFondo'      => 'nullable|string|max:10',
+            'analsisAbierto'  => 'nullable',
+            'analisisCerrado' => 'nullable',
         ]);
 
-        // Actualizar el registro mapeando manualmente a las columnas de la DB
-        $estatus->update([
-            'nombreCorto'     => $request->nombreCorto,
-            'descripcion'     => $request->descripcion,
-            'colorTexto'      => $request->colorTexto,
-            'colorFondo'      => $request->colorFondo,
-            'analsisAbierto'  => $request->has('analsisAbierto') ? 1 : 0,
-            'analisisCerrado' => $request->has('analisisCerrado') ? 1 : 0,
-        ]);
+        try {
+            $estatus->update([
+                'nombre'           => $validated['nombreCorto'],
+                'descripcion'      => $validated['descripcion'],
+                'color_texto'      => $validated['colorTexto'],
+                'color_fondo'      => $validated['colorFondo'],
+                'analisis_abierto' => $request->has('analsisAbierto') ? 1 : 0,
+                'analisis_cerrado' => $request->has('analisisCerrado') ? 1 : 0,
+            ]);
 
-        return redirect()->route('estatus-analisis.index')
-            ->with('success', 'Estatus actualizado correctamente.');
+            return redirect()->route('estatus-analisis.index')
+                ->with('success', 'Estatus actualizado correctamente.');
+
+        } catch (\Exception $e) {
+
+            return back()->withInput()->with('error', 'Error al actualizar: ' . $e->getMessage());
+        }
     }
 
     // Eliminar registro

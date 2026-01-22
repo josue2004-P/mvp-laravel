@@ -3,125 +3,125 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Models\EstatusAnalisis;
 use App\Models\ConfiguracionAnalisis;
 use App\Models\Perfil;
+use Illuminate\Support\Facades\DB;
 
 class ConfiguracionAnalisisController extends Controller
 {
     public function index()
     {
+        // Perfiles con el permiso específico
         $perfiles = Perfil::whereHas('permisos', function ($q) {
             $q->where('nombre', 'mod-est-anl');
         })->get();
         
-        $estatus = EstatusAnalisis::where(function ($query) {
-            $query->where('analsisAbierto', 1)
-                  ->orWhere('analisisCerrado', 1);
-        })
-        ->orderBy('nombreCorto', 'asc')
-        ->get();
+        // Estatus activos para el flujo
+        $estatus = EstatusAnalisis::where('analisis_abierto', 1)
+            ->orWhere('analisis_cerrado', 1)
+            ->orderBy('nombre', 'asc')
+            ->get();
 
-        $configuracionPerfiles = \DB::table('configuracion_perfil_estatus_analisis')->get();
+        // Cargar configuración global (ID 1)
+        $configuracionExistente = ConfiguracionAnalisis::find(1);
 
-        $configuracionExistente = \DB::table('configuracion_analisis')
-            ->where('id', 1)
-            ->first(); 
+        // Permisos de perfiles actuales
+        $configuracionPerfiles = DB::table('configuracion_perfil_estatus_analisis')
+            ->where('configuracion_analisis_id', 1)
+            ->get();
 
-        $flujosActuales = \DB::table('configuracion_flujo_estatus_analisis')
-            ->where('configuracionEstatusId', 1)
+        // Mapeo de flujos para la vista (Origen => [Destinos])
+        $flujosActuales = DB::table('configuracion_flujo_estatus_analisis')
+            ->where('configuracion_analisis_id', 1)
             ->get()
-            ->groupBy('estatusId')
-            ->map(fn($group) => $group->pluck('siguienteEstatusId')->toArray())
+            ->groupBy('estatus_id')
+            ->map(fn($group) => $group->pluck('estatus_siguiente_id')->toArray())
             ->toArray();
 
-        return view('pages.configuracion-analisis.index', compact('perfiles', 'estatus', 'configuracionExistente','configuracionPerfiles','flujosActuales'));
+        return view('pages.configuracion-analisis.index', compact(
+            'perfiles', 
+            'estatus', 
+            'configuracionExistente', 
+            'configuracionPerfiles', 
+            'flujosActuales'
+        ));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-        'inicialEstatusId' => 'required|integer|exists:estatus_analises,id', // Reemplaza 'estatus' por el nombre real de tu tabla de estatus
-    ]);
+            'inicialEstatusId' => 'required|integer|exists:estatus_analisis,id',
+        ]);
 
         try {
+            DB::transaction(function () use ($request) {
+                $configId = 1; 
+                $userId = auth()->id();
+                $now = now();
 
-            \DB::transaction(function () use ($request) {
-
-                $configuracionId = 1; // ID de tu configuración global
-                $usuarioId = auth()->id();
-
-                // --- SECCIÓN 1: ACTUALIZAR ESTATUS INICIAL ---
-                $configGeneral = \App\Models\ConfiguracionAnalisis::updateOrCreate(
-                    ['id' => $configuracionId],
+                // 1. Configuración General
+                ConfiguracionAnalisis::updateOrCreate(
+                    ['id' => $configId],
                     [
-                        'inicialEstatusId' => $request->inicialEstatusId,
-                        'usuarioIdActualizacion'   => $usuarioId,
-                        'usuarioIdCreacion'      => $usuarioId,
+                        'inicial_estatus_id'       => $request->inicialEstatusId,
+                        'usuario_creacion_id'      => $userId,
+                        'usuario_actualizacion_id' => $userId,
                     ]
                 );
 
-                // --- SECCIÓN 2: LIMPIAR Y GUARDAR FLUJOS (TU PREGUNTA) ---
-                // Eliminamos TODO lo anterior para este ID. Si el usuario desmarcó todo, 
-                // la tabla quedará vacía para este análisis.
-                \DB::table('configuracion_flujo_estatus_analisis')
-                    ->where('configuracionEstatusId', $configuracionId)
+                // 2. Flujo de Estatus (Sincronización)
+                DB::table('configuracion_flujo_estatus_analisis')
+                    ->where('configuracion_analisis_id', $configId)
                     ->delete();
 
-                $flujos = $request->input('flujo') ?? [];
+                $flujos = $request->input('flujo', []);
                 $dataFlujo = [];
-
                 foreach ($flujos as $origenId => $destinos) {
                     foreach ($destinos as $destinoId) {
                         $dataFlujo[] = [
-                            'configuracionEstatusId' => $configuracionId,
-                            'estatusId'              => $origenId,
-                            'siguienteEstatusId'     => $destinoId,
-                            'usuarioIdCreacion'      => $usuarioId,
-                            'fechaCreacion'          => now(),
+                            'configuracion_analisis_id' => $configId,
+                            'estatus_id'                => $origenId,
+                            'estatus_siguiente_id'      => $destinoId,
+                            'usuario_creacion_id'       => $userId,
+                            'usuario_actualizacion_id'  => $userId, // CAMPO FALTANTE AGREGADO
+                            'created_at'                => $now,
+                            'updated_at'                => $now,
                         ];
                     }
                 }
+                if (!empty($dataFlujo)) DB::table('configuracion_flujo_estatus_analisis')->insert($dataFlujo);
 
-                if (!empty($dataFlujo)) {
-                    \DB::table('configuracion_flujo_estatus_analisis')->insert($dataFlujo);
-                }
-
-                // --- SECCIÓN 3: LIMPIAR Y GUARDAR PERMISOS PERFILES ---
-                \DB::table('configuracion_perfil_estatus_analisis')
-                    ->where('configuracionAnalisisId', $configuracionId)
+                // 3. Permisos por Perfil (Sincronización)
+                DB::table('configuracion_perfil_estatus_analisis')
+                    ->where('configuracion_analisis_id', $configId)
                     ->delete();
 
-                $permisos = $request->input('permisos') ?? [];
+                $permisos = $request->input('permisos', []);
                 $dataPermisos = [];
-
                 foreach ($permisos as $perfilId => $estatusArray) {
                     foreach ($estatusArray as $estatusId => $opciones) {
-                        // Solo insertamos si al menos una opción (modificar o automático) está marcada
                         if (isset($opciones['modificar']) || isset($opciones['automatico'])) {
                             $dataPermisos[] = [
-                                'configuracionAnalisisId' => $configuracionId,
-                                'perfilId'                => $perfilId,
-                                'estatusId'               => $estatusId,
-                                'modificar'               => isset($opciones['modificar']) ? 1 : 0,
-                                'automatico'              => isset($opciones['automatico']) ? 1 : 0,
-                                'usuarioIdCreacion'       => $usuarioId,
-                                'fechaCreacion'           => now(),
+                                'configuracion_analisis_id' => $configId,
+                                'perfil_id'                 => $perfilId,
+                                'estatus_id'                => $estatusId,
+                                'modificar'                 => isset($opciones['modificar']) ? 1 : 0,
+                                'automatico'                => isset($opciones['automatico']) ? 1 : 0,
+                                'usuario_creacion_id'       => $userId,
+                                'usuario_actualizacion_id'  => $userId, // CAMPO FALTANTE AGREGADO
+                                'created_at'                => $now,
+                                'updated_at'                => $now,
                             ];
                         }
                     }
                 }
-
-                if (!empty($dataPermisos)) {
-                    \DB::table('configuracion_perfil_estatus_analisis')->insert($dataPermisos);
-                }
+                if (!empty($dataPermisos)) DB::table('configuracion_perfil_estatus_analisis')->insert($dataPermisos);
             });
 
-            return redirect()->back()->with('success', 'Configuración de análisis actualizada con éxito.');
-
+            return redirect()->back()->with('success', 'Configuración actualizada exitosamente.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error al procesar la configuración: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
 }
