@@ -4,76 +4,66 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Doctor;
 use App\Models\Especialidad;
-
 use Livewire\Attributes\On;
 
-class DoctorTabla extends Component
+class EspecialidadTabla extends Component
 {
     use WithPagination;
 
     public $search = '';
-    public $especialidadId = '';
     public $perPage = 10;
 
     protected $queryString = [
         'search' => ['except' => ''],
         'perPage' => ['except' => 10],
-        'especialidadId' => ['except' => ''],
     ];
 
     protected $updatesQueryString = ['search'];
     protected $paginationTheme = 'tailwind';
-
+    
     public function updatedSearch() { $this->resetPage(); }
     public function updatedPerPage(){$this->resetPage();}
-    public function updatedEspecialidadId() { $this->resetPage(); }
-
 
     public function confirmDelete($id)
     {
         $this->dispatch('swal-confirm', [
-            'title' => '¿Eliminar doctor?',
+            'title' => '¿Eliminar la especialidad?',
             'text'  => 'Esta acción no se puede deshacer',
             'icon'  => 'warning',
             'id'    => $id,
-            'function'=> 'delete-doctor',
+            'function'    => 'delete-especialidad',
         ]);
     }
 
-    #[On('delete-doctor')]
-    public function deleteDoctor($id)
+    #[On('delete-especialidad')]
+    public function deleteEspecialidad($id)
     {
-        if (!checkPermiso('doctores.eliminar')) {
+        if (!checkPermiso('especialidades.eliminar')) {
             $this->dispatch('swal-init', [
                 'icon'  => 'error',
                 'title' => 'Acceso Denegado',
-                'text'  => 'No tienes permisos para eliminar este doctor'
+                'text'  => 'No tienes permisos para eliminar esta especialidad'
             ]);
             return;
         }
 
-        Doctor::findOrFail($id)->delete();
+        Especialidad::findOrFail($id)->delete();
 
         $this->dispatch('swal-init', [
             'icon'  => 'success',
             'title' => 'Eliminado',
-            'text'  => 'El doctor fue eliminado correctamente'
+            'text'  => 'El tipo de metodo fue eliminado correctamente'
         ]);
     }
 
     public function render()
     {
-        $especialidades = Especialidad::all();
-        $doctores = Doctor::where('nombre', 'like', '%'.$this->search.'%')
-            ->when($this->especialidadId, function ($query) {
-                $query->where('especialidad_Id', $this->especialidadId);
-            })
+        $especialidades = Especialidad::where('nombre', 'like', '%'.$this->search.'%')
             ->paginate(10);
-        return view('livewire.doctor-tabla',[
-            'doctores' => $doctores,
-             'especialidades' =>  $especialidades
+
+        return view('livewire.especialidad-tabla',[
+            'especialidades' => $especialidades,
         ]);
     }
 }

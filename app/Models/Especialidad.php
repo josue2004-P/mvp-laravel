@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Models; 
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TipoMuestra extends Model
+class Especialidad extends Model
 {
     use HasFactory;
 
-    protected $table = 'tipo_muestras';
+    protected $table = 'especialidades';
 
     protected $fillable = [
         'nombre',

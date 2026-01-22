@@ -22,19 +22,21 @@ class UsuarioController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
+        $validated = $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'is_activo' => 'nullable|boolean',
         ]);
 
         User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name'      => $validated['name'],
+            'email'     => $validated['email'],
+            'password'  => Hash::make($validated['password']),
+            'is_activo' => $request->boolean('is_activo', true), // Default true si no viene
         ]);
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario creado.');
+        return redirect()->route('usuarios.index')->with('success', 'Usuario registrado con éxito.');
     }
 
     public function edit(User $usuario)
@@ -45,12 +47,34 @@ class UsuarioController extends Controller
 
     public function update(Request $request, User $usuario)
     {
-        $usuario->update($request->only('name', 'email'));
+        $validated = $request->validate([
+            'name'      => 'required|string|max:255',
+            'email'     => 'required|string|email|max:255|unique:users,email,' . $usuario->id,
+            'is_activo' => 'nullable|boolean', // El checkbox envía true/null
+            'perfiles'  => 'nullable|array',
+            'perfiles.*'=> 'exists:perfiles,id'
+        ]);
 
-        // Sincronizar perfiles
-        $usuario->perfiles()->sync($request->input('perfiles', []));
+        try {
+            $usuario->update([
+                'name'      => $validated['name'],
+                'email'     => $validated['email'],
+                'is_activo' => $request->boolean('is_activo'), 
+            ]);
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado');
+            $usuario->perfiles()->sync($request->input('perfiles', []));
+
+            return redirect()
+                ->route('usuarios.index')
+                ->with('success', "El usuario {$usuario->name} ha sido actualizado con éxito.");
+
+        } catch (\Exception $e) {
+            \Log::error("Error al actualizar usuario ID {$usuario->id}: " . $e->getMessage());
+
+            return back()
+                ->withInput()
+                ->with('error', 'Ocurrió un error al intentar guardar los cambios.');
+        }
     }
 
     public function destroy(User $usuario)

@@ -20,13 +20,19 @@ class TipoMetodoController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100|unique:tipo_metodos,nombre',
+        $validated = $request->validate([
+            'nombre'      => 'required|string|max:100|unique:tipo_metodos,nombre',
+            'descripcion' => 'nullable|string|max:1000',
         ]);
 
-        TipoMetodo::create($request->all());
-
-        return redirect()->route('tipo_metodo.index')->with('success', 'Método creado correctamente');
+        try {
+            TipoMetodo::create($validated);
+            return redirect()->route('tipo_metodo.index')
+                ->with('success', 'Método "' . $request->nombre . '" registrado correctamente.');
+        } catch (\Exception $e) {
+            \Log::error("Error al crear tipo_metodo: " . $e->getMessage());
+            return back()->withInput()->with('error', 'No se pudo guardar el método.');
+        }
     }
 
     public function edit(TipoMetodo $tipoMetodo)
@@ -36,13 +42,19 @@ class TipoMetodoController extends Controller
 
     public function update(Request $request, TipoMetodo $tipoMetodo)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100|unique:tipo_metodos,nombre,' . $tipoMetodo->id,
+        $validated = $request->validate([
+            'nombre'      => 'required|string|max:100|unique:tipo_metodos,nombre,' . $tipoMetodo->id,
+            'descripcion' => 'nullable|string|max:1000',
         ]);
 
-        $tipoMetodo->update($request->all());
-
-        return redirect()->route('tipo_metodo.index')->with('success', 'Método actualizado correctamente');
+        try {
+            $tipoMetodo->update($validated);
+            return redirect()->route('tipo_metodo.index')
+                ->with('success', 'Metodología actualizada exitosamente.');
+        } catch (\Exception $e) {
+            \Log::error("Error al actualizar tipo_metodo: " . $e->getMessage());
+            return back()->withInput()->with('error', 'Error al procesar la actualización.');
+        }
     }
 
     public function destroy(TipoMetodo $tipoMetodo)

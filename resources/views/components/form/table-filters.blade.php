@@ -7,71 +7,81 @@
     'title' => 'Registros'
 ])
 
-<div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] shadow-sm overflow-hidden">
+<div class="rounded-3xl border border-gray-200 bg-white shadow-sm transition-all duration-300 dark:border-gray-800 dark:bg-gray-900/50">
     
-    {{-- BARRA SUPERIOR ESTRUCUTRADA --}}
-    <div class="p-5 border-b border-gray-100 dark:border-gray-800">
-        <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+    {{-- BARRA SUPERIOR PREMIUM --}}
+    <div class="p-6">
+        <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             
-            {{-- Título y Buscador --}}
-            <div class="flex flex-col sm:flex-row sm:items-center gap-4 flex-grow">
+            {{-- Título y Buscador Dinámico --}}
+            <div class="flex flex-col gap-5 sm:flex-row sm:items-center flex-grow">
                 <div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ $title }}</h3>
+                    <h3 class="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+                        {{ $title }}
+                    </h3>
                 </div>
 
                 @if($search !== null)
-                <div class="relative w-full sm:w-72 group">
+                <div class="relative w-full sm:w-80 group">
                     <input 
                         type="text" 
-                        wire:model.live.debounce.300ms="search" 
-                        placeholder="Buscar en registros..." 
-                        class="h-[42px] w-full rounded-xl border-gray-200 bg-gray-50/50 pl-11 pr-4 text-sm transition-all focus:bg-white focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-700 dark:bg-gray-900/50 dark:text-white dark:focus:border-indigo-500"
+                        wire:model.live.debounce.400ms="search" 
+                        placeholder="Buscar..." 
+                        class="h-[46px] w-full rounded-2xl border-gray-200 bg-gray-50/50 pl-12 pr-4 text-sm font-medium transition-all focus:bg-white focus:ring-4 focus:ring-indigo-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-indigo-500/50"
                     >
-                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-500 transition-colors">
-                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors">
+                        <i class="fa-solid fa-magnifying-glass text-base"></i>
+                    </div>
+                    {{-- Spinner de búsqueda sutil --}}
+                    <div wire:loading wire:target="search" class="absolute right-4 top-1/2 -translate-y-1/2">
+                        <div class="h-4 w-4 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent"></div>
                     </div>
                 </div>
                 @endif
             </div>
 
-            {{-- Acciones y Controles --}}
+            {{-- Acciones Estratégicas --}}
             <div class="flex flex-wrap items-center gap-3">
                 
-                {{-- Exportaciones (Estilo Compacto) --}}
-                <div class="flex items-center rounded-xl bg-gray-100 dark:bg-gray-800 p-1">
+                {{-- Controles de Exportación Glassmorphism --}}
+                <div class="flex items-center gap-1 rounded-2xl bg-gray-100/80 p-1.5 dark:bg-white/[0.03] border border-gray-200 dark:border-gray-800">
                     @if($exportPdf)
-                        <a href="{{ $exportPdf }}" target="_blank" title="Exportar PDF"
-                            class="p-2 text-gray-500 hover:text-red-600 hover:bg-white dark:hover:bg-gray-700 rounded-lg transition-all">
-                            <i class="fa-solid fa-file-pdf text-lg"></i>
+                        <a href="{{ $exportPdf }}" target="_blank" 
+                           class="flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 transition-all hover:bg-white hover:text-red-600 hover:shadow-sm dark:hover:bg-gray-800">
+                            <i class="fa-solid fa-file-pdf"></i>
                         </a>
                     @endif
                     @if($exportExcel)
-                        <a href="{{ $exportExcel }}" title="Exportar Excel"
-                            class="p-2 text-gray-500 hover:text-green-600 hover:bg-white dark:hover:bg-gray-700 rounded-lg transition-all">
-                            <i class="fa-solid fa-file-excel text-lg"></i>
+                        <a href="{{ $exportExcel }}" 
+                           class="flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 transition-all hover:bg-white hover:text-green-600 hover:shadow-sm dark:hover:bg-gray-800">
+                            <i class="fa-solid fa-file-excel"></i>
                         </a>
                     @endif
                 </div>
 
                 @if($perPage !== null)
-                <select 
-                    wire:model.live="perPage" 
-                    class="h-[42px] text-xs font-semibold rounded-xl border-gray-200 bg-white pl-4 pr-10 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-300 focus:ring-indigo-500/20 cursor-pointer appearance-none 
-                    bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.5rem_center] bg-no-repeat"
-                >
-                    <option value="10">10 Filas</option>
-                    <option value="25">25 Filas</option>
-                    <option value="50">50 Filas</option>
-                </select>
+                <div class="relative">
+                    <select 
+                        wire:model.live="perPage" 
+                        class="h-[46px] appearance-none rounded-2xl border-gray-200 bg-white pl-4 pr-10 text-xs font-bold tracking-wide text-gray-600 transition-all focus:ring-4 focus:ring-indigo-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+                    >
+                        <option value="10">10 Filas</option>
+                        <option value="25">25 Filas</option>
+                        <option value="50">50 Filas</option>
+                    </select>
+                    <div class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                        <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </div>
+                </div>
                 @endif
 
-                @if($filters->isNotEmpty())
+                @if(isset($filters) && $filters->isNotEmpty())
                 <button 
                     @click="$dispatch('toggle-filtros')" 
-                    class="h-[42px] inline-flex items-center px-4 rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-900/20 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-800/50 transition-all font-bold text-sm"
+                    class="group inline-flex h-[46px] items-center rounded-2xl border border-indigo-100 bg-indigo-50/50 px-5 text-sm font-bold text-indigo-700 transition-all hover:bg-indigo-100 dark:border-indigo-500/20 dark:bg-indigo-500/5 dark:text-indigo-400"
                 >
-                    <i class="fa-solid fa-filter mr-2"></i>
-                    Filtros
+                    <i class="fa-solid fa-sliders mr-2.5 transition-transform group-hover:rotate-12"></i>
+                    Filtros Avanzados
                 </button>
                 @endif
 
@@ -79,40 +89,42 @@
                     <x-form.button-primary 
                         tag="a" 
                         href="{{ $createRoute }}" 
-                        class="w-full lg:w-auto shadow-sm"
+                        class="h-[46px] !rounded-2xl px-6 shadow-lg shadow-indigo-500/20"
                     >
-                        <i class="fa-solid fa-plus mr-1"></i>
-                        Nuevo Registro
+                        <i class="fa-solid fa-plus mr-2 text-xs"></i>
+                        {{ __('Nuevo Registro') }}
                     </x-form.button-primary>
                 @endif
             </div>
         </div>
     </div>
 
-    {{-- FILTROS PANEL DESPLEGABLE --}}
+    {{-- PANEL DE FILTROS DESPLEGABLE --}}
     <div 
         x-data="{ show: false }" 
         @toggle-filtros.window="show = !show"
         x-show="show"
         x-cloak
-        x-collapse {{-- Requiere el plugin Collapse de Alpine --}}
-        class="bg-gray-50/50 dark:bg-white/[0.01] border-b border-gray-100 dark:border-gray-800"
+        x-collapse
+        class="border-t border-dashed border-gray-200 bg-gray-50/30 dark:border-gray-800 dark:bg-white/[0.01]"
     >
-        <div class="p-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="p-8">
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {{ $filters }}
             </div>
         </div>
     </div>
 
-    {{-- TABLA --}}
-    <div class="relative">
-        {{-- Loading Overlay --}}
-        <div wire:loading class="absolute inset-0 z-10 bg-white/50 dark:bg-gray-900/50 backdrop-blur-[1px] flex items-center justify-center">
-            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+    {{-- AREA DE TABLA CON LOADING STATE --}}
+    <div class="relative min-h-[200px]">
+        <div wire:loading.delay.longest class="absolute inset-0 z-20 flex items-center justify-center bg-white/60 backdrop-blur-[2px] dark:bg-gray-900/60 transition-all">
+            <div class="flex flex-col items-center">
+                <div class="h-10 w-10 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent shadow-lg shadow-indigo-500/20"></div>
+                <span class="mt-3 text-xs font-bold uppercase tracking-widest text-indigo-600 animate-pulse">Sincronizando...</span>
+            </div>
         </div>
         
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto overflow-y-hidden rounded-b-3xl">
             {{ $slot }}
         </div>
     </div>
@@ -124,34 +136,21 @@
         const initSelect2 = () => {
             $('.select2-dynamic').each(function () {
                 const $el = $(this);
-                const modelName = $el.data('model');
-                
-                // Evitar duplicados
-                if ($el.data('select2')) { $el.select2('destroy'); }
+                if ($el.data('select2')) return; // Evitar reinicio innecesario
 
                 $el.select2({
                     placeholder: $el.data('placeholder') || 'Seleccionar...',
                     allowClear: true,
                     width: '100%',
-                    dropdownParent: $el.closest('.rounded-2xl') // Mantiene el dropdown dentro del contexto visual
-                });
-
-                // Sincronizar valor inicial
-                let currentVal = @this.get(modelName);
-                if(currentVal) $el.val(currentVal).trigger('change.select2');
-
-                // Escuchar cambios
-                $el.on('change', function () {
-                    @this.set(modelName, $(this).val());
+                    containerCssClass: 'premium-select2'
+                }).on('change', function() {
+                    @this.set($el.data('model'), $(this).val());
                 });
             });
         };
 
         initSelect2();
-
-        // Re-inicializar cuando se abren los filtros o Livewire actualiza el DOM
-        window.addEventListener('toggle-filtros', () => setTimeout(initSelect2, 100));
-        Livewire.hook('morph.updated', () => initSelect2());
+        Livewire.on('reinit-select2', () => setTimeout(initSelect2, 50));
     });
 </script>
 @endpush

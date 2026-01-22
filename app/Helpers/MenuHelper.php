@@ -19,10 +19,13 @@ class MenuHelper
                 'permiso' => "clientes",
             ],
             [
-                'icon' => 'doctor',
                 'name' => 'Doctores',
-                'path' => '/doctores',
+                'icon' => 'doctor',
                 'permiso' => "doctores",
+                'subItems' => [
+                    ['name' => 'Doctores', 'path' => '/doctores','permiso' => "doctor",],
+                    ['name' => 'Especialidades', 'path' => '/especialidades','permiso' => "esp-doctor",],
+                ],
             ],
             [
                 'name' => 'Analisis',

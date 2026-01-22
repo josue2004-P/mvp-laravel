@@ -1,87 +1,156 @@
 <x-form.table-filters 
-    title="Listado de Doctor"
+    title="Listado de Especialistas"
     :search="$search"
     :perPage="$perPage"
     :createRoute="route('doctores.create')"
-    {{-- :exportPdf="route('analisis-general.pdf', ['search' => $search, 'perPage'  => $perPage])" --}}
-    {{-- :exportExcel="route('analisis.export', ['search' => $search, 'perPage'  => $perPage])" --}}
 >
-   {{-- Slot de Filtros Específicos --}}
-    <x-slot:filters>
-    </x-slot:filters>
+   <x-slot:filters>
+        {{-- Filtro de Especialidad --}}
+        <div wire:ignore class="w-full sm:w-72"> 
+            <x-form.input-select-filter
+                id="especialidadSelect" 
+                name="especialidad" 
+                dataModel="especialidadId" 
+                label="Especialidad Médica" >
+                <option value="">Todas las especialidades</option>
+                @foreach($especialidades as $es)
+                    <option value="{{ $es->id }}">
+                        {{ $es->nombre }}
+                    </option>
+                @endforeach
+            </x-form.input-select-filter>
+        </div>
+   </x-slot:filters>
 
-    {{-- El Slot por defecto es la tabla --}}
-    <table class="min-w-full">
-        <thead>
-            <tr class="border-y border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-white/[0.02]">
-                <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">Id</th>
-                <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">Nombre</th>
-                <th scope="col" class="relative px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Acciones</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-            @forelse($doctores as $key  => $doctor)
-                <tr class="hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors">
-                    <td class="px-4 py-1 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                        #{{ $key + 1 }}
-                    </td>
-                    <td class="px-4 py-1 whitespace-nowrap">
-                        <div class="text-sm text-gray-700 dark:text-gray-300 font-medium">{{  $doctor['nombre']  }}</div>
-                    </td>
-                    <td class="px-4 py-1 text-center whitespace-nowrap text-sm font-medium">
-                        <div x-data="{ dropdownOpen: false }" class="inline-block">
-                            <button 
-                                @click="dropdownOpen = !dropdownOpen" 
-                                x-ref="button" {{-- Referencia para posicionar el menú --}}
-                                type="button" 
-                                class="p-2 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
-                            >
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 10.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM12 4.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM12 16.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" />
-                             </svg>
-                            </button>
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+            <thead>
+                <tr class="bg-gray-50/50 dark:bg-white/[0.02]">
+                    <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">ID</th>
+                    <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Doctor / Cédula</th>
+                    <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Especialidad</th>
+                    <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Estatus</th>
+                    <th scope="col" class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-gray-800 bg-transparent">
+                @forelse($doctores as $doctor)
+                    <tr class="group hover:bg-indigo-50/30 dark:hover:bg-indigo-500/5 transition-all duration-200">
+                        {{-- ID --}}
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-400 dark:text-gray-500">
+                            #{{ str_pad($doctor->id, 3, '0', STR_PAD_LEFT) }}
+                        </td>
 
-                            <template x-teleport="body">
-                                <div 
-                                    x-show="dropdownOpen" 
-                                    @click.away="dropdownOpen = false"
-                                    x-anchor.bottom-end.offset.5="$refs.button" {{-- Requiere plugin Anchor de Alpine --}}
-                                    x-transition:enter="transition ease-out duration-100"
-                                    x-transition:enter-start="transform opacity-0 scale-95"
-                                    x-transition:enter-end="transform opacity-100 scale-100"
-                                    class="z-[999] w-48 rounded-xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900"
-                                >
-                                    <div class="p-1">
-                                        <a href="{{ route('doctores.edit', $doctor->id) }}" class="flex items-center px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                            Ver detalles
-                                        </a>
-                                        <button wire:click="confirmDelete({{ $doctor->id }})" class="flex w-full items-center px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-left">
-                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                            Eliminar
-                                        </button>
+                        {{-- Médico --}}
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center gap-4">
+                                <div class="relative inline-flex items-center justify-center flex-shrink-0 h-11 w-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-600 shadow-md shadow-indigo-200 dark:shadow-none">
+                                    <i class="fa-solid fa-user-md text-white text-sm"></i>
+                                    @if($doctor->is_activo)
+                                        <span class="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full border-2 border-white dark:border-gray-900 bg-emerald-500"></span>
+                                    @endif
+                                </div>
+                                <div>
+                                    <div class="text-sm font-extrabold text-gray-900 dark:text-white group-hover:text-indigo-600 transition-colors">
+                                        {{ $doctor->nombre }} {{ $doctor->apellido_paterno }}
+                                    </div>
+                                    <div class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-tighter">
+                                        CP: {{ $doctor->cedula_profesional }}
                                     </div>
                                 </div>
-                            </template>
-                        </div>
-                    </td>
-                </tr>
-            @empty
-                 <tr>
-                    <td colspan="9" class="px-6 py-10 text-center">
-                        <div class="flex flex-col items-center">
-                            <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">No se encontraron resultados para la búsqueda.</p>
-                        </div>
-                    </td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+                            </div>
+                        </td>
 
-    {{-- Paginación al final --}}
-    <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
-        {{ $doctores->links() }}
+                        {{-- Especialidad --}}
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-xl text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-800">
+                                {{ $doctor->especialidad->nombre ?? 'Medicina General' }}
+                            </span>
+                        </td>
+
+                        {{-- Estatus --}}
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            @if($doctor->is_activo)
+                                <div class="flex items-center text-[11px] font-bold text-emerald-600 uppercase tracking-widest">
+                                    <span class="w-1.5 h-1.5 mr-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    Disponible
+                                </div>
+                            @else
+                                <div class="flex items-center text-[11px] font-bold text-gray-400 uppercase tracking-widest">
+                                    <span class="w-1.5 h-1.5 mr-2 rounded-full bg-gray-300"></span>
+                                    Inactivo
+                                </div>
+                            @endif
+                        </td>
+
+                        {{-- Acciones --}}
+                        <td class="px-6 py-4 text-center whitespace-nowrap">
+                            <div x-data="{ dropdownOpen: false }" class="relative inline-block text-left">
+                                <button 
+                                    @click="dropdownOpen = !dropdownOpen" 
+                                    x-ref="button"
+                                    class="p-2.5 rounded-xl text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-all border border-transparent hover:border-indigo-100 dark:hover:border-indigo-500/20 shadow-sm"
+                                >
+                                    <i class="fa-solid fa-ellipsis-vertical text-lg"></i>
+                                </button>
+
+                                <template x-teleport="body">
+                                    <div 
+                                        x-show="dropdownOpen" 
+                                        @click.away="dropdownOpen = false"
+                                        x-anchor.bottom-end.offset.8="$refs.button"
+                                        x-transition:enter="transition ease-out duration-150"
+                                        x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                        x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                        class="z-[100] w-52 rounded-2xl border border-gray-200 bg-white/95 backdrop-blur-md shadow-2xl dark:border-gray-700 dark:bg-gray-900/95 p-1.5"
+                                    >
+                                        <div class="px-3 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100 dark:border-gray-800 mb-1.5">
+                                            Médico Especialista
+                                        </div>
+                                        <div class="space-y-0.5">
+                                            <a href="{{ route('doctores.edit', $doctor->id) }}" class="flex items-center px-3 py-2.5 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-xl transition-colors group/item">
+                                                <i class="fa-solid fa-user-doctor mr-3 text-gray-400 group-hover/item:text-indigo-500 transition-colors"></i>
+                                                Editar Perfil
+                                            </a>
+                                            
+                                            {{-- Espacio para ver agenda o análisis solicitados en el futuro --}}
+                                            {{-- <a href="#" class="flex items-center px-3 py-2.5 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-xl transition-colors group/item">
+                                                <i class="fa-solid fa-file-medical mr-3 text-gray-400 group-hover/item:text-indigo-500 transition-colors"></i>
+                                                Historial Médico
+                                            </a> --}}
+
+                                            <div class="my-1 border-t border-gray-50 dark:border-gray-800"></div>
+                                            
+                                            <button 
+                                                wire:click="confirmDelete({{ $doctor->id }})" 
+                                                class="flex w-full items-center px-3 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors group/del"
+                                            >
+                                                <i class="fa-solid fa-trash-can mr-3 text-red-400 group-hover/del:text-red-500 transition-colors"></i>
+                                                Eliminar Doctor
+                                            </button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    {{-- EMPTY STATE MEJORADO (Igual al de Tipos de Métodos) --}}
+                    <tr>
+                        <td colspan="5" class="px-6 py-16 text-center">
+                            <div class="flex flex-col items-center">
+                                <div class="p-4 rounded-full bg-indigo-50 dark:bg-white/5 mb-4 border border-indigo-100 dark:border-indigo-900/30">
+                                    <i class="fa-solid fa-user-doctor text-3xl text-indigo-200 dark:text-indigo-800"></i>
+                                </div>
+                                <h3 class="text-gray-900 dark:text-white font-extrabold uppercase tracking-tight">Sin Especialistas</h3>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 max-w-xs mx-auto mt-1">
+                                    No se encontraron médicos registrados o que coincidan con los filtros aplicados.
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
 </x-form.table-filters>
-
