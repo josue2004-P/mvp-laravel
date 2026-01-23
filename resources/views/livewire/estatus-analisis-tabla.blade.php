@@ -91,10 +91,10 @@
                                         </a>
                                         <div class="h-px bg-gray-100 dark:bg-gray-800 my-1"></div>
                                         <button 
-                                            onclick="confirmDelete('{{ $value->id }}')" 
-                                            class="flex w-full items-center px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors text-left"
+                                            wire:click="confirmDelete({{ $value->id }})" 
+                                            class="flex w-full items-center px-3 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors group/del"
                                         >
-                                            <i class="fa-solid fa-trash-can mr-3"></i>
+                                            <i class="fa-solid fa-trash-can mr-3 text-red-400 group-hover/del:text-red-500 transition-colors"></i>
                                             Eliminar Registro
                                         </button>
                                     </div>
