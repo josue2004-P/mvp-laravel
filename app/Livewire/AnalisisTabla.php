@@ -20,7 +20,7 @@ class AnalisisTabla extends Component
     public $tipoAnalisisId = '';
     public $tipoMuestraId = '';
     public $tipoMetodoId = '';
-    public $perPage = 10;
+    public $perPage = 6;
 
     // Esto mantiene los filtros en la URL del navegador
     protected $queryString = [
@@ -29,7 +29,7 @@ class AnalisisTabla extends Component
         'doctorId' => ['except' => ''],
         'tipoMuestraId' => ['except' => ''],
         'tipoMetodoId' => ['except' => ''],
-        'perPage' => ['except' => 10],
+        'perPage' => ['except' => 6],
     ];
 
     protected $updatesQueryString = ['search'];

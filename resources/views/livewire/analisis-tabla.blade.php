@@ -62,7 +62,7 @@
                                 {{ $a->cliente->getNombreCompletoAttribute() }}
                             </span>
                             <span class="text-[11px] text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                                <i class="fa-solid fa-user-doctor text-[9px]"></i> {{ $a->doctor->nombre }}
+                                <i class="fa-solid fa-user-doctor text-[9px]"></i> {{ $a->doctor->getNombreCompletoAttribute() }}
                             </span>
                         </div>
                     </td>
@@ -89,10 +89,10 @@
                     <td class="px-4 py-4 whitespace-nowrap hidden lg:table-cell">
                         <div class="flex flex-col gap-1">
                             <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                                <i class="fa-solid fa-vial text-[9px]"></i> {{ $a->tipoMuestra->nombre }}
+                                <i class="fa-solid fa-vial text-[9px]"></i> {{ $a->tipoMuestra->nombre ?? "Sin muestra asignada" }}
                             </span>
                             <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                                <i class="fa-solid fa-microscope text-[9px]"></i> {{ $a->tipoMetodo->nombre }}
+                                <i class="fa-solid fa-microscope text-[9px]"></i> {{ $a->tipoMetodo->nombre ?? "Sin muestra asignada" }}
                             </span>
                         </div>
                     </td>

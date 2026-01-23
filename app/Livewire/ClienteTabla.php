@@ -13,12 +13,12 @@ class ClienteTabla extends Component
     use WithPagination;
 
     public $search = '';
-    public $perPage = 10;
+    public $perPage = 7;
 
     // Esto mantiene los filtros en la URL del navegador
     protected $queryString = [
         'search' => ['except' => ''],
-        'perPage' => ['except' => 10],
+        'perPage' => ['except' =>  7],
     ];
 
     protected $updatesQueryString = ['search'];

@@ -13,11 +13,11 @@ class UnidadTabla extends Component
     use WithPagination;
 
     public $search = '';
-    public $perPage = 10;
+    public $perPage = 7;
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'perPage' => ['except' => 10],
+        'perPage' => ['except' => 7],
     ];
 
     protected $updatesQueryString = ['search'];
@@ -61,7 +61,7 @@ class UnidadTabla extends Component
     public function render()
     {
         $unidades = Unidad::where('nombre', 'like', '%'.$this->search.'%')
-            ->paginate(10);
+            ->paginate($this->perPage);
         return view('livewire.unidad-tabla',[
             'unidades' => $unidades,
         ]);

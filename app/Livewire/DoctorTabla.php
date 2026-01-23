@@ -15,11 +15,11 @@ class DoctorTabla extends Component
 
     public $search = '';
     public $especialidadId = '';
-    public $perPage = 10;
+    public $perPage = 7;
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'perPage' => ['except' => 10],
+        'perPage' => ['except' => 7],
         'especialidadId' => ['except' => ''],
     ];
 
@@ -70,7 +70,7 @@ class DoctorTabla extends Component
             ->when($this->especialidadId, function ($query) {
                 $query->where('especialidad_Id', $this->especialidadId);
             })
-            ->paginate(10);
+            ->paginate($this->perPage);
         return view('livewire.doctor-tabla',[
             'doctores' => $doctores,
              'especialidades' =>  $especialidades

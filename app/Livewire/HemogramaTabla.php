@@ -14,12 +14,12 @@ class HemogramaTabla extends Component
 
     public $search = '';
     public $categoriaHemogramaCompletoId = '';
-    public $perPage = 10;
+    public $perPage = 7;
 
     protected $queryString = [
         'search' => ['except' => ''],
         'categoriaHemogramaCompletoId' => ['except' => ''],
-        'perPage' => ['except' => 10],
+        'perPage' => ['except' => 7],
     ];
 
     protected $updatesQueryString = ['search'];
@@ -72,9 +72,9 @@ class HemogramaTabla extends Component
         $hemogramas = HemogramaCompleto::with(['categoria', 'unidad'])
             ->where('nombre', 'like', '%'.$this->search.'%')
             ->when($this->categoriaHemogramaCompletoId, function ($query) {
-                $query->where('idCategoriaHemogramaCompleto', $this->categoriaHemogramaCompletoId);
+                $query->where('categoria_hemograma_completo_id', $this->categoriaHemogramaCompletoId);
             })
-            ->paginate(10);
+            ->paginate($this->perPage);
 
         return view('livewire.hemograma-tabla', compact('hemogramas', 'categoriasHemogramaCompleto'));
 

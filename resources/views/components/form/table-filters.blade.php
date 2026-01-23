@@ -65,7 +65,7 @@
                         wire:model.live="perPage" 
                         class="h-[46px] appearance-none rounded-2xl border-gray-200 bg-white pl-4 pr-10 text-xs font-bold tracking-wide text-gray-600 transition-all focus:ring-4 focus:ring-indigo-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
                     >
-                        <option value="10">10 Filas</option>
+                        <option value="7">7 Filas</option>
                         <option value="25">25 Filas</option>
                         <option value="50">50 Filas</option>
                     </select>

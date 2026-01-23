@@ -54,8 +54,8 @@ class AnalisisController extends Controller
             'doctor_id'           => 'required|exists:doctores,id',
             'estatus_id'          => 'required|exists:estatus_analisis,id',
             'tipo_analisis_id'    => 'required|exists:tipo_analisis,id',
-            'tipo_metodo_id'      => 'required|exists:tipo_metodos,id',
-            'tipo_muestra_id'     => 'required|exists:tipo_muestras,id',
+            'tipo_metodo_id'  => 'sometimes|nullable|exists:tipo_metodos,id',
+            'tipo_muestra_id' => 'sometimes|nullable|exists:tipo_muestras,id',
             'nota'                => 'nullable|string|max:255',
         ]);
 
@@ -146,8 +146,8 @@ public function update(Request $request, Analisis $analisi)
         'doctor_id'        => 'required|exists:doctores,id',
         'estatus_id'       => 'required|exists:estatus_analisis,id',
         'tipo_analisis_id' => 'required|exists:tipo_analisis,id',
-        'tipo_metodo_id'   => 'required|exists:tipo_metodos,id',
-        'tipo_muestra_id'  => 'required|exists:tipo_muestras,id',
+        'tipo_muestra_id' => 'nullable|exists:tipo_muestras,id',
+        'tipo_metodo_id' => 'nullable|exists:tipo_metodos,id',
         'nota'             => 'nullable|string|max:255',
         'resultados'       => 'nullable|array',
     ]);

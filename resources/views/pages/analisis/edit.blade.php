@@ -41,7 +41,7 @@
                         <x-form.input-label for="cliente_id" :value="__('Cliente')" required/>
                         <x-form.input-select name="cliente_id" class="select2">
                             @foreach($clientes as $c)
-                                <option value="{{ $c->id }}" @selected(old('cliente_id', $analisi->cliente_id) == $c->id)>{{ $c->nombre }}</option>
+                                <option value="{{ $c->id }}" @selected(old('cliente_id', $analisi->cliente_id) == $c->id)>{{ $c->getNombreCompletoAttribute() }}</option>
                             @endforeach
                         </x-form.input-select>
                     </div>
@@ -51,7 +51,7 @@
                         <x-form.input-label for="doctor_id" :value="__('Médico Solicitante')" required/>
                         <x-form.input-select name="doctor_id" class="select2">
                             @foreach($doctores as $d)
-                                <option value="{{ $d->id }}" @selected(old('doctor_id', $analisi->doctor_id) == $d->id)>{{ $d->nombre }}</option>
+                                <option value="{{ $d->id }}" @selected(old('doctor_id', $analisi->doctor_id) == $d->id)>{{ $d->getNombreCompletoAttribute() }}</option>
                             @endforeach
                         </x-form.input-select>
                     </div>
@@ -62,6 +62,7 @@
                         <div>
                             <x-form.input-label for="tipo_muestra_id" :value="__('Tipo de Muestra')" class="font-black text-indigo-600 dark:text-indigo-400" />
                             <x-form.input-select name="tipo_muestra_id" id="tipo_muestra_id" class="select2">
+                                <option value="">-- Seleccione una muestra (Opcional) --</option>
                                 @foreach($tiposMuestra as $tm)
                                     <option value="{{ $tm->id }}" @selected(old('tipo_muestra_id', $analisi->tipo_muestra_id) == $tm->id)>{{ $tm->nombre }}</option>
                                 @endforeach
@@ -97,6 +98,7 @@
                     <div>
                         <x-form.input-label for="tipo_metodo_id" :value="__('Método')" required/>
                         <x-form.input-select name="tipo_metodo_id" class="select2">
+                            <option value="">-- Seleccione una muestra (Opcional) --</option>
                             @foreach($tiposMetodo as $tm)
                                 <option value="{{ $tm->id }}" @selected(old('tipo_metodo_id', $analisi->tipo_metodo_id) == $tm->id)>{{ $tm->nombre }}</option>
                             @endforeach

@@ -46,13 +46,13 @@
     <table style="width:100%; border-collapse: collapse; background-color: #00B0F0; border: none;font-size:13px">
         <tr>
             <td style="padding:5px;font-weight: bold;">NOMBRE:</td>
-            <td style="padding:5px;">{{ $analisis->cliente->nombre }}</td>
+            <td style="padding:5px;">{{ $analisis->cliente->getNombreCompletoAttribute() }}</td>
             <td style="padding:5px;font-weight: bold;">EDAD:</td>
             <td style="padding:5px;">{{ $analisis->cliente->edad }} años</td>
         </tr>
         <tr>
             <td style="padding:5px;font-weight: bold;">MÉDICO:</td>
-            <td style="padding:5px;">{{ $analisis->doctor->nombre }}</td>
+            <td style="padding:5px;">{{ $analisis->doctor->getNombreCompletoAttribute() }}</td>
             <td style="padding:5px;font-weight: bold;">SEXO:</td>
             <td style="padding:5px;">{{ $analisis->cliente->sexo }} </td>
         </tr>
@@ -67,8 +67,17 @@
     {{-- TIPO DE ANALISIS Y MUESTRA--}}
     <div style="width: 100%; text-align: center;">
         <h1 style="padding: 5px; margin: 0; font-size:16px">{{ $analisis->tipoAnalisis->nombre }}</h1>
-        <p style=" margin: 0; font-size:12px">METODO: {{ $analisis->tipoMetodo->nombre }}</p>
-        <p style=" margin: 0; font-size:12px">MUESTRA: {{ $analisis->tipoMuestra->nombre }}</p>
+        @if($analisis->tipoMetodo)
+            <p style="margin: 0; font-size:12px">
+                METODO: {{ $analisis->tipoMetodo->nombre }}
+            </p>
+        @endif
+
+        @if($analisis->tipoMuestra)
+            <p style="margin: 0; font-size:12px">
+                MUESTRA: {{ $analisis->tipoMuestra->nombre }}
+            </p>
+        @endif
     </div>
 
     {{-- Tabla de hemogramas --}}

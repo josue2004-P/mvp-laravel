@@ -28,7 +28,7 @@
                             <x-form.input-select name="cliente_id" id="cliente_id" class="select2">
                                 <option value="">Selecciona un cliente</option>
                                 @foreach($clientes as $c)
-                                    <option value="{{ $c->id }}" @selected(old('cliente_id') == $c->id)>{{ $c->nombre }}</option>
+                                    <option value="{{ $c->id }}" @selected(old('cliente_id') == $c->id)>{{ $c->getNombreCompletoAttribute() }}</option>
                                 @endforeach
                             </x-form.input-select>
                             <x-form.input-error :messages="$errors->get('cliente_id')" class="mt-2" />
@@ -40,7 +40,7 @@
                             <x-form.input-select name="doctor_id" id="doctor_id" class="select2">
                                 <option value="">Selecciona un doctor</option>
                                 @foreach($doctores as $d)
-                                    <option value="{{ $d->id }}" @selected(old('doctor_id') == $d->id)>{{ $d->nombre }}</option>
+                                    <option value="{{ $d->id }}" @selected(old('doctor_id') == $d->id)>{{ $d->getNombreCompletoAttribute() }}</option>
                                 @endforeach
                             </x-form.input-select>
                             <x-form.input-error :messages="$errors->get('doctor_id')" class="mt-2" />
