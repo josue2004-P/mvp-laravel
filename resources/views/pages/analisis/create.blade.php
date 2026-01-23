@@ -31,6 +31,8 @@
                                     <option value="{{ $c->id }}" @selected(old('cliente_id') == $c->id)>{{ $c->nombre }}</option>
                                 @endforeach
                             </x-form.input-select>
+                            <x-form.input-error :messages="$errors->get('cliente_id')" class="mt-2" />
+
                         </div>
                         
                         <div class="col-span-2">
@@ -41,6 +43,7 @@
                                     <option value="{{ $d->id }}" @selected(old('doctor_id') == $d->id)>{{ $d->nombre }}</option>
                                 @endforeach
                             </x-form.input-select>
+                            <x-form.input-error :messages="$errors->get('doctor_id')" class="mt-2" />
                         </div>
 
                         <div class="col-span-2 bg-gray-50 dark:bg-white/[0.02] p-5 rounded-2xl border border-dashed border-gray-200 dark:border-gray-800">
@@ -73,6 +76,7 @@
                                     <option value="{{ $t->id }}" @selected(old('tipo_analisis_id') == $t->id)>{{ $t->nombre }}</option>
                                 @endforeach
                             </x-form.input-select>
+                            <x-form.input-error :messages="$errors->get('tipo_analisis_id')" class="mt-2" />
                         </div>
 
                         <div>
@@ -83,6 +87,7 @@
                                     <option value="{{ $tm->id }}" @selected(old('tipo_metodo_id') == $tm->id)>{{ $tm->nombre }}</option>
                                 @endforeach
                             </x-form.input-select>
+                            <x-form.input-error :messages="$errors->get('tipo_metodo_id')" class="mt-2" />
                         </div>
 
                         <div>
@@ -93,6 +98,7 @@
                                     <option value="{{ $tm->id }}" @selected(old('tipo_muestra_id') == $tm->id)>{{ $tm->nombre }}</option>
                                 @endforeach
                             </x-form.input-select>
+                            <x-form.input-error :messages="$errors->get('tipo_muestra_id')" class="mt-2" />
                         </div>
                     </div>
                 </x-common.component-card>

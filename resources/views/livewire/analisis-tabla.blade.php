@@ -59,7 +59,7 @@
                     <td class="px-4 py-4 whitespace-nowrap">
                         <div class="flex flex-col">
                             <span class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 transition-colors">
-                                {{ $a->cliente->nombre }}
+                                {{ $a->cliente->getNombreCompletoAttribute() }}
                             </span>
                             <span class="text-[11px] text-gray-500 dark:text-gray-400 flex items-center gap-1">
                                 <i class="fa-solid fa-user-doctor text-[9px]"></i> {{ $a->doctor->nombre }}

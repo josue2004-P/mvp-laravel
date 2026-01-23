@@ -35,6 +35,7 @@
                                 class="w-full font-bold text-lg"
                                 :messages="$errors->get('nombre')"
                             />    
+                            <x-form.input-error :messages="$errors->get('nombre')" class="mt-2" />
                         </div>
 
                         {{-- Descripción --}}
@@ -48,6 +49,8 @@
                                 class="w-full"
                                 :messages="$errors->get('descripcion')"
                             />    
+                            <x-form.input-error :messages="$errors->get('descripcion')" class="mt-2" />
+
                         </div>
 
                         {{-- Reglas de Estado --}}

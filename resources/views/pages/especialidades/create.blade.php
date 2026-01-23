@@ -27,7 +27,6 @@
                             placeholder="Ej. Cardiología, Pediatría, etc."
                             class="w-full"
                             :value="old('nombre')"
-                            required
                         />
                     </div>
                     <x-form.input-error :messages="$errors->get('nombre')" class="mt-2" />

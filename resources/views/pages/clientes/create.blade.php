@@ -59,6 +59,8 @@
                         <x-form.input-label for="edad" :value="__('Edad')" required/>
                         <div class="mt-1">
                             <x-form.text-input type="number" name="edad" placeholder="00" :value="old('edad')" class="w-full" />    
+                            <x-form.input-error :messages="$errors->get('edad')" class="mt-2" />
+
                         </div>
                     </div>
                     <div>
@@ -70,6 +72,8 @@
                                 <option value="FEMENINO" {{ old('sexo') == 'FEMENINO' ? 'selected' : '' }}>Femenino</option>
                                 <option value="OTRO" {{ old('sexo') == 'OTRO' ? 'selected' : '' }}>Otro</option>
                             </x-form.input-select>
+                            <x-form.input-error :messages="$errors->get('sexo')" class="mt-2" />
+
                         </div>
                     </div>
                 </div>

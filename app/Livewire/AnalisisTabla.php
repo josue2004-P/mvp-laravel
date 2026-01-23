@@ -86,16 +86,10 @@ class AnalisisTabla extends Component
                 $query->where('nombre', 'like', '%'.$this->search.'%');
             })
             ->when($this->tipoAnalisisId, function ($query) {
-                $query->where('idTipoAnalisis', $this->tipoAnalisisId);
+                $query->where('tipo_analisis_id', $this->tipoAnalisisId);
             })
             ->when($this->doctorId, function ($query) {
-                $query->where('idDoctor', $this->doctorId);
-            })
-            ->when($this->tipoMuestraId, function ($query) {
-                $query->where('idTipoMuestra', $this->tipoMuestraId);
-            })
-            ->when($this->tipoMetodoId, function ($query) {
-                $query->where('idTipoMetodo', $this->tipoMetodoId);
+                $query->where('doctor_id', $this->doctorId);
             })
             ->paginate($this->perPage);
 
