@@ -1,4 +1,20 @@
 services:
+  bd_mysql_lab_piedad:
+    image: mysql:8.0
+    container_name: bd_mysql_lab_piedad
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}    
+      MYSQL_PASSWORD: ${DB_PASSWORD}  
+    ports:
+      - "3306:3306"
+    volumes:
+      - vol_lab_piedad:/var/lib/mysql
+    networks:
+      - lab_piedad_net
+      - lab_piedad_proxy
   app_lab_piedad:
     build:
       context: .
@@ -7,23 +23,9 @@ services:
     ports:
     - "8080:80"
 
-  bd_mysql_lab_piedad:
-    image: mysql:8.0
-    container_name: bd_mysql_lab_piedad
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: bd_mysql_lab_piedad
-    ports:
-      - '3306:3306'
-    volumes:
-      - vol_lab_piedad:/var/lib/mysql  
-    networks:
-      - lab_piedad_net
-      - lab_piedad_proxy
-
 networks:
   lab_piedad_net:
-    external: true   # Marca esta red como externa si ya existe
+    external: true
   lab_piedad_proxy:
     external: true
 
