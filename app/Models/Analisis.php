@@ -14,7 +14,12 @@ class Analisis extends Model
     
     protected $fillable = [
         'estatus_id', 'cliente_id', 'doctor_id', 'tipo_analisis_id', 
-        'tipo_metodo_id', 'tipo_muestra_id', 'usuario_creacion_id', 'nota'
+        'tipo_metodo_id', 'tipo_muestra_id', 'usuario_creacion_id', 'nota',
+        
+    ];
+
+    protected $casts = [
+        'fecha_toma' => 'datetime',
     ];
 
     // Relaciones
