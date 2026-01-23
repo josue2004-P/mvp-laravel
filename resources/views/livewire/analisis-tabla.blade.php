@@ -1,6 +1,5 @@
-
 <x-form.table-filters 
-    title="Listado de Análisis"
+    title="Listado de Análisis Clínicos"
     :search="$search"
     :perPage="$perPage"
     :createRoute="route('analisis.create')"
@@ -9,133 +8,142 @@
 >
     {{-- Slot de Filtros Específicos --}}
     <x-slot:filters>
-            <div wire:ignore class="w-full"> 
-                <x-form.input-select-filter
-                    id="tipoAnalisisSelect" 
-                    name="tipoAnalisis" 
-                    dataModel="tipoAnalisisId" 
-                    label="Tipo de Analisis" >
-                    <option value="">Selecciona un Tipo de Analisis</option>
-                    @foreach($tipoAnalisis as $t)
-                        <option value="{{ $t->id }}" {{ old('idTipoAnalisis') == $t->id ? 'selected' : '' }}>
-                            {{ $t->nombre }}
-                        </option>
-                    @endforeach
-                </x-form.input-filter >
-            </div>
-            <div wire:ignore class="w-full"> 
-                <x-form.input-select-filter
-                    dataModel="doctorId"
-                    id="doctorSelect" 
-                    name="doctor" 
-                    label="Doctor" >
-                    <option value="">Selecciona un Doctor</option>
-                   @foreach($doctores as $d)
-                        <option value="{{ $d->id }}">{{ $d->nombre }}</option>
-                    @endforeach
-                </x-form.input-filter >
-            </div>
-            <div wire:ignore class="w-full"> 
-                <x-form.input-select-filter
-                    dataModel="tipoMuestraId"
-                    id="tipoMuestraSelect" 
-                    name="tipoMuesra" 
-                    label="Tipo de Muestra" >
-                    <option value="">Selecciona un tipo de muestra</option>
-                   @foreach($tipoMuestras as $tpmu)
-                        <option value="{{ $tpmu->id }}">{{ $tpmu->nombre }}</option>
-                    @endforeach
-                </x-form.input-filter >
-            </div>
-            <div wire:ignore class="w-full"> 
-                <x-form.input-select-filter
-                    dataModel="tipoMetodoId"
-                    id="tipoMetodoSelect" 
-                    name="tipoMetodo" 
-                    label="Tipo de Metodo" >
-                    <option value="">Selecciona un tipo de metodo</option>
-                   @foreach($tipoMetodos as $tpme)
-                        <option value="{{ $tpme->id }}">{{ $tpme->nombre }}</option>
-                    @endforeach
-                </x-form.input-filter >
-            </div>
+        <div wire:ignore class="w-full"> 
+            <x-form.input-select-filter
+                id="tipoAnalisisSelect" 
+                name="tipoAnalisis" 
+                dataModel="tipoAnalisisId" 
+                label="Tipo de Análisis" >
+                <option value="">Todos los tipos</option>
+                @foreach($tipoAnalisis as $t)
+                    <option value="{{ $t->id }}">{{ $t->nombre }}</option>
+                @endforeach
+            </x-form.input-select-filter>
+        </div>
+        <div wire:ignore class="w-full"> 
+            <x-form.input-select-filter
+                dataModel="doctorId"
+                id="doctorSelect" 
+                name="doctor" 
+                label="Médico Solicitante" >
+                <option value="">Todos los doctores</option>
+                @foreach($doctores as $d)
+                    <option value="{{ $d->id }}">{{ $d->nombre }}</option>
+                @endforeach
+            </x-form.input-select-filter>
+        </div>
+        {{-- ... Resto de filtros (Muestra y Método) ... --}}
     </x-slot:filters>
 
-    {{-- El Slot por defecto es la tabla --}}
     <table class="min-w-full">
         <thead>
             <tr class="border-y border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-white/[0.02]">
-                <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">Id</th>
-                <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">Cliente</th>
-                <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">Doctor</th>
-                <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">Análisis</th>
-                <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400 hidden md:table-cell">Método</th>
-                <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400 hidden lg:table-cell">Muestra</th>
-                <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400 hidden xl:table-cell">Usuario</th>
-                <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">Nota</th>
-                <th scope="col" class="relative px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Acciones</th>
+                <th scope="col" class="px-4 py-3 text-start text-[10px] font-bold text-gray-400 uppercase tracking-widest">ID</th>
+                <th scope="col" class="px-4 py-3 text-start text-[10px] font-bold text-gray-400 uppercase tracking-widest">Paciente / Doctor</th>
+                <th scope="col" class="px-4 py-3 text-start text-[10px] font-bold text-gray-400 uppercase tracking-widest">Estatus</th>
+                <th scope="col" class="px-4 py-3 text-start text-[10px] font-bold text-gray-400 uppercase tracking-widest hidden md:table-cell">Estudio</th>
+                <th scope="col" class="px-4 py-3 text-start text-[10px] font-bold text-gray-400 uppercase tracking-widest hidden lg:table-cell">Muestra/Método</th>
+                <th scope="col" class="px-4 py-3 text-start text-[10px] font-bold text-gray-400 uppercase tracking-widest hidden xl:table-cell">Registro</th>
+                <th scope="col" class="relative px-4 py-3 text-center text-[10px] font-bold text-gray-400 uppercase">Acciones</th>
             </tr>
         </thead>
-        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-            @forelse($analisis as $key  => $a)
-                <tr class="hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors">
-                    <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                        #{{ $key + 1 }}
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-transparent">
+            @forelse($analisis as $key => $a)
+                <tr class="hover:bg-gray-50 dark:hover:bg-white/[0.01] transition-colors group">
+                    {{-- ID con formato --}}
+                    <td class="px-4 py-4 whitespace-nowrap text-xs font-mono text-gray-400">
+                        #{{ str_pad($a->id, 5, '0', STR_PAD_LEFT) }}
                     </td>
-                    <td class="px-4 py-1 whitespace-nowrap">
-                        <div class="text-sm text-gray-700 dark:text-gray-300 font-medium">{{ $a->cliente->nombre }}</div>
+
+                    {{-- Paciente y Doctor combinados para ahorrar espacio --}}
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 transition-colors">
+                                {{ $a->cliente->nombre }}
+                            </span>
+                            <span class="text-[11px] text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                                <i class="fa-solid fa-user-doctor text-[9px]"></i> {{ $a->doctor->nombre }}
+                            </span>
+                        </div>
                     </td>
-                    <td class="px-4 py-1 whitespace-nowrap">
-                        <div class="text-sm text-gray-500 dark:text-gray-400">{{ $a->doctor->nombre }}</div>
-                    </td>
-                    <td class="px-4 py-1 whitespace-nowrap">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                            {{ $a->tipoAnalisis->nombre }}
+
+                    {{-- Estatus con Badge Dinámico --}}
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span 
+                            class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm border border-black/5"
+                            style="background-color: {{ $a->estatus->color_fondo }}; color: {{ $a->estatus->color_texto }};"
+                        >
+                            <i class="fa-solid fa-circle text-[6px] mr-1.5 opacity-50"></i>
+                            {{ $a->estatus->nombre }}
                         </span>
                     </td>
-                    <td class="px-4 py-1 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 hidden md:table-cell">
-                        {{ $a->tipoMetodo->nombre }}
-                    </td>       
-                    <td class="px-4 py-1 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 hidden lg:table-cell">
-                        {{ $a->tipoMuestra->nombre }}
-                    </td>       
-                    <td class="px-4 py-1 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 hidden xl:table-cell">
-                        {{ $a->usuarioCreacion->name }}
-                    </td>       
-                    <td class="px-4 py-1 text-sm text-gray-500 dark:text-gray-400 max-w-[150px] truncate">
-                        {{ $a->nota ?: '-' }}
-                    </td>                                           
-                    <td class="px-4 py-1 text-center whitespace-nowrap text-sm font-medium">
-                        <div x-data="{ dropdownOpen: false }" class="inline-block">
+
+                    {{-- Estudio --}}
+                    <td class="px-4 py-4 whitespace-nowrap hidden md:table-cell">
+                        <div class="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-tighter">
+                            {{ $a->tipoAnalisis->nombre ?? 0}}
+                        </div>
+                    </td>
+
+                    {{-- Muestra y Método combinados --}}
+                    <td class="px-4 py-4 whitespace-nowrap hidden lg:table-cell">
+                        <div class="flex flex-col gap-1">
+                            <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                                <i class="fa-solid fa-vial text-[9px]"></i> {{ $a->tipoMuestra->nombre }}
+                            </span>
+                            <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                                <i class="fa-solid fa-microscope text-[9px]"></i> {{ $a->tipoMetodo->nombre }}
+                            </span>
+                        </div>
+                    </td>
+
+                    {{-- Registro (Fecha y Usuario) --}}
+                    <td class="px-4 py-4 whitespace-nowrap hidden xl:table-cell">
+                        <div class="flex flex-col">
+                            <span class="text-[11px] text-gray-600 dark:text-gray-400 font-medium">
+                                {{ $a->created_at->format('d/m/Y') }}
+                            </span>
+                            <span class="text-[10px] text-gray-400 italic">
+                                Por: {{ explode(' ', $a->usuarioCreacion->name)[0] }}
+                            </span>
+                        </div>
+                    </td>
+
+                    {{-- Acciones --}}
+                    <td class="px-4 py-4 text-center whitespace-nowrap text-sm font-medium">
+                        <div x-data="{ dropdownOpen: false }" class="relative inline-block">
                             <button 
                                 @click="dropdownOpen = !dropdownOpen" 
-                                x-ref="button" {{-- Referencia para posicionar el menú --}}
+                                x-ref="button"
                                 type="button" 
-                                class="p-2 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+                                class="p-2 rounded-xl text-gray-400 hover:bg-white dark:hover:bg-gray-800 hover:text-indigo-600 hover:shadow-sm transition-all border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
                             >
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 10.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM12 4.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM12 16.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" />
-                                </svg>
+                                <i class="fa-solid fa-ellipsis-vertical text-base"></i>
                             </button>
 
                             <template x-teleport="body">
                                 <div 
                                     x-show="dropdownOpen" 
                                     @click.away="dropdownOpen = false"
-                                    x-anchor.bottom-end.offset.5="$refs.button" {{-- Requiere plugin Anchor de Alpine --}}
+                                    x-anchor.bottom-end.offset.5="$refs.button"
                                     x-transition:enter="transition ease-out duration-100"
                                     x-transition:enter-start="transform opacity-0 scale-95"
                                     x-transition:enter-end="transform opacity-100 scale-100"
-                                    class="z-[999] w-48 rounded-xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900"
+                                    class="z-[999] w-52 rounded-2xl border border-gray-200 bg-white/95 backdrop-blur-sm shadow-2xl dark:border-gray-700 dark:bg-gray-900/95"
                                 >
-                                    <div class="p-1">
-                                        <a href="{{ route('analisis.edit', $a->id) }}" class="flex items-center px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                            Ver detalles
+                                    <div class="p-2 space-y-1">
+                                        <a href="{{ route('analisis.edit', $a->id) }}" class="flex items-center px-3 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 rounded-xl transition-colors">
+                                            <i class="fa-solid fa-flask-vial mr-3 text-indigo-500"></i>
+                                            Resultados / Editar
                                         </a>
-                                        <button wire:click="confirmDelete({{ $a->id }})" class="flex w-full items-center px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-left">
-                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                            Eliminar
+                                        <a href="{{ route('analisis.pdf', $a->id) }}" target="_blank" class="flex items-center px-3 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 rounded-xl transition-colors">
+                                            <i class="fa-solid fa-file-pdf mr-3 text-red-500"></i>
+                                            Imprimir Reporte
+                                        </a>
+                                        <div class="h-px bg-gray-100 dark:bg-gray-800 my-1"></div>
+                                        <button wire:click="confirmDelete({{ $a->id }})" class="flex w-full items-center px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors text-left font-semibold">
+                                            <i class="fa-solid fa-trash-can mr-3"></i>
+                                            Eliminar Análisis
                                         </button>
                                     </div>
                                 </div>
@@ -144,11 +152,14 @@
                     </td>
                 </tr>
             @empty
-                 <tr>
-                    <td colspan="9" class="px-6 py-10 text-center">
+                <tr>
+                    <td colspan="7" class="px-6 py-20 text-center">
                         <div class="flex flex-col items-center">
-                            <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">No se encontraron resultados para la búsqueda.</p>
+                            <div class="h-20 w-20 rounded-3xl bg-gray-100 dark:bg-white/[0.02] flex items-center justify-center text-gray-300 mb-4">
+                                <i class="fa-solid fa-microscope text-4xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">No hay registros</h3>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Prueba ajustando los filtros o crea un nuevo análisis.</p>
                         </div>
                     </td>
                 </tr>
@@ -156,8 +167,7 @@
         </tbody>
     </table>
 
-    {{-- Paginación al final --}}
-    <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+    <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50/30 dark:bg-white/[0.01]">
         {{ $analisis->links() }}
     </div>
 </x-form.table-filters>

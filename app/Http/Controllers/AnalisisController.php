@@ -33,7 +33,7 @@ class AnalisisController extends Controller
         $estatusAnalisis = EstatusAnalisis::all();
 
         $configuracion = ConfiguracionAnalisis::find(1);
-        $estatusInicialId = $configuracion ? $configuracion->inicialEstatusId : null;
+        $estatusInicialId = $configuracion ? $configuracion->inicial_estatus_id : null;
 
         return view('pages.analisis.create', compact(
             'clientes', 
@@ -48,70 +48,81 @@ class AnalisisController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'idCliente' => 'required|exists:clientes,id',
-            'idDoctor' => 'required|exists:doctores,id',
-            'idTipoAnalisis' => 'required|exists:tipo_analisis,id',
-            'idTipoMetodo' => 'required|exists:tipo_metodos,id',
-            'idTipoMuestra' => 'required|exists:tipo_muestras,id',
-            'nota' => 'nullable|string',
+        // Ahora los nombres coinciden 100% con tu base de datos
+        $validated = $request->validate([
+            'cliente_id'          => 'required|exists:clientes,id',
+            'doctor_id'           => 'required|exists:doctores,id',
+            'estatus_id'          => 'required|exists:estatus_analisis,id',
+            'tipo_analisis_id'    => 'required|exists:tipo_analisis,id',
+            'tipo_metodo_id'      => 'required|exists:tipo_metodos,id',
+            'tipo_muestra_id'     => 'required|exists:tipo_muestras,id',
+            'nota'                => 'nullable|string|max:255',
         ]);
 
-        $data = $request->all();
-        $data['idUsuarioCreacion'] = auth()->id();
+        try {
+            // Agregamos el ID del usuario directamente al array validado
+            $validated['usuario_creacion_id'] = auth()->id();
 
-        Analisis::create($data);
+            \App\Models\Analisis::create($validated);
 
-        return redirect()->route('analisis.index')->with('success', 'Análisis creado correctamente');
+            return redirect()->route('analisis.index')
+                ->with('success', 'Análisis registrado exitosamente.');
+
+        } catch (\Exception $e) {
+            return back()
+                ->withInput()
+                ->with('error', 'Error al registrar el análisis: ' . $e->getMessage());
+        }
     }
 
     public function edit(Analisis $analisi)
     {
+        // Cargamos la relación con la tabla pivote y sus resultados
         $analisi->load('hemogramas');
 
-        $clientes      = Cliente::all();
-        $doctores      = Doctor::all();
-        $tiposAnalisis = TipoAnalisis::with('hemogramas.categoria')->get();
-        $tiposMetodo   = TipoMetodo::all();
-        $tiposMuestra  = TipoMuestra::all();
+        $clientes        = Cliente::all();
+        $doctores        = Doctor::all();
+        $tiposAnalisis   = TipoAnalisis::with('parametrosHemograma')->get();
+        $tiposMetodo     = TipoMetodo::all();
+        $tiposMuestra    = TipoMuestra::all();
         $estatusAnalisis = EstatusAnalisis::all();
 
-    $estatusActualId = 13; // ATENDER
-    $configuracionId = 1;
-    $slugPermisoMaestro = 'mod-est-anl';
-    $misPerfilesIds = auth()->user()->perfiles->pluck('id')->toArray();
+        // Detectamos el estatus actual dinámicamente desde el modelo
+        $estatusActualId = $analisi->estatus_id; 
+        $configuracionId = 1; // ID global de configuración
+        $slugPermisoMaestro = 'mod-est-anl';
+        $misPerfilesIds = auth()->user()->perfiles->pluck('id')->toArray();
 
-    // 1. Validamos permiso maestro
-    $tienePermisoMaestro = auth()->user()->perfiles()
-        ->whereHas('permisos', fn($q) => $q->where('nombre', $slugPermisoMaestro))
-        ->exists();
+        // 1. Verificamos si el usuario tiene el permiso maestro para mover estatus
+        $tienePermisoMaestro = auth()->user()->perfiles()
+            ->whereHas('permisos', fn($q) => $q->where('nombre', $slugPermisoMaestro))
+            ->exists();
 
-    // 2. CONSULTA CLAVE: Traer destinos que estén en el FLUJO 
-    // Y que además tengan el CHECK de MODIFICAR para tu perfil
-    $estatusPermitidos = [];
+        $estatusPermitidos = [];
     
-    if ($tienePermisoMaestro) {
-        $estatusPermitidos = \DB::table('configuracion_flujo_estatus_analisis as flujo')
-            ->join('estatus_analises as e', 'flujo.siguienteEstatusId', '=', 'e.id')
-            ->join('configuracion_perfil_estatus_analisis as p', function($join) use ($misPerfilesIds, $configuracionId) {
-                $join->on('e.id', '=', 'p.estatusId')
-                     ->whereIn('p.perfilId', $misPerfilesIds)
-                     ->where('p.configuracionAnalisisId', $configuracionId)
-                     ->where('p.modificar', 1); // <--- AQUÍ FILTRAMOS EL CHECK AZUL
-            })
-            ->where('flujo.configuracionEstatusId', $configuracionId)
-            ->where('flujo.estatusId', $estatusActualId)
-            ->select('e.id', 'e.descripcion')
-            ->distinct()
-            ->get();
-    }
+        if ($tienePermisoMaestro) {
+            // Obtenemos los estatus destino permitidos según el Flujo y los Permisos del Perfil
+            $estatusPermitidos = \DB::table('configuracion_flujo_estatus_analisis as flujo')
+                ->join('estatus_analisis as e', 'flujo.estatus_siguiente_id', '=', 'e.id')
+                ->join('configuracion_perfil_estatus_analisis as p', function($join) use ($misPerfilesIds, $configuracionId) {
+                    $join->on('e.id', '=', 'p.estatus_id')
+                        ->whereIn('p.perfil_id', $misPerfilesIds)
+                        ->where('p.configuracion_analisis_id', $configuracionId)
+                        ->where('p.modificar', 1); // Solo estatus donde el perfil tenga check azul
+                })
+                ->where('flujo.configuracion_analisis_id', $configuracionId)
+                ->where('flujo.estatus_id', $estatusActualId)
+                ->select('e.id', 'e.nombre', 'e.descripcion') // Asegúrate de traer 'nombre' para la vista
+                ->distinct()
+                ->get();
+        }
 
-    // 3. Verificar si puedes modificar el actual para habilitar/deshabilitar el select
-    $puedeModificarActual = \DB::table('configuracion_perfil_estatus_analisis')
-        ->whereIn('perfilId', $misPerfilesIds)
-        ->where('estatusId', $estatusActualId)
-        ->where('modificar', 1)
-        ->exists();
+        // 2. Verificamos si el perfil del usuario permite modificar datos en el estatus ACTUAL
+        $puedeModificarActual = \DB::table('configuracion_perfil_estatus_analisis')
+            ->whereIn('perfil_id', $misPerfilesIds)
+            ->where('estatus_id', $estatusActualId)
+            ->where('modificar', 1)
+            ->exists();
 
         return view('pages.analisis.edit', compact(
             'analisi',
@@ -128,37 +139,57 @@ class AnalisisController extends Controller
         ));
     }
 
-    public function update(Request $request, Analisis $analisi)
-    {
-        $validated = $request->validate([
-            'idCliente'      => 'required|exists:clientes,id',
-            'idDoctor'       => 'required|exists:doctores,id',
-            'idTipoAnalisis' => 'required|exists:tipo_analisis,id',
-            'idTipoMetodo'   => 'required|exists:tipo_metodos,id',
-            'idTipoMuestra'  => 'required|exists:tipo_muestras,id',
-            'nota'           => 'nullable|string',
-            'resultados'     => 'nullable|array',
-            'resultados.*'   => 'nullable|string|max:100',
-        ]);
+public function update(Request $request, Analisis $analisi)
+{
+    $validated = $request->validate([
+        'cliente_id'       => 'required|exists:clientes,id',
+        'doctor_id'        => 'required|exists:doctores,id',
+        'estatus_id'       => 'required|exists:estatus_analisis,id',
+        'tipo_analisis_id' => 'required|exists:tipo_analisis,id',
+        'tipo_metodo_id'   => 'required|exists:tipo_metodos,id',
+        'tipo_muestra_id'  => 'required|exists:tipo_muestras,id',
+        'nota'             => 'nullable|string|max:255',
+        'resultados'       => 'nullable|array',
+    ]);
 
-        // Actualizar datos del análisis
-        $analisi->update($validated);
+    try {
+        \DB::transaction(function () use ($request, $analisi, $validated) {
+            // 1. Actualización de datos principales
+            $analisi->update($validated);
 
-        // Guardar resultados de hemogramas
-        if (!empty($validated['resultados'])) {
-            $pivotData = [];
-            foreach ($validated['resultados'] as $idHemograma => $resultado) {
-                if (trim((string) $resultado) !== '') {
-                    $pivotData[$idHemograma] = ['resultado' => $resultado];
+            // 2. Sincronización de Resultados
+            if ($request->has('resultados')) {
+                $syncData = [];
+                $userId = auth()->id();
+
+                foreach ($request->resultados as $hemogramaId => $valor) {
+                    // Solo agregamos al sync si el valor tiene contenido
+                    // Si viene null, no lo metemos al array para que sync no lo borre
+                    if (!is_null($valor) && $valor !== '') {
+                        $syncData[$hemogramaId] = [
+                            'resultado'                => $valor,
+                            'usuario_actualizacion_id' => $userId,
+                            'usuario_creacion_id'      => $userId 
+                        ];
+                    }
+                }
+                
+                // IMPORTANTE: Si quieres mantener los resultados anteriores 
+                // y solo actualizar/agregar los nuevos, usa syncWithoutDetaching
+                if (!empty($syncData)) {
+                    $analisi->hemogramas()->syncWithoutDetaching($syncData);
                 }
             }
-            $analisi->hemogramas()->syncWithoutDetaching($pivotData);
-        }
+        });
 
-        return redirect()
-            ->route('analisis.edit', $analisi->id)
-            ->with('success', 'Análisis actualizado correctamente');
+        return redirect()->back()->with('success', 'Cambios guardados correctamente.');
+
+    } catch (\Exception $e) {
+        return redirect()->back()
+            ->withInput()
+            ->with('error', 'Error al actualizar: ' . $e->getMessage());
     }
+}
 
     public function destroy(Analisis $analisi)
     {

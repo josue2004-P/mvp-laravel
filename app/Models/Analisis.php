@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Model;
 
 class Analisis extends Model
@@ -20,7 +21,7 @@ class Analisis extends Model
     public function cliente() { return $this->belongsTo(Cliente::class); }
     public function doctor() { return $this->belongsTo(Doctor::class); }
     public function estatus() { return $this->belongsTo(EstatusAnalisis::class, 'estatus_id'); }
-    public function tipoAnalisis() { return $this->belongsTo(TipoAnalisis::class, 'estatus_id'); }
+    public function tipoAnalisis() { return $this->belongsTo(TipoAnalisis::class, 'tipo_analisis_id'); }
     public function tipoMetodo() { return $this->belongsTo(TipoMetodo::class, 'tipo_metodo_id'); }
     public function tipoMuestra() { return $this->belongsTo(TipoMuestra::class, 'tipo_muestra_id'); }
     public function usuarioCreacion() { return $this->belongsTo(User::class, 'usuario_creacion_id'); }

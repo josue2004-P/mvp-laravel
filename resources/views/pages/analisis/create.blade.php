@@ -1,148 +1,120 @@
 @extends('layouts.app')
 
-@section('title', 'Crear Analisis')
+@section('title', 'Nuevo Análisis')
 
 @section('content')
-
-<x-common.component-card title="Formulario Analisis" desc="Completa la información para registrar un Analisi." class="max-w-5xl">
-    <form id="form-analisis" action="{{ route('analisis.store') }}" method="POST" class="md:grid grid-cols-1 md:grid-cols-2 gap-5">
-    @csrf
-        <!-- Cliente -->
-        <div>
-            <x-form.input-label for="idCliente" :value="__('Cliente')" required/>
-            <x-form.input-select name="idCliente" 
-            :messages="$errors->get('idCliente')"
-            class="select2"
-            >
-                <option value="">Selecciona un cliente</option>
-                @foreach($clientes as $c)
-                    <option value="{{ $c->id }}" {{ old('idCliente') == $c->id ? 'selected' : '' }}>
-                        {{ $c->nombre }}
-                    </option>
-                @endforeach
-            </x-form.input-select>
+<div class="max-w-6xl mx-auto">
+    {{-- Header --}}
+    <div class="mb-8 flex items-center gap-4 text-white">
+        <div class="h-14 w-14 rounded-3xl bg-indigo-600 flex items-center justify-center shadow-xl shadow-indigo-500/20">
+            <i class="fa-solid fa-file-medical text-2xl"></i>
         </div>
-        
-        <!-- Doctor -->
         <div>
-            <x-form.input-label for="idDoctor" :value="__('Doctor')" required/>
-            <x-form.input-select name="idDoctor" 
-            :messages="$errors->get('idDoctor')"
-            class="select2"
-            >
-                <option value="">Selecciona un doctor</option>
-                @foreach($doctores as $d)
-                    <option value="{{ $d->id }}" {{ old('idDoctor') == $d->id ? 'selected' : '' }}>
-                        {{ $d->nombre }}
-                    </option>
-                @endforeach
-            </x-form.input-select>
+            <h1 class="text-2xl font-black text-gray-900 dark:text-white tracking-tight">Registro de Análisis</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Nombres de campos sincronizados con la base de datos.</p>
         </div>
+    </div>
 
-        <!-- Estatus -->
-        <div class="space-y-1">
-            <x-form.input-label for="estatusId" :value="__('Estatus')" required/>
+    <form id="form-analisis" action="{{ route('analisis.store') }}" method="POST">
+        @csrf
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <div class="relative">
-                {{-- El select se mantiene con su nombre original para que se envíe el dato --}}
-                <x-form.input-select 
-                    name="estatusId" 
-                    id="estatusId"
-                    :messages="$errors->get('estatusId')"
-                    {{-- Clases para simular readonly y evitar interacción --}}
-                    class="select2 pointer-events-none bg-gray-100 dark:bg-gray-800 opacity-70"
-                    tabindex="-1"
-                >
-                    <option value="">Selecciona un estatus</option>
-                    @foreach($estatusAnalisis as $value)
-                        <option value="{{ $value->id }}" 
-                            @selected(old('estatusId', $estatusInicialId) == $value->id)>
-                            {{ $value->descripcion }}
-                        </option>
-                    @endforeach
-                </x-form.input-select>
-                
-                {{-- Overlay transparente para bloquear clics si Select2 no respeta pointer-events --}}
-                <div class="absolute inset-0 z-10 cursor-not-allowed"></div>
+            {{-- Columna Izquierda --}}
+            <div class="lg:col-span-7 space-y-6">
+                <x-common.component-card title="Información General" desc="Selección de cliente y médico.">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 py-2">
+                        <div class="col-span-2">
+                            <x-form.input-label for="cliente_id" :value="__('Cliente')" required/>
+                            <x-form.input-select name="cliente_id" id="cliente_id" class="select2">
+                                <option value="">Selecciona un cliente</option>
+                                @foreach($clientes as $c)
+                                    <option value="{{ $c->id }}" @selected(old('cliente_id') == $c->id)>{{ $c->nombre }}</option>
+                                @endforeach
+                            </x-form.input-select>
+                        </div>
+                        
+                        <div class="col-span-2">
+                            <x-form.input-label for="doctor_id" :value="__('Doctor Solicitante')" required/>
+                            <x-form.input-select name="doctor_id" id="doctor_id" class="select2">
+                                <option value="">Selecciona un doctor</option>
+                                @foreach($doctores as $d)
+                                    <option value="{{ $d->id }}" @selected(old('doctor_id') == $d->id)>{{ $d->nombre }}</option>
+                                @endforeach
+                            </x-form.input-select>
+                        </div>
+
+                        <div class="col-span-2 bg-gray-50 dark:bg-white/[0.02] p-5 rounded-2xl border border-dashed border-gray-200 dark:border-gray-800">
+                            <x-form.input-label :value="__('Estatus Inicial')" class="text-indigo-600 dark:text-indigo-400" />
+                            <div class="flex items-center gap-4 mt-2">
+                                <input type="hidden" name="estatus_id" value="{{ $estatusInicialId }}">
+                                @php $estatusActual = $estatusAnalisis->find($estatusInicialId); @endphp
+                                @if($estatusActual)
+                                    <span class="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest" 
+                                          style="background-color: {{ $estatusActual->color_fondo }}; color: {{ $estatusActual->color_texto }}">
+                                        {{ $estatusActual->nombre }}
+                                    </span>
+                                @endif
+                                <p class="text-[10px] text-gray-400 font-bold uppercase italic"><i class="fa-solid fa-lock mr-1"></i> Predefinido</p>
+                            </div>
+                        </div>
+                    </div>
+                </x-common.component-card>
             </div>
 
-            <p class="mt-1 text-[10px] text-blue-500 font-semibold uppercase italic dark:text-blue-400">
-                <i class="fas fa-info-circle mr-1"></i> Estatus inicial bloqueado por configuración
-            </p>
-        </div>
-        
-        <!-- Tipo de Análisis -->
-        <div>
-            <x-form.input-label for="idTipoAnalisis" :value="__('Tipo de Análisis')" required/>
-            <x-form.input-select name="idTipoAnalisis" 
-            :messages="$errors->get('idTipoAnalisis')"
-            class="select2"
-            >
-                <option value="">Selecciona un tipo</option>
-                @foreach($tiposAnalisis as $t)
-                    <option value="{{ $t->id }}" {{ old('idTipoAnalisis') == $t->id ? 'selected' : '' }}>
-                        {{ $t->nombre }}
-                    </option>
-                @endforeach
-            </x-form.input-select>
-        </div>
+            {{-- Columna Derecha --}}
+            <div class="lg:col-span-5 space-y-6">
+                <x-common.component-card title="Especificaciones Técnicas" desc="Categorización del estudio.">
+                    <div class="space-y-4 py-2">
+                        <div>
+                            <x-form.input-label for="tipo_analisis_id" :value="__('Tipo de Análisis')" required/>
+                            <x-form.input-select name="tipo_analisis_id" id="tipo_analisis_id" class="select2">
+                                <option value="">Selecciona un tipo</option>
+                                @foreach($tiposAnalisis as $t)
+                                    <option value="{{ $t->id }}" @selected(old('tipo_analisis_id') == $t->id)>{{ $t->nombre }}</option>
+                                @endforeach
+                            </x-form.input-select>
+                        </div>
 
-        <!-- Método -->
-        <div >
-            <x-form.input-label for="idTipoMetodo" :value="__('Tipo de Método')" required/>
-            <x-form.input-select name="idTipoMetodo"
-                :messages="$errors->get('idTipoMetodo')"
-                class="select2"
-                >
-                <option value="">Selecciona un tipo</option>
-                @foreach($tiposMetodo as $tm)
-                    <option value="{{ $tm->id }}" {{ old('idTipoMetodo') == $tm->id ? 'selected' : '' }}>
-                        {{ $tm->nombre }}
-                    </option>
-                @endforeach
-            </x-form.input-select>
-        </div>
+                        <div>
+                            <x-form.input-label for="tipo_metodo_id" :value="__('Tipo de Método')" required/>
+                            <x-form.input-select name="tipo_metodo_id" id="tipo_metodo_id" class="select2">
+                                <option value="">Selecciona un método</option>
+                                @foreach($tiposMetodo as $tm)
+                                    <option value="{{ $tm->id }}" @selected(old('tipo_metodo_id') == $tm->id)>{{ $tm->nombre }}</option>
+                                @endforeach
+                            </x-form.input-select>
+                        </div>
 
-
-        <!-- Muestra -->
-        <div >
-            <x-form.input-label for="idTipoMuestra" :value="__('Tipo de Muestra')" required/>
-            <x-form.input-select name="idTipoMuestra" 
-                :messages="$errors->get('idTipoMuestra')"
-                class="select2"
-                >
-                <option value="">Selecciona una muestra</option>
-                @foreach($tiposMuestra as $tm)
-                    <option value="{{ $tm->id }}" {{ old('idTipoMuestra') == $tm->id ? 'selected' : '' }}>
-                        {{ $tm->nombre }}
-                    </option>
-                @endforeach
-            </x-form.input-select>
-        </div>
-
-        <div class="col-span-2">
-            <x-form.input-label for="nota" :value="__('Nota')"/>
-            <x-form.text-input
-                type="text"
-                name="nota"
-                placeholder="Escribe la nota"
-                :value="old('nota')"
-                :messages="$errors->get('nota')"
-            />    
-            <x-form.input-error :messages="$errors->get('nota')" class="mt-2" />
-        </div>
-
-        <x-slot:footer>
-            <div class="flex justify-end gap-2">
-                <a href="{{ route('analisis.index') }}"
-                    class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700  hover:bg-gray-200 transition">
-                    Cancelar
-                </a>
-                <x-ui.button size="sm" type="submit" form="form-analisis">
-                    Guardar
-                </x-ui.button>
+                        <div>
+                            <x-form.input-label for="tipo_muestra_id" :value="__('Tipo de Muestra')" required/>
+                            <x-form.input-select name="tipo_muestra_id" id="tipo_muestra_id" class="select2">
+                                <option value="">Selecciona una muestra</option>
+                                @foreach($tiposMuestra as $tm)
+                                    <option value="{{ $tm->id }}" @selected(old('tipo_muestra_id') == $tm->id)>{{ $tm->nombre }}</option>
+                                @endforeach
+                            </x-form.input-select>
+                        </div>
+                    </div>
+                </x-common.component-card>
             </div>
-        </x-slot:footer>
+
+            {{-- Notas --}}
+            <div class="lg:col-span-12">
+                <x-common.component-card>
+                    <x-form.input-label for="nota" :value="__('Nota u Observaciones')" />
+                    <x-form.text-input name="nota" id="nota" placeholder="Escribe aquí..." :value="old('nota')" />
+                    
+                    <x-slot:footer>
+                        <div class="flex items-center justify-between">
+                            <a href="{{ route('analisis.index') }}" class="text-sm font-bold text-gray-400 hover:text-red-500">Cancelar</a>
+                            <x-ui.button type="submit" class="px-8 shadow-xl shadow-indigo-500/20">
+                                <i class="fa-solid fa-vial-circle-check mr-2"></i> Crear Análisis
+                            </x-ui.button>
+                        </div>
+                    </x-slot:footer>
+                </x-common.component-card>
+            </div>
+        </div>
     </form>
-</x-common.component-card>
+</div>
 @endsection
