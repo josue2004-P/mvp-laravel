@@ -119,94 +119,83 @@
                         ->groupBy(fn($h) => $h->categoria->nombre ?? 'General');
                 @endphp
 
-                {{-- Contenedor con estado de Alpine.js --}}
-                {{-- activeCategory: almacena el nombre de la categoría abierta. Puedes usar null para que todos inicien cerrados --}}
                 <div class="space-y-4" x-data="{ activeCategory: '{{ $hemogramasPorCategoria->keys()->first() }}' }">
                     @foreach($hemogramasPorCategoria as $categoria => $hemogramas)
-                        <div class="rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden transition-all duration-300"
+                        {{-- Contenedor Principal --}}
+                        <div class="rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 dark:border-white/5 dark:bg-white/[0.02]"
                             :class="activeCategory === '{{ $categoria }}' ? 'ring-1 ring-indigo-500/30 shadow-lg' : ''">
                             
-                            {{-- Cabecera / Botón de apertura --}}
+                            {{-- Cabecera --}}
                             <button type="button" 
                                 @click="activeCategory = (activeCategory === '{{ $categoria }}' ? null : '{{ $categoria }}')"
-                                class="w-full px-5 py-4 flex justify-between items-center bg-white/[0.03] hover:bg-white/[0.05] transition-colors text-left focus:outline-none">
+                                class="w-full px-5 py-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100 transition-colors text-left focus:outline-none dark:bg-white/[0.03] dark:hover:bg-white/[0.05]">
                                 
                                 <div class="flex items-center gap-3">
-                                    {{-- Indicador visual de color --}}
                                     <div class="h-4 w-1 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.5)]"></div>
-                                    <h4 class="text-xs font-black uppercase tracking-widest text-white/90">
+                                    <h4 class="text-xs font-black uppercase tracking-widest text-gray-700 dark:text-white/90">
                                         {{ $categoria }}
                                     </h4>
                                 </div>
 
                                 <div class="flex items-center gap-3">
-                                    <span class="text-[10px] text-gray-500 font-bold uppercase tracking-tighter">
+                                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-tighter dark:text-gray-500">
                                         {{ $hemogramas->count() }} ítems
                                     </span>
-                                    {{-- Icono con rotación --}}
                                     <i class="fa-solid fa-chevron-down text-[10px] text-gray-400 transition-transform duration-300"
-                                    :class="activeCategory === '{{ $categoria }}' ? 'rotate-180 text-indigo-400' : ''"></i>
+                                    :class="activeCategory === '{{ $categoria }}' ? 'rotate-180 text-indigo-500 dark:text-indigo-400' : ''"></i>
                                 </div>
                             </button>
 
                             {{-- Contenido colapsable --}}
-                            <div x-show="activeCategory === '{{ $categoria }}'" 
-                                x-collapse {{-- Requiere el plugin Collapse de Alpine.js --}}
-                                x-cloak>
-                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 border-t border-white/5 bg-black/20">
+                            <div x-show="activeCategory === '{{ $categoria }}'" x-collapse x-cloak>
+                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 border-t border-gray-100 bg-white dark:border-white/5 dark:bg-black/20">
                                     @foreach($hemogramas as $hemograma)
                                         @php
                                             $valorPrevio = $analisi->hemogramas->firstWhere('id', $hemograma->id)?->pivot->resultado;
                                         @endphp
-                                        <div class="flex flex-col p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all group">
+                                        {{-- Card del Hemograma --}}
+                                        <div class="flex flex-col p-4 rounded-xl border border-gray-100 bg-gray-50/50 hover:bg-gray-50 transition-all group dark:border-white/5 dark:bg-white/[0.02] dark:hover:bg-white/[0.04]">
                                             <div class="flex items-center justify-between mb-2">
-                                                <div class="flex flex-col">
-                                                    <div class="flex items-center gap-2">
-                                                        <span class="text-[11px] font-black text-white/90 uppercase group-hover:text-indigo-400 transition-colors">
-                                                            {{ $hemograma->nombre }}
+                                                <div class="flex items-center gap-2">
+                                                    <span class="text-[11px] font-black text-gray-700 uppercase group-hover:text-indigo-600 transition-colors dark:text-white/90 dark:group-hover:text-indigo-400">
+                                                        {{ $hemograma->nombre }}
+                                                    </span>
+                                                    @if($hemograma->tipo_valor)
+                                                        <span class="px-1.5 py-0.5 rounded text-[8px] font-black uppercase bg-gray-200 text-gray-600 border border-gray-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700">
+                                                            {{ $hemograma->tipo_valor }}
                                                         </span>
-                                                        {{-- Badge de Clasificación (Diferencial/Absoluto) --}}
-                                                        @if($hemograma->tipo_valor)
-                                                            <span class="px-1.5 py-0.5 rounded text-[8px] font-black uppercase bg-gray-800 text-gray-400 border border-gray-700">
-                                                                {{ $hemograma->tipo_valor }}
-                                                            </span>
-                                                        @endif
-                                                    </div>
+                                                    @endif
                                                 </div>
                                                 
-                                                {{-- Input de Resultado --}}
-                                                <div class="relative">
-                                                    <input type="text" 
-                                                        name="resultados[{{ $hemograma->id }}]" 
-                                                        value="{{ old('resultados.'.$hemograma->id, $valorPrevio) }}"
-                                                        placeholder="0.00"
-                                                        class="w-24 text-right font-mono text-sm font-bold border-gray-700 bg-gray-950/50 text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all p-2 shadow-inner">
-                                                </div>
+                                                {{-- Input --}}
+                                                <input type="text" 
+                                                    name="resultados[{{ $hemograma->id }}]" 
+                                                    value="{{ old('resultados.'.$hemograma->id, $valorPrevio) }}"
+                                                    placeholder="0.00"
+                                                    class="w-24 text-right font-mono text-sm font-bold border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all p-2 shadow-sm dark:border-gray-700 dark:bg-gray-950/50 dark:text-white">
                                             </div>
 
-                                            {{-- Visualización de Referencias --}}
-                                            <div class="pt-2 border-t border-white/[0.03]">
+                                            {{-- Referencias --}}
+                                            <div class="pt-2 border-t border-gray-100 dark:border-white/[0.03]">
                                                 @if($hemograma->rango_ideal || $hemograma->rango_moderado || $hemograma->rango_alto)
-                                                    {{-- Diseño para Rangos Escalonados (Estilo Colesterol) --}}
                                                     <div class="grid grid-cols-3 gap-2">
                                                         <div class="flex flex-col">
-                                                            <span class="text-[8px] font-black text-green-500/70 uppercase">Ideal</span>
-                                                            <span class="text-[9px] font-bold text-gray-400 font-mono">{{ $hemograma->rango_ideal ?? 'N/A' }}</span>
+                                                            <span class="text-[8px] font-black text-green-600 uppercase dark:text-green-500/70">Ideal</span>
+                                                            <span class="text-[9px] font-bold text-gray-500 font-mono dark:text-gray-400">{{ $hemograma->rango_ideal ?? 'N/A' }}</span>
                                                         </div>
                                                         <div class="flex flex-col">
-                                                            <span class="text-[8px] font-black text-yellow-500/70 uppercase">Mod.</span>
-                                                            <span class="text-[9px] font-bold text-gray-400 font-mono">{{ $hemograma->rango_moderado ?? 'N/A' }}</span>
+                                                            <span class="text-[8px] font-black text-yellow-600 uppercase dark:text-yellow-500/70">Mod.</span>
+                                                            <span class="text-[9px] font-bold text-gray-500 font-mono dark:text-gray-400">{{ $hemograma->rango_moderado ?? 'N/A' }}</span>
                                                         </div>
                                                         <div class="flex flex-col">
-                                                            <span class="text-[8px] font-black text-red-500/70 uppercase">Alto</span>
-                                                            <span class="text-[9px] font-bold text-gray-400 font-mono">{{ $hemograma->rango_alto ?? 'N/A' }}</span>
+                                                            <span class="text-[8px] font-black text-red-600 uppercase dark:text-red-500/70">Alto</span>
+                                                            <span class="text-[9px] font-bold text-gray-500 font-mono dark:text-gray-400">{{ $hemograma->rango_alto ?? 'N/A' }}</span>
                                                         </div>
                                                     </div>
                                                 @else
-                                                    {{-- Diseño para Referencia Estándar --}}
                                                     <div class="flex items-center gap-1.5">
-                                                        <span class="text-[9px] font-bold text-gray-600 uppercase tracking-tighter">Referencia:</span>
-                                                        <span class="text-[9px] font-mono font-bold text-gray-400">{{ $hemograma->referencia ?? 'N/A' }}</span>
+                                                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-tighter">Referencia:</span>
+                                                        <span class="text-[9px] font-mono font-bold text-gray-500 dark:text-gray-400">{{ $hemograma->referencia ?? 'N/A' }}</span>
                                                     </div>
                                                 @endif
                                             </div>
