@@ -41,14 +41,14 @@
                         {{-- Descripción --}}
                         <div>
                             <x-form.input-label for="descripcion" :value="__('Descripción')" />
-                            <x-form.text-input
-                                name="descripcion"
-                                id="descripcion"
-                                :value="old('descripcion')"
-                                placeholder="Escribe la descripción del estatus"
-                                class="w-full"
-                                :messages="$errors->get('descripcion')"
-                            />    
+                            <x-form.textarea-input 
+                                name="descripcion" 
+                                id="descripcion" 
+                                rows="4" 
+                                placeholder="Describe brevemente qué tipo de estudios o procesos abarca esta área..."
+                            >
+                                {{ old('descripcion') }}
+                            </x-form.textarea-input>
                             <x-form.input-error :messages="$errors->get('descripcion')" class="mt-2" />
 
                         </div>

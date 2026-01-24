@@ -36,13 +36,14 @@
                 <div>
                     <x-form.input-label for="descripcion" :value="__('Descripción (Opcional)')" />
                     <div class="mt-1">
-                        <textarea 
+                        <x-form.textarea-input 
                             name="descripcion" 
-                            id="descripcion"
-                            rows="4"
-                            class="block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm text-sm p-3"
-                            placeholder="Escribe una breve descripción sobre el alcance de esta especialidad..."
-                        >{{ old('descripcion') }}</textarea>
+                            id="descripcion" 
+                            rows="4" 
+                            placeholder="Describe brevemente qué tipo de estudios o procesos abarca esta área..."
+                        >
+                            {{ old('descripcion') }}
+                        </x-form.textarea-input>
                     </div>
                     <x-form.input-error :messages="$errors->get('descripcion')" class="mt-2" />
                 </div>

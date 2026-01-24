@@ -44,14 +44,14 @@
                         {{-- Descripción --}}
                         <div>
                             <x-form.input-label for="descripcion" :value="__('Descripción')" />
-                            <x-form.text-input
-                                name="descripcion"
-                                id="descripcion"
-                                :value="old('descripcion', $estatus->descripcion)"
-                                placeholder="Escribe la descripción del estatus"
-                                class="w-full"
-                                :messages="$errors->get('descripcion')"
-                            />    
+                            <x-form.textarea-input 
+                                name="descripcion" 
+                                id="descripcion" 
+                                rows="4" 
+                                placeholder="Describe brevemente qué tipo de estudios o procesos abarca esta área..."
+                            >
+                                {{ old('descripcion', $estatus->descripcion) }}
+                            </x-form.textarea-input>
                         </div>
 
                         {{-- Reglas de Estado (Checkboxes como Tarjetas) --}}

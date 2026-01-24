@@ -32,11 +32,14 @@
 
                 <div>
                     <x-form.input-label for="descripcion" :value="__('Descripción')" />
-                    <textarea 
+                    <x-form.textarea-input 
                         name="descripcion" 
-                        rows="4"
-                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm text-sm p-3"
-                    >{{ old('descripcion', $tipoMetodo->descripcion) }}</textarea>
+                        id="descripcion" 
+                        rows="4" 
+                        placeholder="Describe brevemente qué tipo de estudios o procesos abarca esta área..."
+                    >
+                        {{ old('descripcion', $tipoMetodo->descripcion) }}
+                    </x-form.textarea-input>
                 </div>
             </div>
 

@@ -61,35 +61,37 @@ class EstatusAnalisisController extends Controller
         return view('pages.estatus-analisis.edit', ['estatus' => $estatus]);
     }
 
-    public function update(Request $request, EstatusAnalisis $estatus)
-    {
-        $validated = $request->validate([
-            'nombre' => 'required|string|max:255|unique:estatus_analisis,nombre',
-            'descripcion'     => 'required|string|max:255',
-            'colorTexto'      => 'nullable|string|max:10',
-            'colorFondo'      => 'nullable|string|max:10',
-            'analsisAbierto'  => 'nullable',
-            'analisisCerrado' => 'nullable',
+public function update(Request $request, EstatusAnalisis $estatus)
+{
+    $validated = $request->validate([
+        // Validamos 'nombreCorto' que es el nombre en el input del HTML
+        // E ignoramos el ID actual para que no falle el 'unique'
+        'nombreCorto'     => 'required|string|max:255|unique:estatus_analisis,nombre,' . $estatus->id,
+        'descripcion'     => 'required|string|max:255',
+        'colorTexto'      => 'nullable|string|max:10',
+        'colorFondo'      => 'nullable|string|max:10',
+        'analsisAbierto'  => 'nullable',
+        'analisisCerrado' => 'nullable',
+    ]);
+
+    try {
+        $estatus->update([
+            'nombre'           => $validated['nombreCorto'], // Usamos la llave correcta
+            'descripcion'      => $validated['descripcion'],
+            'color_texto'      => $validated['colorTexto'],
+            'color_fondo'      => $validated['colorFondo'],
+            // Usamos merge o has para los booleanos
+            'analisis_abierto' => $request->has('analsisAbierto') ? 1 : 0,
+            'analisis_cerrado' => $request->has('analisisCerrado') ? 1 : 0,
         ]);
 
-        try {
-            $estatus->update([
-                'nombre'           => $validated['nombreCorto'],
-                'descripcion'      => $validated['descripcion'],
-                'color_texto'      => $validated['colorTexto'],
-                'color_fondo'      => $validated['colorFondo'],
-                'analisis_abierto' => $request->has('analsisAbierto') ? 1 : 0,
-                'analisis_cerrado' => $request->has('analisisCerrado') ? 1 : 0,
-            ]);
+        return redirect()->route('estatus-analisis.index')
+            ->with('success', 'Estatus actualizado correctamente.');
 
-            return redirect()->route('estatus-analisis.index')
-                ->with('success', 'Estatus actualizado correctamente.');
-
-        } catch (\Exception $e) {
-
-            return back()->withInput()->with('error', 'Error al actualizar: ' . $e->getMessage());
-        }
+    } catch (\Exception $e) {
+        return back()->withInput()->with('error', 'Error al actualizar: ' . $e->getMessage());
     }
+}
 
     // Eliminar registro
     public function destroy(EstatusAnalisis $estatusAnalise)
