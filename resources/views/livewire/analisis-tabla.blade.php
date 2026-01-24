@@ -8,6 +8,7 @@
 >
     {{-- Slot de Filtros Específicos --}}
     <x-slot:filters>
+        {{-- Filtro Tipo de Análisis --}}
         <div wire:ignore class="w-full"> 
             <x-form.input-select-filter
                 id="tipoAnalisisSelect" 
@@ -16,10 +17,14 @@
                 label="Tipo de Análisis" >
                 <option value="">Todos los tipos</option>
                 @foreach($tipoAnalisis as $t)
-                    <option value="{{ $t->id }}">{{ $t->nombre }}</option>
+                    <option value="{{ $t->id }}" {{ $tipoAnalisisId == $t->id ? 'selected' : '' }}>
+                        {{ $t->nombre }}
+                    </option>
                 @endforeach
             </x-form.input-select-filter>
         </div>
+
+        {{-- Filtro Médicos --}}
         <div wire:ignore class="w-full"> 
             <x-form.input-select-filter
                 dataModel="doctorId"
@@ -28,11 +33,28 @@
                 label="Médico Solicitante" >
                 <option value="">Todos los doctores</option>
                 @foreach($doctores as $d)
-                    <option value="{{ $d->id }}">{{ $d->nombre }}</option>
+                    <option value="{{ $d->id }}" {{ $doctorId == $d->id ? 'selected' : '' }}>
+                        {{ $d->nombre }}
+                    </option>
                 @endforeach
             </x-form.input-select-filter>
         </div>
-        {{-- ... Resto de filtros (Muestra y Método) ... --}}
+
+        {{-- Filtro Estatus --}}
+        <div wire:ignore class="w-full"> 
+            <x-form.input-select-filter
+                dataModel="estatusId"
+                id="estatusSelect" 
+                name="estatus" 
+                label="Estatus" >
+                <option value="">Todos los estatus</option>
+                @foreach($estatus as $e)
+                    <option value="{{ $e->id }}" {{ $estatusId == $e->id ? 'selected' : '' }}>
+                        {{ $e->nombre }}
+                    </option>
+                @endforeach
+            </x-form.input-select-filter>
+        </div>
     </x-slot:filters>
 
     <table class="min-w-full">

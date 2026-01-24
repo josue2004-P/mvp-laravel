@@ -9,6 +9,7 @@ use App\Models\TipoAnalisis;
 use App\Models\TipoMetodo;
 use App\Models\TipoMuestra;
 use App\Models\Doctor;
+use App\Models\EstatusAnalisis;
 use Livewire\Attributes\On;
 
 class AnalisisTabla extends Component
@@ -20,6 +21,7 @@ class AnalisisTabla extends Component
     public $tipoAnalisisId = '';
     public $tipoMuestraId = '';
     public $tipoMetodoId = '';
+    public $estatusId = '';
     public $perPage = 6;
 
     // Esto mantiene los filtros en la URL del navegador
@@ -29,6 +31,7 @@ class AnalisisTabla extends Component
         'doctorId' => ['except' => ''],
         'tipoMuestraId' => ['except' => ''],
         'tipoMetodoId' => ['except' => ''],
+        'estatusId' => ['except' => ''],
         'perPage' => ['except' => 6],
     ];
 
@@ -40,6 +43,7 @@ class AnalisisTabla extends Component
     public function updatedDoctorId() { $this->resetPage(); }
     public function updatedTipoMuestraId() { $this->resetPage(); }
     public function updatedTipoMetodoId() { $this->resetPage(); }
+    public function updatedEstatusId() { $this->resetPage(); }
     public function updatedPerPage(){$this->resetPage();}
 
     public function confirmDelete($id)
@@ -80,8 +84,18 @@ class AnalisisTabla extends Component
         $tipoAnalisis = TipoAnalisis::all();
         $tipoMetodos = TipoMetodo::all();
         $tipoMuestras = TipoMuestra::all();
+        $estatus = EstatusAnalisis::all();
 
         $analisis = Analisis::with(['cliente', 'doctor', 'tipoAnalisis'])
+            // Lógica de Estatus:
+            ->when($this->estatusId, function ($query) {
+                // Si el usuario seleccionó un estatus específico, filtramos por ese
+                $query->where('estatus_id', $this->estatusId);
+            }, function ($query) {
+                // Si NO hay filtro seleccionado (null/vacio), excluimos el 2 por defecto
+                $query->where('estatus_id', '!=', 2);
+            })
+            
             ->whereHas('cliente', function ($query) {
                 $query->where('nombre', 'like', '%'.$this->search.'%');
             })
@@ -91,8 +105,9 @@ class AnalisisTabla extends Component
             ->when($this->doctorId, function ($query) {
                 $query->where('doctor_id', $this->doctorId);
             })
+            ->latest() 
             ->paginate($this->perPage);
 
-        return view('livewire.analisis-tabla', compact('analisis', 'tipoAnalisis', 'doctores','tipoMetodos','tipoMuestras'));
+        return view('livewire.analisis-tabla', compact('analisis', 'tipoAnalisis', 'doctores','tipoMetodos','tipoMuestras','estatus'));
     }
 }
