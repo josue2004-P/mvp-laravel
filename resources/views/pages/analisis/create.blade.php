@@ -56,8 +56,10 @@
                                           style="background-color: {{ $estatusActual->color_fondo }}; color: {{ $estatusActual->color_texto }}">
                                         {{ $estatusActual->nombre }}
                                     </span>
-                                @endif
-                                <p class="text-[10px] text-gray-400 font-bold uppercase italic"><i class="fa-solid fa-lock mr-1"></i> Predefinido</p>
+                                    @endif
+                                    
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase italic"><i class="fa-solid fa-lock mr-1"></i> Predefinido</p>
+                                    <x-form.input-error :messages="$errors->get('estatus_id')" class="mt-2" />
                             </div>
                         </div>
                     </div>

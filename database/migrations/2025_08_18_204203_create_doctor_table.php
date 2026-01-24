@@ -14,20 +14,20 @@ return new class extends Migration
             $table->string('apellido_paterno', 100);
             $table->string('apellido_materno', 100)->nullable();
             $table->string('cedula_profesional', 50)->unique();
-            
-            // Llave foránea a especialidades
-            $table->foreignId('especialidad_id')
-                  ->constrained('especialidades')
-                  ->onDelete('restrict'); // Evita borrar especialidades en uso
-            
             $table->string('email', 255)->unique()->nullable();
             $table->string('telefono', 20)->nullable();
             $table->boolean('is_activo')->default(true);
             
-            $table->index('especialidad_id','idx_doctor_especialidad');
-            
             $table->timestamps();
 
+        });
+
+        Schema::create('doctor_especialidad', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('doctor_id')->constrained('doctores')->onDelete('cascade');
+            $table->foreignId('especialidad_id')->constrained('especialidades')->onDelete('cascade');
+            $table->index(['doctor_id', 'especialidad_id'], 'idx_doc_esp');
+            $table->timestamps();
         });
     }
 

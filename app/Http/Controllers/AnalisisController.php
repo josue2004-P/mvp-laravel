@@ -139,57 +139,56 @@ class AnalisisController extends Controller
         ));
     }
 
-public function update(Request $request, Analisis $analisi)
-{
-    $validated = $request->validate([
-        'cliente_id'       => 'required|exists:clientes,id',
-        'doctor_id'        => 'required|exists:doctores,id',
-        'estatus_id'       => 'required|exists:estatus_analisis,id',
-        'tipo_analisis_id' => 'required|exists:tipo_analisis,id',
-        'tipo_muestra_id' => 'nullable|exists:tipo_muestras,id',
-        'tipo_metodo_id' => 'nullable|exists:tipo_metodos,id',
-        'nota'             => 'nullable|string|max:255',
-        'resultados'       => 'nullable|array',
-    ]);
+    public function update(Request $request, Analisis $analisi)
+    {
+        $validated = $request->validate([
+            'cliente_id'       => 'required|exists:clientes,id',
+            'doctor_id'        => 'required|exists:doctores,id',
+            'estatus_id'       => 'required|exists:estatus_analisis,id',
+            'tipo_analisis_id' => 'required|exists:tipo_analisis,id',
+            'tipo_muestra_id'  => 'nullable|exists:tipo_muestras,id',
+            'tipo_metodo_id'   => 'nullable|exists:tipo_metodos,id',
+            'nota'             => 'nullable|string|max:255',
+            'resultados'       => 'nullable|array',
+        ]);
 
-    try {
-        \DB::transaction(function () use ($request, $analisi, $validated) {
-            // 1. Actualización de datos principales
-            $analisi->update($validated);
+        try {
+            \DB::transaction(function () use ($request, $analisi, $validated) {
+                $analisi->update($validated);
 
-            // 2. Sincronización de Resultados
-            if ($request->has('resultados')) {
-                $syncData = [];
-                $userId = auth()->id();
+                if ($request->has('resultados')) {
+                    $syncData = [];
+                    $userId = auth()->id();
 
-                foreach ($request->resultados as $hemogramaId => $valor) {
-                    // Solo agregamos al sync si el valor tiene contenido
-                    // Si viene null, no lo metemos al array para que sync no lo borre
-                    if (!is_null($valor) && $valor !== '') {
-                        $syncData[$hemogramaId] = [
-                            'resultado'                => $valor,
-                            'usuario_actualizacion_id' => $userId,
-                            'usuario_creacion_id'      => $userId 
-                        ];
+                    foreach ($request->resultados as $hemogramaId => $valor) {
+                        if (!is_null($valor) && $valor !== '') {
+                            $syncData[$hemogramaId] = [
+                                'resultado'                => $valor,
+                                'usuario_actualizacion_id' => $userId,
+                                'usuario_creacion_id'      => $userId 
+                            ];
+                        }
+                    }
+                    
+                    if (!empty($syncData)) {
+                        $analisi->hemogramas()->syncWithoutDetaching($syncData);
                     }
                 }
-                
-                // IMPORTANTE: Si quieres mantener los resultados anteriores 
-                // y solo actualizar/agregar los nuevos, usa syncWithoutDetaching
-                if (!empty($syncData)) {
-                    $analisi->hemogramas()->syncWithoutDetaching($syncData);
-                }
-            }
-        });
+            });
 
-        return redirect()->back()->with('success', 'Cambios guardados correctamente.');
+            return redirect()
+                ->back()
+                ->with('success', 'La actualización del análisis se realizó correctamente.');
 
-    } catch (\Exception $e) {
-        return redirect()->back()
-            ->withInput()
-            ->with('error', 'Error al actualizar: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            \Log::error("Error al actualizar Análisis ID {$analisi->id}: " . $e->getMessage());
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Ocurrió un problema al guardar los cambios: ' . $e->getMessage());
+        }
     }
-}
 
     public function destroy(Analisis $analisi)
     {

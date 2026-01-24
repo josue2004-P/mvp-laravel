@@ -68,8 +68,12 @@ class DoctorTabla extends Component
         $especialidades = Especialidad::all();
         $doctores = Doctor::where('nombre', 'like', '%'.$this->search.'%')
             ->when($this->especialidadId, function ($query) {
-                $query->where('especialidad_Id', $this->especialidadId);
+                // Buscamos dentro de la relación 'especialidades'
+                $query->whereHas('especialidades', function ($q) {
+                    $q->where('especialidades.id', $this->especialidadId);
+                });
             })
+            ->with('especialidades')
             ->paginate($this->perPage);
         return view('livewire.doctor-tabla',[
             'doctores' => $doctores,

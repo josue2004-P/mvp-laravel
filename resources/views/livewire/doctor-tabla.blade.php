@@ -62,12 +62,19 @@
                         </td>
 
                         {{-- Especialidad --}}
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-xl text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-800">
-                                {{ $doctor->especialidad->nombre ?? 'Medicina General' }}
-                            </span>
+                        <td class="px-6 py-4">
+                            <div class="flex flex-wrap gap-1.5 max-w-[200px]">
+                                @forelse($doctor->especialidades as $especialidad)
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-800">
+                                        {{ $especialidad->nombre }}
+                                    </span>
+                                @empty
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-gray-50 text-gray-500 dark:bg-gray-800 dark:text-gray-400 border border-gray-100 dark:border-gray-700">
+                                        Sin Especialidad
+                                    </span>
+                                @endforelse
+                            </div>
                         </td>
-
                         {{-- Estatus --}}
                         <td class="px-6 py-4 whitespace-nowrap">
                             @if($doctor->is_activo)

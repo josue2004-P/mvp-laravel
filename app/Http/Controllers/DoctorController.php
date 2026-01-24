@@ -29,15 +29,20 @@ class DoctorController extends Controller
             'apellido_paterno'   => 'required|string|max:100',
             'apellido_materno'   => 'nullable|string|max:100',
             'cedula_profesional' => 'required|string|max:50|unique:doctores,cedula_profesional',
-            'especialidad_id'    => 'required|exists:especialidades,id',
+            'especialidades'     => 'required|array|min:1',
+            'especialidades.*'   => 'exists:especialidades,id',
             'email'              => 'nullable|email|max:255|unique:doctores,email',
             'telefono'           => 'nullable|string|max:20',
         ]);
 
         try {
-            $validated['is_activo'] = true;
+            $dataDoctor = $validated;
+            unset($dataDoctor['especialidades']);
+            $dataDoctor['is_activo'] = true;
 
-            Doctor::create($validated);
+            $doctor = Doctor::create($dataDoctor);
+            
+            $doctor->especialidades()->attach($request->especialidades);
             
             return redirect()
                 ->route('doctores.index')
@@ -65,25 +70,28 @@ class DoctorController extends Controller
             'apellido_paterno'   => 'required|string|max:100',
             'apellido_materno'   => 'nullable|string|max:100',
             'cedula_profesional' => 'required|string|max:50|unique:doctores,cedula_profesional,' . $doctor->id,
-            'especialidad_id'    => 'required|exists:especialidades,id',
+            'especialidades'     => 'required|array|min:1',
+            'especialidades.*'   => 'exists:especialidades,id',
             'email'              => 'nullable|email|max:255|unique:doctores,email,' . $doctor->id,
             'telefono'           => 'nullable|string|max:20',
-            'is_activo'          => 'required|boolean',
         ]);
 
         try {
-            $doctor->update($validated);
+            $dataDoctor = $validated;
+            unset($dataDoctor['especialidades']);
 
+            $doctor->update($dataDoctor);
+            
+            // sync() es clave aquí: quita las que ya no están y agrega las nuevas
+            $doctor->especialidades()->sync($request->especialidades);
+            
             return redirect()
                 ->route('doctores.index')
-                ->with('success', 'La información del Dr. ' . $doctor->apellido_paterno . ' se actualizó correctamente.');
+                ->with('success', 'La información del Dr. ' . $doctor->nombre . ' ha sido actualizada.');
 
         } catch (\Exception $e) {
-            \Log::error("Error actualizando doctor ID {$doctor->id}: " . $e->getMessage());
-
-            return back()
-                ->withInput()
-                ->with('error', 'Ocurrió un error al procesar la actualización.');
+            \Log::error("Error al actualizar doctor: " . $e->getMessage());
+            return back()->withInput()->with('error', 'Error al intentar actualizar el registro.');
         }
     }
 

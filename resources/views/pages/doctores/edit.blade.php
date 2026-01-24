@@ -22,7 +22,7 @@
         @csrf
         @method('PUT')
         
-        <x-common.component-card title="Modificar Información" desc="Asegúrate de que la cédula y especialidad sean correctas." class="shadow-theme-md">
+        <x-common.component-card title="Modificar Información" desc="Asegúrate de que la cédula y especialidades sean correctas." class="shadow-theme-md">
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                 
@@ -74,24 +74,26 @@
                     <x-form.input-error :messages="$errors->get('cedula_profesional')" class="mt-2" />
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <x-form.input-label for="especialidad_id" :value="__('Especialidad')" required/>
-                        <x-form.input-select name="especialidad_id" class="w-full mt-1 select2">
-                            @foreach($especialidades as $especialidad)
-                                <option value="{{ $especialidad->id }}" {{ old('especialidad_id', $doctor->especialidad_id) == $especialidad->id ? 'selected' : '' }}>
-                                    {{ $especialidad->nombre }}
-                                </option>
-                            @endforeach
-                        </x-form.input-select>
+                <div>
+                    <x-form.input-label for="is_activo" :value="__('Estado Laboral')" />
+                    <x-form.input-select name="is_activo" class="w-full mt-1">
+                        <option value="1" {{ old('is_activo', $doctor->is_activo) == '1' ? 'selected' : '' }}>Activo</option>
+                        <option value="0" {{ old('is_activo', $doctor->is_activo) == '0' ? 'selected' : '' }}>Inactivo</option>
+                    </x-form.input-select>
+                </div>
+
+                {{-- Especialidades en ancho completo para que los tags luzcan bien --}}
+                <div class="col-span-1 md:col-span-2">
+                    <x-form.input-label for="especialidades" :value="__('Especialidades Médicas')" required/>
+                    <div class="mt-1">
+                        <x-form.input-tags 
+                            name="especialidades" 
+                            :options="$especialidades" 
+                            :selected="old('especialidades', $doctor->especialidades->pluck('id')->toArray())"
+                        />
                     </div>
-                    <div>
-                        <x-form.input-label for="is_activo" :value="__('Estado Laboral')" />
-                        <x-form.input-select name="is_activo" class="w-full mt-1">
-                            <option value="1" {{ old('is_activo', $doctor->is_activo) == '1' ? 'selected' : '' }}>Activo</option>
-                            <option value="0" {{ old('is_activo', $doctor->is_activo) == '0' ? 'selected' : '' }}>Inactivo</option>
-                        </x-form.input-select>
-                    </div>
+                    <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Puedes seleccionar varias áreas de especialización.</p>
+                    <x-form.input-error :messages="$errors->get('especialidades')" class="mt-2" />
                 </div>
 
             </div>

@@ -23,7 +23,7 @@ class EstatusAnalisisController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nombre'          => 'required|string|max:255',
+            'nombre' => 'required|string|max:255|unique:estatus_analisis,nombre',
             'descripcion'     => 'nullable|string|max:255',
             'colorTexto'      => 'nullable|string|max:10',
             'colorFondo'      => 'nullable|string|max:10',
@@ -64,7 +64,7 @@ class EstatusAnalisisController extends Controller
     public function update(Request $request, EstatusAnalisis $estatus)
     {
         $validated = $request->validate([
-            'nombreCorto'     => 'required|string|max:255',
+            'nombre' => 'required|string|max:255|unique:estatus_analisis,nombre',
             'descripcion'     => 'required|string|max:255',
             'colorTexto'      => 'nullable|string|max:10',
             'colorFondo'      => 'nullable|string|max:10',

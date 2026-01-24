@@ -79,22 +79,17 @@
                     </div>
                     <x-form.input-error :messages="$errors->get('cedula_profesional')" class="mt-2" />
                 </div>
-
                 <div>
-                    <x-form.input-label for="especialidad_id" :value="__('Especialidad Médica')" required/>
+                    <x-form.input-label for="especialidades" :value="__('Especialidades Médicas')" required/>
                     <div class="mt-1">
-                        <x-form.input-select name="especialidad_id" class="w-full select2">
-                            <option value="">Selecciona una Especialidad</option>
-                            @foreach($especialidades as $especialidad)
-                                <option value="{{ $especialidad->id }}" {{ old('especialidad_id') == $especialidad->id ? 'selected' : '' }}>
-                                    {{ $especialidad->nombre }}
-                                </option>
-                            @endforeach
-                        </x-form.input-select>
+                        <x-form.input-tags 
+                            name="especialidades" 
+                            :options="$especialidades" 
+                            :selected="old('especialidades', isset($doctor) ? $doctor->especialidades->pluck('id')->toArray() : [])"
+                        />
                     </div>
-                    <x-form.input-error :messages="$errors->get('especialidad_id')" class="mt-2" />
+                    <x-form.input-error :messages="$errors->get('especialidades')" class="mt-2" />
                 </div>
-
             </div>
 
             <x-slot:footer>

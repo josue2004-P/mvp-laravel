@@ -7,7 +7,7 @@
     {{-- Encabezado Externo --}}
     <div class="mb-6">
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Nuevo Parámetro Hematológico</h1>
-        <p class="text-sm text-gray-500 dark:text-gray-400">Configura los elementos que componen el análisis de biometría hemática.</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">Configura biometrías hemáticas, diferenciales o perfiles lipídicos.</p>
     </div>
 
     <form id="form-hemogramas" action="{{ route('hemograma_completo.store') }}" method="POST">
@@ -16,17 +16,6 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                 
-                {{-- Sección Visual Informativa --}}
-                {{-- <div class="col-span-1 md:col-span-2 flex items-center gap-4 p-4 rounded-xl bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/20 mb-2">
-                    <div class="h-12 w-12 rounded-lg bg-red-600 flex items-center justify-center text-white shadow-lg">
-                        <i class="fa-solid fa-microscope text-xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-red-900 dark:text-red-400 uppercase tracking-tight">Módulo de Biometría Hemática</h4>
-                        <p class="text-xs text-red-700 dark:text-red-500/80">Los parámetros configurados aquí aparecerán en la hoja de resultados del paciente.</p>
-                    </div>
-                </div> --}}
-
                 {{-- Nombre del Parámetro --}}
                 <div class="col-span-1 md:col-span-2">
                     <x-form.input-label for="nombre" :value="__('Nombre del Parámetro')" required/>
@@ -35,7 +24,7 @@
                             id="nombre"
                             type="text"
                             name="nombre"
-                            placeholder="Ej. Hemoglobina, Hematocrito, Plaquetas..."
+                            placeholder="Ej. Hemoglobina, Colesterol Total, Neutrófilos..."
                             class="w-full font-bold"
                             :value="old('nombre')"
                         />
@@ -75,20 +64,53 @@
                     <x-form.input-error :messages="$errors->get('unidad_id')" class="mt-2" />
                 </div>
 
-                {{-- Rango de Referencia --}}
+                {{-- Clasificación (Imagen 2) --}}
                 <div class="col-span-1 md:col-span-2">
-                    <x-form.input-label for="referencia" :value="__('Valores de Referencia')" />
+                    <x-form.input-label for="tipo_valor" :value="__('Clasificación de Medida (Opcional)')" />
+                    <div class="mt-1">
+                        <x-form.input-select name="tipo_valor" class="w-full">
+                            <option value="">Ninguno (Valor Único)</option>
+                            <option value="diferencial" {{ old('tipo_valor') == 'diferencial' ? 'selected' : '' }}>DIFERENCIAL (%)</option>
+                            <option value="absoluto" {{ old('tipo_valor') == 'absoluto' ? 'selected' : '' }}>ABSOLUTOS (mm³)</option>
+                        </x-form.input-select>
+                    </div>
+                </div>
+
+                {{-- Rango de Referencia Estándar --}}
+                <div class="col-span-1 md:col-span-2 border-t border-gray-100 dark:border-gray-800 pt-4">
+                    <x-form.input-label for="referencia" :value="__('Rango de Referencia Estándar')" />
                     <div class="mt-1">
                         <x-form.text-input
                             id="referencia"
                             type="text"
                             name="referencia"
-                            placeholder="Ej. Hombres: 13.5 - 17.5 / Mujeres: 12.0 - 15.5"
+                            placeholder="Ej. 5.0 - 10.0"
                             class="w-full font-mono text-indigo-600 dark:text-indigo-400"
                             :value="old('referencia')"
                         />
                     </div>
-                    <p class="mt-1 text-[10px] text-gray-400 italic italic">Este texto se imprimirá tal cual en el reporte de resultados.</p>
+                </div>
+
+                {{-- Sección: Niveles de Riesgo (Imagen 3) --}}
+                <div class="col-span-1 md:col-span-2 bg-gray-50 dark:bg-gray-900/50 p-5 rounded-2xl border border-dashed border-gray-200 dark:border-gray-700">
+                    <h3 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group"></i> Rangos Escalonados (Opcional)
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <x-form.input-label for="rango_ideal" :value="__('Nivel Ideal')" />
+                            <x-form.text-input name="rango_ideal" class="w-full mt-1 border-green-200 dark:border-green-900/30" placeholder="Ej. < 200" :value="old('rango_ideal')" />
+                        </div>
+                        <div>
+                            <x-form.input-label for="rango_moderado" :value="__('Nivel Moderado')" />
+                            <x-form.text-input name="rango_moderado" class="w-full mt-1 border-yellow-200 dark:border-yellow-900/30" placeholder="Ej. 200 - 239" :value="old('rango_moderado')" />
+                        </div>
+                        <div>
+                            <x-form.input-label for="rango_alto" :value="__('Nivel Alto')" />
+                            <x-form.text-input name="rango_alto" class="w-full mt-1 border-red-200 dark:border-red-900/30" placeholder="Ej. > 240" :value="old('rango_alto')" />
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -97,9 +119,8 @@
                 <div class="flex items-center justify-between">
                     <a href="{{ route('hemograma_completo.index') }}"
                         class="inline-flex items-center text-sm font-semibold text-gray-500 hover:text-red-600 dark:text-gray-400 transition-colors">
-                        <i class="fa-solid fa-arrow-left mr-2"></i> Volver al listado
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Volver
                     </a>
-                    
                     <x-ui.button size="sm" type="submit" form="form-hemogramas">
                         <i class="fa-solid fa-droplet mr-2"></i> Guardar Parámetro
                     </x-ui.button>

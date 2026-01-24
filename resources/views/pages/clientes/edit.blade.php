@@ -83,7 +83,12 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <x-form.input-label for="fecha_nacimiento" :value="__('Fecha de Nacimiento')"/>
-                        <x-form.text-input type="date" name="fecha_nacimiento" :value="old('fecha_nacimiento', $cliente->fecha_nacimiento)" class="w-full mt-1" />    
+                        <x-form.text-input 
+                            type="date" 
+                            name="fecha_nacimiento" 
+                            :value="old('fecha_nacimiento', $cliente->fecha_nacimiento ? $cliente->fecha_nacimiento->format('Y-m-d') : '')" 
+                            class="w-full mt-1" 
+                        />    
                     </div>
                     <div>
                         <x-form.input-label for="is_activo" :value="__('Estado de Cuenta')" />

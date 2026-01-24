@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('estatus_analisis', function (Blueprint $table) {
             $table->id(); 
             
-            $table->string('nombre');
+            $table->string('nombre')->unique();
             $table->string('descripcion');
 
             $table->string('color_texto', 10)->nullable();

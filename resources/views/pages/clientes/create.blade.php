@@ -73,7 +73,6 @@
                                 <option value="OTRO" {{ old('sexo') == 'OTRO' ? 'selected' : '' }}>Otro</option>
                             </x-form.input-select>
                             <x-form.input-error :messages="$errors->get('sexo')" class="mt-2" />
-
                         </div>
                     </div>
                 </div>

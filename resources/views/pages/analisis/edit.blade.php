@@ -158,23 +158,57 @@
                                         @php
                                             $valorPrevio = $analisi->hemogramas->firstWhere('id', $hemograma->id)?->pivot->resultado;
                                         @endphp
-                                        <div class="flex items-center justify-between p-3 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all group">
-                                            <div class="flex flex-col">
-                                                <span class="text-[11px] font-black text-white/90 uppercase group-hover:text-indigo-400 transition-colors">
-                                                    {{ $hemograma->nombre }}
-                                                </span>
-                                                <div class="flex items-center gap-1.5 mt-0.5">
-                                                    <span class="text-[9px] font-bold text-gray-600 uppercase">Ref:</span>
-                                                    <span class="text-[9px] font-mono font-bold text-gray-400">{{ $hemograma->referencia ?? 'N/A' }}</span>
+                                        <div class="flex flex-col p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all group">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <div class="flex flex-col">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="text-[11px] font-black text-white/90 uppercase group-hover:text-indigo-400 transition-colors">
+                                                            {{ $hemograma->nombre }}
+                                                        </span>
+                                                        {{-- Badge de Clasificación (Diferencial/Absoluto) --}}
+                                                        @if($hemograma->tipo_valor)
+                                                            <span class="px-1.5 py-0.5 rounded text-[8px] font-black uppercase bg-gray-800 text-gray-400 border border-gray-700">
+                                                                {{ $hemograma->tipo_valor }}
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                
+                                                {{-- Input de Resultado --}}
+                                                <div class="relative">
+                                                    <input type="text" 
+                                                        name="resultados[{{ $hemograma->id }}]" 
+                                                        value="{{ old('resultados.'.$hemograma->id, $valorPrevio) }}"
+                                                        placeholder="0.00"
+                                                        class="w-24 text-right font-mono text-sm font-bold border-gray-700 bg-gray-950/50 text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all p-2 shadow-inner">
                                                 </div>
                                             </div>
-                                            
-                                            <div class="relative">
-                                                <input type="text" 
-                                                    name="resultados[{{ $hemograma->id }}]" 
-                                                    value="{{ old('resultados.'.$hemograma->id, $valorPrevio) }}"
-                                                    placeholder="0.00"
-                                                    class="w-24 text-right font-mono text-sm font-bold border-gray-700 bg-gray-950/50 text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all p-2 shadow-inner">
+
+                                            {{-- Visualización de Referencias --}}
+                                            <div class="pt-2 border-t border-white/[0.03]">
+                                                @if($hemograma->rango_ideal || $hemograma->rango_moderado || $hemograma->rango_alto)
+                                                    {{-- Diseño para Rangos Escalonados (Estilo Colesterol) --}}
+                                                    <div class="grid grid-cols-3 gap-2">
+                                                        <div class="flex flex-col">
+                                                            <span class="text-[8px] font-black text-green-500/70 uppercase">Ideal</span>
+                                                            <span class="text-[9px] font-bold text-gray-400 font-mono">{{ $hemograma->rango_ideal ?? 'N/A' }}</span>
+                                                        </div>
+                                                        <div class="flex flex-col">
+                                                            <span class="text-[8px] font-black text-yellow-500/70 uppercase">Mod.</span>
+                                                            <span class="text-[9px] font-bold text-gray-400 font-mono">{{ $hemograma->rango_moderado ?? 'N/A' }}</span>
+                                                        </div>
+                                                        <div class="flex flex-col">
+                                                            <span class="text-[8px] font-black text-red-500/70 uppercase">Alto</span>
+                                                            <span class="text-[9px] font-bold text-gray-400 font-mono">{{ $hemograma->rango_alto ?? 'N/A' }}</span>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    {{-- Diseño para Referencia Estándar --}}
+                                                    <div class="flex items-center gap-1.5">
+                                                        <span class="text-[9px] font-bold text-gray-600 uppercase tracking-tighter">Referencia:</span>
+                                                        <span class="text-[9px] font-mono font-bold text-gray-400">{{ $hemograma->referencia ?? 'N/A' }}</span>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach
