@@ -11,17 +11,26 @@ class UsuarioController extends Controller
 {
     public function index()
     {
+        if (!checkPermiso('usuarios.is_read')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $usuarios = User::all();
         return view('pages.usuarios.index', compact('usuarios'));
     }
 
     public function create()
     {
+        if (!checkPermiso('usuarios.is_create')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         return view('pages.usuarios.create');
     }
 
     public function store(Request $request)
     {
+        if (!checkPermiso('usuarios.is_create')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $validated = $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|max:255|unique:users',
@@ -41,12 +50,18 @@ class UsuarioController extends Controller
 
     public function edit(User $usuario)
     {
+        if (!checkPermiso('usuarios.is_update')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $perfiles = Perfil::all();
         return view('pages.usuarios.edit', compact('usuario', 'perfiles'));
     }
 
     public function update(Request $request, User $usuario)
     {
+        if (!checkPermiso('usuarios.is_update')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $validated = $request->validate([
             'name'      => 'required|string|max:255',
             'email'     => 'required|string|email|max:255|unique:users,email,' . $usuario->id,
@@ -79,6 +94,9 @@ class UsuarioController extends Controller
 
     public function destroy(User $usuario)
     {
+        if (!checkPermiso('usuarios.is_delete')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $usuario->delete();
         return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado.');
     }

@@ -24,11 +24,11 @@ class UsuariosTabla extends Component
 
     public function updatedSearch() { $this->resetPage(); }
     public function updatedPerPage(){$this->resetPage();}
+
     public function confirmDelete($id)
     {
-
         $this->dispatch('swal-confirm', [
-            'title' => '¿Eliminar usuario?',
+            'title' => '¿Desactivar usuario?',
             'text'  => 'Esta acción no se puede deshacer',
             'icon'  => 'warning',
             'id'    => $id,
@@ -36,24 +36,61 @@ class UsuariosTabla extends Component
         ]);
     }
 
+    public function confirmActive($id)
+    {
+        $this->dispatch('swal-confirm', [
+            'title' => '¿Activar usuario?',
+            'text'  => 'Esta acción no se puede deshacer',
+            'icon'  => 'warning',
+            'id'    => $id,
+            'function'    => 'active-usuario',
+        ]);
+    }
+
     #[On('delete-usuario')]
     public function deletePermiso($id)
     {
-        if (!checkPermiso('usuario.eliminar')) {
+        if (!checkPermiso('usuarios.is_delete')) {
             $this->dispatch('swal-init', [
                 'icon'  => 'error',
                 'title' => 'Acceso Denegado',
-                'text'  => 'No tienes permisos para eliminar este usuario'
+                'text'  => 'No tienes permisos para desactivar este usuario'
             ]);
             return;
         }
 
-        User::findOrFail($id)->delete();
+        $usuario = User::findOrFail($id);
+
+        $usuario->update([
+            'is_activo' => false
+        ]);
 
         $this->dispatch('swal-init', [
             'icon'  => 'success',
-            'title' => 'Eliminado',
-            'text'  => 'El usuario fue eliminado correctamente'
+            'title' => 'Desactivado',
+            'text'  => 'El usuario fue desactivado correctamente'
+        ]);
+    }
+
+    #[On('active-usuario')]
+    public function activarUsuario($id)
+    {
+        if (!checkPermiso('usuarios.is_update')) { 
+            $this->dispatch('swal-init', [
+                'icon'  => 'error',
+                'title' => 'Acceso Denegado',
+                'text'  => 'No tienes permisos para activar este usuario'
+            ]);
+            return;
+        }
+
+        $usuario = User::findOrFail($id);
+        $usuario->update(['is_activo' => true]);
+
+        $this->dispatch('swal-init', [
+            'icon'  => 'success',
+            'title' => 'Activado',
+            'text'  => 'El usuario vuelve a estar operativo'
         ]);
     }
 

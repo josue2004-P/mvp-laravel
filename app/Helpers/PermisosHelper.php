@@ -17,13 +17,13 @@ if (!function_exists('checkPermiso')) {
             return true;
         }
 
-        // Si no se envía un permiso específico, asumimos 'leer'
-        $key = $key ?: 'leer';
+        // Si no se envía un permiso específico, asumimos 'is_read'
+        $key = $key ?: 'is_read';
 
-        // Si no tiene '.', asumimos que es un módulo y acción = leer
+        // Si no tiene '.', asumimos que es un módulo y acción = is_read
         if (!str_contains($key, '.')) {
             $modulo = $key;
-            $accion = 'leer';
+            $accion = 'is_read';
         } else {
             [$modulo, $accion] = explode('.', $key);
         }

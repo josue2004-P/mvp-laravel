@@ -36,8 +36,7 @@
                                     <span class="text-white font-extrabold text-sm tracking-tighter">
                                         {{ strtoupper(substr(trim($usuario->name), 0, 1)) }}{{ strlen($usuario->name) > 1 ? strtoupper(substr(trim($usuario->name), 1, 1)) : '' }}
                                     </span>
-                                    {{-- Indicador de estatus (opcional) --}}
-                                    <span class="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full border-2 border-white dark:border-gray-900 bg-emerald-500 shadow-sm"></span>
+                                    <span class="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full border-2 border-white dark:border-gray-900 shadow-sm {{ $usuario->is_activo ? 'bg-emerald-500' : 'bg-red-500' }}"></span>
                                 </div>
                                 <div>
                                     <div class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
@@ -100,13 +99,25 @@
                                                 Editar Perfil
                                             </a>
                                             <div class="my-1 border-t border-gray-50 dark:border-gray-800"></div>
-                                            <button 
-                                                wire:click="confirmDelete({{ $usuario->id }})" 
-                                                class="flex w-full items-center px-3 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors group/del"
-                                            >
-                                                <i class="fa-solid fa-user-xmark mr-3 text-red-400 group-hover/del:text-red-500 transition-colors"></i>
-                                                Desactivar Cuenta
-                                            </button>
+                                            @if($usuario->is_activo)
+                                                {{-- Botón para DESACTIVAR --}}
+                                                <button 
+                                                    wire:click="confirmDelete({{ $usuario->id }})" 
+                                                    class="flex w-full items-center px-3 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors group/del"
+                                                >
+                                                    <i class="fa-solid fa-user-xmark mr-3 text-red-400 group-hover/del:text-red-500 transition-colors"></i>
+                                                    Desactivar Cuenta
+                                                </button>
+                                            @else
+                                                {{-- Botón para ACTIVAR --}}
+                                                <button 
+                                                    wire:click="confirmActive({{ $usuario->id }})" 
+                                                    class="flex w-full items-center px-3 py-2.5 text-sm font-semibold text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 rounded-xl transition-colors group/act"
+                                                >
+                                                    <i class="fa-solid fa-user-check mr-3 text-emerald-400 group-hover/act:text-emerald-500 transition-colors"></i>
+                                                    Activar Cuenta
+                                                </button>
+                                            @endif
                                         </div>
                                     </div>
                                 </template>

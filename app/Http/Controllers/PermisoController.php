@@ -9,8 +9,8 @@ class PermisoController extends Controller
 {
     public function index()
     {
-        if (!checkPermiso('permisos.leer')) {
-            abort(403, 'Operación sin permisos');
+        if (!checkPermiso('permisos.is_read')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
         }
         $permisos = Permiso::all();
         return view('pages.permisos.index', compact('permisos'));
@@ -18,16 +18,16 @@ class PermisoController extends Controller
 
     public function create()
     {
-        if (!checkPermiso('permisos.crear')) {
-            abort(403, 'Operación sin permisos');
+        if (!checkPermiso('permisos.is_create')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
         }
         return view('pages.permisos.create');
     }
 
     public function store(Request $request)
     {
-        if (!checkPermiso('permisos.crear')) {
-            abort(403, 'Operación sin permisos');
+        if (!checkPermiso('permisos.is_create')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
         }
 
         $request->validate([
@@ -46,16 +46,17 @@ class PermisoController extends Controller
 
     public function edit(Permiso $permiso)
     {
-        if (!checkPermiso('permisos.actualizar')) {
-            abort(403, 'Operación sin permisos');
+        if (!checkPermiso('permisos.is_update')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
         }
+
         return view('pages.permisos.edit', compact('permiso'));
     }
 
     public function update(Request $request, Permiso $permiso)
     {
-        if (!checkPermiso('permisos.actualizar')) {
-            abort(403, 'Operación sin permisos');
+        if (!checkPermiso('permisos.is_update')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
         }
 
         $request->merge([
@@ -74,8 +75,8 @@ class PermisoController extends Controller
 
     public function destroy(Permiso $permiso)
     {
-        if (!checkPermiso('permisos.eliminar')) {
-            abort(403, 'Operación sin permisos');
+        if (!checkPermiso('permisos.is_delete')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
         }
         
         $permiso->delete();

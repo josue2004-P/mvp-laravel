@@ -30,7 +30,7 @@ class MenuHelper
             [
                 'name' => 'Analisis',
                 'icon' => 'analysis',
-                'permiso' => "analisis",
+                'permiso' => "  ",
                 'subItems' => [
                     ['name' => 'Analisis', 'path' => '/analisis','permiso' => "analisis",],
                     ['name' => 'Tipo de Analisis', 'path' => '/tipo_analisis','permiso' => "tipo-analisis",],
@@ -51,7 +51,7 @@ class MenuHelper
             [
                 'name' => 'Catalogo',
                 'icon' => 'catalog',
-                'permiso' => "catalog",
+                'permiso' => "catalogo",
                 'subItems' => [
                     ['name' => 'Estatus Analisis', 'path' => '/estatus-analisis','permiso' => "est-als",],
                 ],

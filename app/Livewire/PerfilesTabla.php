@@ -40,7 +40,7 @@ class PerfilesTabla extends Component
     #[On('delete-perfil')]
     public function deletePermiso($id)
     {
-        if (!checkPermiso('permisos.eliminar')) {
+        if (!checkPermiso('perfiles.is_delete')) {
             $this->dispatch('swal-init', [
                 'icon'  => 'error',
                 'title' => 'Acceso Denegado',
