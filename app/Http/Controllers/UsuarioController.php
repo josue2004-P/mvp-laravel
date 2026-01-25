@@ -94,7 +94,7 @@ class UsuarioController extends Controller
 
     public function destroy(User $usuario)
     {
-        if (!checkPermiso('usuarios.is_delete')) {
+        if (!checkPermiso('administrador.is_delete')) {
            return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
         }
         $usuario->delete();

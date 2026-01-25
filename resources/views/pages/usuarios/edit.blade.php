@@ -18,17 +18,25 @@
             </div>
         </div>
         
-        {{-- Badge de Estatus Rápido --}}
-        <div class="hidden md:block">
-            @if($usuario->is_activo)
-                <span class="px-4 py-2 rounded-2xl bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-500/20 text-xs font-bold uppercase tracking-widest">
-                    <i class="fa-solid fa-circle-check mr-2"></i> Cuenta Activa
-                </span>
-            @else
-                <span class="px-4 py-2 rounded-2xl bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-400 border border-red-100 dark:border-red-500/20 text-xs font-bold uppercase tracking-widest">
-                    <i class="fa-solid fa-circle-xmark mr-2"></i> Acceso Restringido
-                </span>
-            @endif
+        {{-- Acciones Rápidas Superiores --}}
+        <div class="flex items-center gap-3">
+            {{-- Botón Regresar --}}
+            <a href="{{ route('usuarios.index') }}" class="flex items-center gap-2 px-4 py-2 rounded-2xl border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 text-xs font-bold uppercase tracking-widest transition-all">
+                <i class="fa-solid fa-arrow-left"></i> Regresar
+            </a>
+
+            {{-- Badge de Estatus --}}
+            <div class="hidden md:block">
+                @if($usuario->is_activo)
+                    <span class="px-4 py-2 rounded-2xl bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-500/20 text-xs font-bold uppercase tracking-widest">
+                        <i class="fa-solid fa-circle-check mr-2"></i> Cuenta Activa
+                    </span>
+                @else
+                    <span class="px-4 py-2 rounded-2xl bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-400 border border-red-100 dark:border-red-500/20 text-xs font-bold uppercase tracking-widest">
+                        <i class="fa-solid fa-circle-xmark mr-2"></i> Acceso Restringido
+                    </span>
+                @endif
+            </div>
         </div>
     </div>
 
@@ -84,15 +92,28 @@
                             </label>
                         </div>
                     </div>
-
                     <x-slot:footer>
-                        <div class="flex items-center justify-between">
-                            <a href="{{ route('usuarios.index') }}" class="text-sm font-bold text-gray-400 hover:text-red-500 transition-colors">
-                                <i class="fa-solid fa-xmark mr-1"></i> Cancelar
-                            </a>
-                            <x-ui.button size="sm" type="submit" form="form-usuarios">
-                                <i class="fa-solid fa-floppy-disk mr-2"></i> Actualizar Cuenta
-                            </x-ui.button>
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-6 w-full">
+                            
+                            <div class="w-full sm:w-auto">
+                                @if(checkPermiso('usuarios.is_delete'))
+                                    <button 
+                                        type="button"
+                                        onclick="confirmarEliminacion()"
+                                        class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 border border-red-100 dark:border-red-500/20 text-xs font-bold uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all duration-300"
+                                    >
+                                        <i class="fa-solid fa-trash-can mr-2"></i> Eliminar Usuario
+                                    </button>
+
+                   
+                                @endif
+                            </div>
+
+                            <div class="w-full sm:w-auto">
+                                <x-ui.button size="md" type="submit" form="form-usuarios" class="w-full sm:w-auto shadow-xl shadow-indigo-500/20">
+                                    <i class="fa-solid fa-floppy-disk mr-2"></i> Guardar Cambios
+                                </x-ui.button>
+                            </div>
                         </div>
                     </x-slot:footer>
                 </x-common.component-card>
@@ -134,4 +155,37 @@
         </div>
     </form>
 </div>
+
+@if(checkPermiso('administrador.is_delete'))
+    <form id="form-eliminar-usuario" action="{{ route('usuarios.destroy', $usuario->id) }}" method="POST" class="hidden">
+        @csrf
+        @method('DELETE')
+    </form>
+@endif
+
+<script>
+function confirmarEliminacion() {
+    const formEliminar = document.getElementById('form-eliminar-usuario');
+    
+    if (!formEliminar) {
+        alert("Error crítico: El formulario de eliminación no se encontró en el DOM.");
+        return;
+    }
+
+    Swal.fire({
+        title: '¿Eliminar permanentemente?',
+        text: "Esta acción borrará al usuario de la base de datos.",
+        icon: 'error',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Sí, eliminar ahora',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            formEliminar.submit();
+        }
+    });
+}
+</script>
 @endsection
