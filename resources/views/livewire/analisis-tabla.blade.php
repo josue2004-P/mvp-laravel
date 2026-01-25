@@ -8,13 +8,15 @@
 >
     {{-- Slot de Filtros Específicos --}}
     <x-slot:filters>
-        {{-- Filtro Tipo de Análisis --}}
-        <div wire:ignore class="w-full"> 
+        {{-- Filtro Tipo de Análisis (Ocupa 4/12 - 33%) --}}
+        <div wire:ignore class="sm:col-span-6 lg:col-span-4"> 
             <x-form.input-select-filter
                 id="tipoAnalisisSelect" 
                 name="tipoAnalisis" 
                 dataModel="tipoAnalisisId" 
-                label="Tipo de Análisis" >
+                label="Tipo de Análisis"
+                class="!bg-white dark:!bg-gray-800/50 border-gray-200 dark:border-gray-700 rounded-xl shadow-sm"
+            >
                 <option value="">Todos los tipos</option>
                 @foreach($tipoAnalisis as $t)
                     <option value="{{ $t->id }}" {{ $tipoAnalisisId == $t->id ? 'selected' : '' }}>
@@ -24,29 +26,33 @@
             </x-form.input-select-filter>
         </div>
 
-        {{-- Filtro Médicos --}}
-        <div wire:ignore class="w-full"> 
+        {{-- Filtro Médicos (Ocupa 5/12 - Un poco más ancho para nombres largos) --}}
+        <div wire:ignore class="sm:col-span-6 lg:col-span-5"> 
             <x-form.input-select-filter
                 dataModel="doctorId"
                 id="doctorSelect" 
                 name="doctor" 
-                label="Médico Solicitante" >
+                label="Médico Solicitante"
+                class="!bg-white dark:!bg-gray-800/50 border-gray-200 dark:border-gray-700 rounded-xl shadow-sm"
+            >
                 <option value="">Todos los doctores</option>
                 @foreach($doctores as $d)
                     <option value="{{ $d->id }}" {{ $doctorId == $d->id ? 'selected' : '' }}>
-                        {{ $d->nombre }}
+                        {{ $d->getNombreCompletoAttribute() }}
                     </option>
                 @endforeach
             </x-form.input-select-filter>
         </div>
 
-        {{-- Filtro Estatus --}}
-        <div wire:ignore class="w-full"> 
+        {{-- Filtro Estatus (Ocupa 3/12 - Más compacto) --}}
+        <div wire:ignore class="sm:col-span-12 lg:col-span-3"> 
             <x-form.input-select-filter
                 dataModel="estatusId"
                 id="estatusSelect" 
                 name="estatus" 
-                label="Estatus" >
+                label="Estatus"
+                class="!bg-white dark:!bg-gray-800/50 border-gray-200 dark:border-gray-700 rounded-xl shadow-sm"
+            >
                 <option value="">Todos los estatus</option>
                 @foreach($estatus as $e)
                     <option value="{{ $e->id }}" {{ $estatusId == $e->id ? 'selected' : '' }}>

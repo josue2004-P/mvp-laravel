@@ -66,7 +66,12 @@ class ClienteTabla extends Component
 
     public function render()
     {
-        $clientes = Cliente::where('nombre', 'like', '%'.$this->search.'%')
+        $clientes = Cliente::where(function($query) {
+                $query->where('nombre', 'like', '%' . $this->search . '%')
+                    ->orWhere('calle', 'like', '%' . $this->search . '%')
+                    ->orWhere('ciudad', 'like', '%' . $this->search . '%')
+                    ->orWhere('estado', 'like', '%' . $this->search . '%');
+            })
             ->paginate($this->perPage);
 
         return view('livewire.cliente-tabla', [

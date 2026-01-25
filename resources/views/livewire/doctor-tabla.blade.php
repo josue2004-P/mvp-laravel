@@ -4,23 +4,26 @@
     :perPage="$perPage"
     :createRoute="route('doctores.create')"
 >
-   <x-slot:filters>
-        {{-- Filtro de Especialidad --}}
-        <div wire:ignore class="w-full sm:w-72"> 
-            <x-form.input-select-filter
-                id="especialidadSelect" 
-                name="especialidad" 
-                dataModel="especialidadId" 
-                label="Especialidad Médica" >
-                <option value="">Todas las especialidades</option>
-                @foreach($especialidades as $es)
-                    <option value="{{ $es->id }}">
-                        {{ $es->nombre }}
-                    </option>
-                @endforeach
-            </x-form.input-select-filter>
+    <x-slot:filters>
+        <div wire:ignore class="sm:col-span-6 lg:col-span-4 xl:col-span-5"> 
+            <div class="relative group">
+                <x-form.input-select-filter
+                    id="especialidadSelect" 
+                    name="especialidad" 
+                    dataModel="especialidadId" 
+                    label="Especialidad Médica"
+                    class="!bg-white dark:!bg-gray-800/50 border-gray-200 dark:border-gray-700 rounded-xl shadow-sm focus:ring-indigo-500/20 transition-all"
+                >
+                    <option value="">Todas las especialidades</option>
+                    @foreach($especialidades as $es)
+                        <option value="{{ $es->id }}">
+                            {{ $es->nombre }}
+                        </option>
+                    @endforeach
+                </x-form.input-select-filter>
+            </div>
         </div>
-   </x-slot:filters>
+    </x-slot:filters>
 
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">

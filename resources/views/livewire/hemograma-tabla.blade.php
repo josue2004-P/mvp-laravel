@@ -6,7 +6,7 @@
 >
    {{-- Slot de Filtros Específicos --}}
     <x-slot:filters>
-        <div wire:ignore class="w-full sm:w-72"> 
+        <div wire:ignore class=" sm:col-span-6 lg:col-span-5"> 
             <x-form.input-select-filter
                 id="categoriaHemogramaCompletoSelect" 
                 name="categoriaHemogramaCompleto" 

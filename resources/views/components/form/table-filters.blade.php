@@ -20,18 +20,20 @@
                         {{ $title }}
                     </h3>
                 </div>
-
                 @if($search !== null)
                 <div class="relative w-full sm:w-80 group">
-                    <input 
-                        type="text" 
+                    {{-- Tu componente personalizado --}}
+                    <x-form.text-input 
                         wire:model.live.debounce.400ms="search" 
                         placeholder="Buscar..." 
-                        class="h-[46px] w-full rounded-2xl border-gray-200 bg-gray-50/50 pl-12 pr-4 text-sm font-medium transition-all focus:bg-white focus:ring-4 focus:ring-indigo-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-indigo-500/50"
-                    >
-                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors">
+                        class="h-[46px] rounded-2xl pl-12 pr-10" {{-- Forzamos el padding para el icono y el spinner --}}
+                    />
+
+                    {{-- Icono de lupa --}}
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors pointer-events-none">
                         <i class="fa-solid fa-magnifying-glass text-base"></i>
                     </div>
+
                     {{-- Spinner de búsqueda sutil --}}
                     <div wire:loading wire:target="search" class="absolute right-4 top-1/2 -translate-y-1/2">
                         <div class="h-4 w-4 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent"></div>
@@ -99,17 +101,16 @@
         </div>
     </div>
 
-    {{-- PANEL DE FILTROS DESPLEGABLE --}}
     <div 
         x-data="{ show: false }" 
         @toggle-filtros.window="show = !show"
         x-show="show"
         x-cloak
         x-collapse
-        class="border-t border-dashed border-gray-200 bg-gray-50/30 dark:border-gray-800 dark:bg-white/[0.01]"
+        class="border-t border-gray-200 bg-gray-50/50 dark:border-gray-800 dark:bg-gray-900/50"
     >
-        <div class="p-8">
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div class="px-6 py-6 lg:px-8">
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-12">
                 {{ $filters }}
             </div>
         </div>

@@ -5,18 +5,6 @@
     :createRoute="route('clientes.create')"
 >
    <x-slot:filters>
-       {{-- Filtro rápido por Estado de Cliente --}}
-       <div wire:ignore class="w-full sm:w-64">
-           <x-form.input-select-filter
-                id="estadoClienteSelect" 
-                name="status" 
-                dataModel="statusFilter" 
-                label="Estado del Cliente" >
-                <option value="">Todos los registros</option>
-                <option value="1">Activos</option>
-                <option value="0">Inactivos</option>
-           </x-form.input-select-filter>
-       </div>
    </x-slot:filters>
     
     <div class="overflow-x-auto">
