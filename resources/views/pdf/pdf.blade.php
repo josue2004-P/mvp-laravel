@@ -129,6 +129,22 @@
 
         <div class="titulo-seccion">{{ $analisis->tipoAnalisis->nombre }}</div>
 
+        {{-- Sección de Método y Muestra centrada --}}
+        @if($analisis->tipoMetodo || $analisis->tipoMuestra)
+            <div style="text-align: center; margin-top: -10px; margin-bottom: 15px; font-size: 11px; color: #475569; text-transform: uppercase;">
+                @if($analisis->tipoMetodo)
+                    <span style="font-weight: bold; color: #00B0F0;">MÉTODO:</span> {{ $analisis->tipoMetodo->nombre }}
+                @endif
+                
+                @if($analisis->tipoMetodo && $analisis->tipoMuestra) 
+                    <span style="margin: 0 15px; color: #cbd5e1;">|</span> 
+                @endif
+
+                @if($analisis->tipoMuestra)
+                    <span style="font-weight: bold; color: #00B0F0;">MUESTRA:</span> {{ $analisis->tipoMuestra->nombre }}
+                @endif
+            </div>
+        @endif
         <table class="tabla-resultados">
             <thead>
                 <tr style="border-bottom: 1.5px solid #334155;">
