@@ -77,7 +77,7 @@
                                 id="estatus_id"
                                 class="select2 {{ !$puedeModificarActual ? 'pointer-events-none opacity-60' : '' }}"
                             >
-                                <option value="{{ $analisi->estatus_id }}" selected>{{ $analisi->estatus->nombre }} (Actual)</option>
+                                <option value="{{ $analisi->estatus_id }}" selected>{{  strtoupper($analisi->estatus->nombre) }}</option>
                                 @foreach($estatusPermitidos as $permitido)
                                     <option value="{{ $permitido->id }}">{{ strtoupper($permitido->nombre) }}</option>
                                 @endforeach
