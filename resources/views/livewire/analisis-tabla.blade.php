@@ -132,7 +132,7 @@
                                 {{ $a->created_at->format('d/m/Y') }}
                             </span>
                             <span class="text-[10px] text-gray-400 italic">
-                                Por: {{ explode(' ', $a->usuarioCreacion->name)[0] }}
+                                Por: {{ $a->usuarioCreacion->name }}
                             </span>
                         </div>
                     </td>
