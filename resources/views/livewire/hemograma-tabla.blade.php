@@ -4,9 +4,9 @@
     :perPage="$perPage"
     :createRoute="route('hemograma_completo.create')"
 >
-   {{-- Slot de Filtros Específicos --}}
+    {{-- Slot de Filtros --}}
     <x-slot:filters>
-        <div wire:ignore class=" sm:col-span-6 lg:col-span-5"> 
+        <div wire:ignore class="sm:col-span-6 lg:col-span-5"> 
             <x-form.input-select-filter
                 id="categoriaHemogramaCompletoSelect" 
                 name="categoriaHemogramaCompleto" 
@@ -14,11 +14,9 @@
                 label="Filtrar por Categoría" >
                 <option value="">Todas las categorías</option>
                 @foreach($categoriasHemogramaCompleto as $chcm)
-                    <option value="{{ $chcm->id }}">
-                        {{ $chcm->nombre }}
-                    </option>
+                    <option value="{{ $chcm->id }}">{{ $chcm->nombre }}</option>
                 @endforeach
-            </x-form.input-filter >
+            </x-form.input-filter>
         </div>
     </x-slot:filters>
 
@@ -29,6 +27,7 @@
                     <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">ID</th>
                     <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Parámetro Analítico</th>
                     <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Categoría</th>
+                    <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Tipo</th>
                     <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Unidad</th>
                     <th scope="col" class="px-6 py-4 text-start text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Rango de Referencia</th>
                     <th scope="col" class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Acciones</th>
@@ -54,19 +53,31 @@
                             </div>
                         </td>
 
-                        {{-- Categoría con Badge --}}
+                        {{-- Categoría --}}
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400 border border-blue-100 dark:border-blue-800">
-                                <i class="fa-solid fa-tag mr-1.5 opacity-50"></i>
                                 {{ $hemograma->categoria->nombre }}
                             </span>
                         </td>
 
-                        {{-- Unidad con estilo Mono --}}
+                        {{-- Nueva Columna: Tipo de Valor (Agrupación) --}}
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="text-xs font-mono font-bold px-2 py-1 rounded bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-white/10">
-                                {{ $hemograma->unidad->nombre }}
-                            </span>
+                            @if($hemograma->tipo_valor == 'diferencial')
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-bold bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400 border border-amber-100 dark:border-amber-800">
+                                    <i class="fa-solid fa-percent mr-1.5 opacity-60"></i> Diferencial
+                                </span>
+                            @elseif($hemograma->tipo_valor == 'absoluto')
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-bold bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400 border border-purple-100 dark:border-purple-800">
+                                    <i class="fa-solid fa-hashtag mr-1.5 opacity-60"></i> Absoluto
+                                </span>
+                            @else
+                                <span class="text-[10px] font-bold text-gray-400 italic">General</span>
+                            @endif
+                        </td>
+
+                        {{-- Unidad --}}
+                        <td class="px-6 py-4 whitespace-nowrap text-xs font-mono font-bold text-gray-600 dark:text-gray-400">
+                            {{ $hemograma->unidad->nombre }}
                         </td>
 
                         {{-- Referencia --}}
