@@ -14,11 +14,17 @@
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white mt-2">Historial Clínico: {{ $cliente->getNombreCompletoAttribute() }}</h1>
         </div>
         
-        <div class="flex gap-2">
-            <x-ui.button variant="secondary" size="sm">
-                <i class="fa-solid fa-download mr-2"></i> Exportar Reporte
-            </x-ui.button>
-        </div>
+<div class="flex gap-2">
+    <x-ui.button 
+        variant="secondary" 
+        size="sm" 
+        :href="route('analisis-cliente.pdf', $cliente->id)"
+        target="_blank"
+    >
+        <i class="fa-solid fa-download"></i> 
+        Exportar Reporte
+    </x-ui.button>
+</div>
     </div>
 
     {{-- Tabla de Registros --}}
@@ -56,10 +62,39 @@
                                     {{ $item->estatus->nombre }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-right">
-                                <button class="text-indigo-600 hover:text-indigo-800 font-bold p-2">
-                                    <i class="fa-solid fa-eye"></i>
-                                </button>
+                            <td class="px-4 py-4 text-center whitespace-nowrap text-sm font-medium">
+                                <div x-data="{ dropdownOpen: false }" class="relative inline-block">
+                                    <button 
+                                        @click="dropdownOpen = !dropdownOpen" 
+                                        x-ref="button"
+                                        type="button" 
+                                        class="p-2 rounded-xl text-gray-400 hover:bg-white dark:hover:bg-gray-800 hover:text-indigo-600 hover:shadow-sm transition-all border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
+                                    >
+                                        <i class="fa-solid fa-ellipsis-vertical text-base"></i>
+                                    </button>
+
+                                    <template x-teleport="body">
+                                        <div 
+                                            x-show="dropdownOpen" 
+                                            @click.away="dropdownOpen = false"
+                                            x-anchor.bottom-end.offset.5="$refs.button"
+                                            x-transition:enter="transition ease-out duration-100"
+                                            x-transition:enter-start="transform opacity-0 scale-95"
+                                            x-transition:enter-end="transform opacity-100 scale-100"
+                                            class="z-[999] w-52 rounded-2xl border border-gray-200 bg-white/95 backdrop-blur-sm shadow-2xl dark:border-gray-700 dark:bg-gray-900/95"
+                                        >
+                                            <div class="p-2 space-y-1">
+                                                <a href="{{ route('analisis.edit', $item->id) }}" class="flex items-center px-3 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 rounded-xl transition-colors">
+                                                    <i class="fa-solid fa-flask-vial mr-3 text-indigo-500"></i>
+                                                    Resultados / Editar
+                                                </a>
+                                                <a href="{{ route('analisis.pdf', $item->id) }}" target="_blank" class="flex items-center px-3 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 rounded-xl transition-colors">
+                                                    <i class="fa-solid fa-file-pdf mr-3 text-red-500"></i>
+                                                    Imprimir Reporte
+                                                </a>
+                                        </div>
+                                    </template>
+                                </div>
                             </td>
                         </tr>
                     @empty

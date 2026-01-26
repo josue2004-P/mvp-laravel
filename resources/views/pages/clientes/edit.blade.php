@@ -8,7 +8,7 @@
         <div>
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Actualizar Expediente</h1>
             <p class="text-sm text-gray-500 dark:text-gray-400">
-                Modificando el registro de: <span class="font-semibold text-indigo-600">{{ $cliente->nombre }} {{ $cliente->apellido_paterno }}</span>
+                Modificando el registro de: <span class="font-semibold text-indigo-600">{{ $cliente->getNombreCompletoAttribute() }} </span>
             </p>
         </div>
 
@@ -18,7 +18,7 @@
                 <i class="fa-solid fa-microscope mr-2"></i>
                 Ver Historial de Análisis
                 <span class="ml-2 bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full text-xs">
-                    {{ $cliente->analisis_count ?? '0' }} {{-- Asumiendo que cargaste el conteo en el controlador --}}
+                    {{ $cliente->analisis->count() }} 
                 </span>
             </a>
 

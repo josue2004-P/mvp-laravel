@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ClienteController extends Controller
 {
@@ -18,7 +19,7 @@ class ClienteController extends Controller
 
         return view('pages.clientes.index', compact('clientes'));
     }
-    
+
     public function analisis(Cliente $cliente)
     {
         $analisis = $cliente->analisis()->latest()->paginate(10);
@@ -157,4 +158,40 @@ class ClienteController extends Controller
 
         return redirect()->route('clientes.index')->with('success', 'Cliente eliminado correctamente');
     }
+
+
+public function generarPdf($id)
+{
+    $cliente = Cliente::findOrFail($id);
+
+    // Obtenemos todos los análisis del último al primero
+    $analisisCollection = $cliente->analisis()
+        ->with([
+            'doctor', 
+            'tipoAnalisis', 
+            'hemogramas.categoria', 
+            'hemogramas.unidad'
+        ])
+        ->latest() 
+        ->get();
+
+    if ($analisisCollection->isEmpty()) {
+        return back()->with('error', 'El cliente no tiene análisis registrados.');
+    }
+
+    // El primer elemento de la colección es el último creado
+    $ultimo = $analisisCollection->first();
+    
+
+    $pdf = Pdf::loadView('pdf.reporte_general', [
+        'cliente' => $cliente,
+        'analisisCollection' => $analisisCollection,
+        'ultimo' => $ultimo,
+        'fechaUltimo' => $ultimo->created_at->format('d/m/Y H:i'),
+    ])
+    ->setPaper('A4', 'portrait')
+    ->setOptions(['isRemoteEnabled' => true]);
+
+    return $pdf->stream('expediente_'.$cliente->id.'.pdf');
+}
 }
