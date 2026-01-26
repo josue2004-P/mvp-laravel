@@ -37,7 +37,7 @@
                                 </div>
                                 <div>
                                     <div class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 transition-colors">
-                                        {{ $cliente->nombre }} {{ $cliente->apellido_paterno }}
+                                        {{ $cliente->getNombreCompletoAttribute() }} 
                                     </div>
                                     <div class="flex items-center text-[10px] font-medium text-gray-500 dark:text-gray-400 mt-0.5 lowercase tracking-tight">
                                         <i class="fa-regular fa-envelope mr-1.5 opacity-60"></i>

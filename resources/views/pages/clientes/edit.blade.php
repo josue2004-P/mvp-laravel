@@ -4,19 +4,30 @@
 
 @section('content')
 <div class="max-w-5xl mx-auto">
-    {{-- Encabezado Externo --}}
-    <div class="mb-6 flex justify-between items-center">
+    <div class="mb-6 flex flex-wrap justify-between items-end gap-4">
         <div>
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Actualizar Expediente</h1>
             <p class="text-sm text-gray-500 dark:text-gray-400">
                 Modificando el registro de: <span class="font-semibold text-indigo-600">{{ $cliente->nombre }} {{ $cliente->apellido_paterno }}</span>
             </p>
         </div>
-        {{-- Badge de estado rápido --}}
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold {{ $cliente->is_activo ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
-            <span class="w-2 h-2 mr-2 rounded-full {{ $cliente->is_activo ? 'bg-green-500' : 'bg-red-500' }}"></span>
-            {{ $cliente->is_activo ? 'Cuenta Activa' : 'Cuenta Inactiva' }}
-        </span>
+
+        <div class="flex items-center gap-3">
+            <a href="{{ route('clientes.analisis.index', $cliente->id) }}" 
+            class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-indigo-200 dark:border-indigo-900 rounded-lg text-sm font-bold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all shadow-sm">
+                <i class="fa-solid fa-microscope mr-2"></i>
+                Ver Historial de Análisis
+                <span class="ml-2 bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full text-xs">
+                    {{ $cliente->analisis_count ?? '0' }} {{-- Asumiendo que cargaste el conteo en el controlador --}}
+                </span>
+            </a>
+
+            {{-- Badge de estado rápido existente --}}
+            <span class="inline-flex items-center px-3 py-2 rounded-lg text-xs font-bold {{ $cliente->is_activo ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
+                <span class="w-2 h-2 mr-2 rounded-full {{ $cliente->is_activo ? 'bg-green-500' : 'bg-red-500' }}"></span>
+                {{ $cliente->is_activo ? 'Activa' : 'Inactiva' }}
+            </span>
+        </div>
     </div>
 
     <form id="form-clientes" action="{{ route('clientes.update', $cliente->id) }}" method="POST">

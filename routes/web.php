@@ -41,6 +41,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('usuarios', UsuarioController::class);
     Route::resource('clientes', ClienteController::class);
+    Route::get('clientes/{cliente}/analisis', [ClienteController::class, 'analisis'])
+    ->name('clientes.analisis.index');
+    
     Route::resource('doctores', DoctorController::class)->parameters([
         'doctores' => 'doctor'
         

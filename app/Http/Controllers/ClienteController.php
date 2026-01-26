@@ -18,6 +18,29 @@ class ClienteController extends Controller
 
         return view('pages.clientes.index', compact('clientes'));
     }
+    
+    public function analisis(Cliente $cliente)
+    {
+        $analisis = $cliente->analisis()->latest()->paginate(10);
+        
+        // Obtenemos el último registro para la gráfica de hemograma
+        $ultimoAnalisis = $cliente->analisis()->latest()->first();
+        
+        // Preparamos los datos (ajusta las llaves según tus columnas en la BD)
+        $datosHemograma = [];
+        $fechaUltimo = $ultimoAnalisis ? $ultimoAnalisis->created_at->format('d/m/Y') : 'Sin registro';
+
+        if ($ultimoAnalisis) {
+            $datosHemograma = [
+                'Hemoglobina' => $ultimoAnalisis->hemoglobina ?? 0,
+                'Leucocitos'  => $ultimoAnalisis->leucocitos ?? 0,
+                'Plaquetas'   => $ultimoAnalisis->plaquetas ?? 0,
+                'Eritrocitos' => $ultimoAnalisis->eritrocitos ?? 0,
+            ];
+        }
+
+        return view('pages.clientes.analisis-index', compact('cliente', 'analisis', 'datosHemograma', 'fechaUltimo'));
+    }
 
     // Formulario para crear cliente
     public function create()
