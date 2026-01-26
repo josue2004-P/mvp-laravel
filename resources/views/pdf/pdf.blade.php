@@ -46,65 +46,65 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <style>
+<style>
         @page { margin: 0px; }
         body {
             margin: 0; padding: 0; width: 100%;
             font-family: 'Helvetica', 'Arial', sans-serif;
-            color: #1a1a1a; line-height: 1.3; /* Incrementado ligeramente el interlineado */
+            color: #1a1a1a; line-height: 1.3;
         }
         .header, .footer { width: 100%; }
         .footer { position: absolute; bottom: 0; }
         .logo { width: 100%; display: block; }
         .content { padding: 0 35px; margin-top: 10px; }
         
-        /* Tabla Paciente - Aumentada de 9px a 10.5px */
+        /* Tabla Paciente - Reducido a 10px */
         .tabla-paciente {
             width: 100%; border-collapse: collapse;
-            background-color: #00B0F0; color: white; font-size: 10.5px; 
+            background-color: #00B0F0; color: white; font-size: 10px; 
         }
         .tabla-paciente td { padding: 5px 10px; border: 0.5px solid rgba(255,255,255,0.2); }
 
-        /* Título de Sección - Aumentado de 13px a 15px */
+        /* Título de Sección - Reducido a 14.5px */
         .titulo-seccion {
-            text-align: center; font-size: 15px; font-weight: bold; 
+            text-align: center; font-size: 14.5px; font-weight: bold; 
             text-transform: uppercase; margin: 15px 0 8px 0;
             border-bottom: 2px solid #00B0F0; width: 100%;
         }
 
-        /* Método y Muestra - Aumentado de 8.5px a 10px */
+        /* Método y Muestra - Reducido a 9.5px */
         .metodo-muestra {
-            text-align: center; margin-bottom: 15px; font-size: 10px; 
+            text-align: center; margin-bottom: 15px; font-size: 9.5px; 
             color: #475569; text-transform: uppercase;
         }
 
-        /* Tabla Resultados - Aumentada de 9px a 10.5px */
-        .tabla-resultados { width: 100%; border-collapse: collapse; font-size: 10.5px; }
+        /* Tabla Resultados - Reducido a 10px */
+        .tabla-resultados { width: 100%; border-collapse: collapse; font-size: 10px; }
         
-        /* Encabezados de Tabla - Aumentado a 11px */
+        /* Encabezados de Tabla - Reducido a 10.5px */
         .tabla-resultados th { 
             padding: 6px 4px; 
             border-bottom: 1.5px solid #334155; 
-            font-size: 11px;
+            font-size: 10.5px;
         }
 
-        /* Categorías - Aumentado a 11px */
+        /* Categorías - Reducido a 10.5px */
         .categoria-row td { 
             background-color: #f1f5f9; 
             font-weight: bold; 
             padding: 6px 8px; 
-            font-size: 11px; 
+            font-size: 10.5px; 
         }
         
         .tabla-resultados td { padding: 5px 4px; border-bottom: 0.5px solid #f1f5f9; }
         
-        /* Resultados Resaltados - Aumentado de 10px a 11.5px */
-        .texto-negrita { font-weight: 900; font-size: 11.5px; color: #000; }
-        .texto-normal { font-weight: normal; font-size: 10.5px; color: #1a1a1a; }
+        /* Resultados Resaltados - Reducido a 11px */
+        .texto-negrita { font-weight: 900; font-size: 11px; color: #000; }
+        .texto-normal { font-weight: normal; font-size: 10px; color: #1a1a1a; }
         
-        /* Unidades y Referencias - Aumentado de 8px a 9.5px */
-        .unidad-col { color: #64748b; font-size: 9.5px; }
-        .rango-txt { display: block; font-size: 9.5px; line-height: 1.1; color: #475569; }
+        /* Unidades y Referencias - Reducido a 9px */
+        .unidad-col { color: #64748b; font-size: 9px; }
+        .rango-txt { display: block; font-size: 9px; line-height: 1.1; color: #475569; }
     </style>
 </head>
 <body>
