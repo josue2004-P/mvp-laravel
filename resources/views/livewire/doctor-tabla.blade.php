@@ -55,7 +55,7 @@
                                 </div>
                                 <div>
                                     <div class="text-sm font-extrabold text-gray-900 dark:text-white group-hover:text-indigo-600 transition-colors">
-                                        {{ $doctor->nombre }} {{ $doctor->apellido_paterno }}
+                                        {{ $doctor->getNombreCompletoAttribute() }}
                                     </div>
                                     <div class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-tighter">
                                         CP: {{ $doctor->cedula_profesional }}
