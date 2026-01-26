@@ -23,7 +23,7 @@ class MenuHelper
                 'icon' => 'doctor',
                 'permiso' => "doctores",
                 'subItems' => [
-                    ['name' => 'Doctores', 'path' => '/doctores','permiso' => "doctor",],
+                    ['name' => 'Doctores', 'path' => '/doctores','permiso' => "doctores",],
                     ['name' => 'Especialidades', 'path' => '/especialidades','permiso' => "esp-doctor",],
                 ],
             ],

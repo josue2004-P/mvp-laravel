@@ -8,16 +8,25 @@ use Illuminate\Http\Request;
 class EspecialidadController extends Controller
 {
     public function index() {
+        if (!checkPermiso('esp-doctor.is_read')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $especialidades = Especialidad::all();
         return view('pages.especialidades.index', compact('especialidades'));
     }
 
     public function create() {
+        if (!checkPermiso('esp-doctor.is_create')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         return view('pages.especialidades.create');
     }
 
     public function store(Request $request) 
     {
+        if (!checkPermiso('esp-doctor.is_create')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $validated = $request->validate([
             'nombre'      => 'required|unique:especialidades,nombre|max:255',
             'descripcion' => 'nullable|string|max:1000', // Agregamos validación de descripción
@@ -34,11 +43,17 @@ class EspecialidadController extends Controller
     }
 
     public function edit(Especialidad $especialidad) {
+        if (!checkPermiso('esp-doctor.is_update')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         return view('pages.especialidades.edit', compact('especialidad'));
     }
 
     public function update(Request $request, Especialidad $especialidad) 
     {
+        if (!checkPermiso('esp-doctor.is_update')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $validated = $request->validate([
             'nombre'      => 'required|max:255|unique:especialidades,nombre,' . $especialidad->id,
             'descripcion' => 'nullable|string|max:1000', // Validamos la descripción en el update
@@ -56,6 +71,9 @@ class EspecialidadController extends Controller
 
     public function destroy(Especialidad $especialidad) 
     {
+        if (!checkPermiso('esp-doctor.is_delete')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         try {
             // Verificamos si tiene doctores antes de borrar (opcional por integridad)
             if ($especialidad->doctores()->count() > 0) {

@@ -45,7 +45,7 @@ class DoctorTabla extends Component
     #[On('delete-doctor')]
     public function deleteDoctor($id)
     {
-        if (!checkPermiso('doctores.eliminar')) {
+        if (!checkPermiso('doctores.is_delete')) {
             $this->dispatch('swal-init', [
                 'icon'  => 'error',
                 'title' => 'Acceso Denegado',

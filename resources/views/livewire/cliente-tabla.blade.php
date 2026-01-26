@@ -114,14 +114,16 @@
                                                 <i class="fa-solid fa-id-card-clip mr-3 text-gray-400 group-hover/item:text-indigo-500 transition-colors"></i>
                                                 Ver Expediente
                                             </a>
-                                            <div class="my-1 border-t border-gray-50 dark:border-gray-800"></div>
-                                            <button 
-                                                wire:click="confirmDelete({{ $cliente->id }})" 
-                                                class="flex w-full items-center px-3 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors group/del"
-                                            >
-                                                <i class="fa-solid fa-user-minus mr-3 text-red-400 group-hover/del:text-red-500 transition-colors"></i>
-                                                Eliminar Cliente
-                                            </button>
+                                            @if(checkPermiso('clientes.is_delete') || checkPermiso('administrador.is_delete'))
+                                                <div class="my-1 border-t border-gray-50 dark:border-gray-800"></div>
+                                                <button 
+                                                    wire:click="confirmDelete({{ $cliente->id }})" 
+                                                    class="flex w-full items-center px-3 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors group/del"
+                                                >
+                                                    <i class="fa-solid fa-user-minus mr-3 text-red-400 group-hover/del:text-red-500 transition-colors"></i>
+                                                    Eliminar Cliente
+                                                </button>
+                                            @endif
                                         </div>
                                     </div>
                                 </template>

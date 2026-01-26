@@ -10,6 +10,9 @@ class DoctorController extends Controller
 {
     public function index()
     {
+        if (!checkPermiso('doctores.is_read')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $doctores = Doctor::all();
         $especialidades = Especialidad::all();
 
@@ -18,12 +21,18 @@ class DoctorController extends Controller
 
     public function create()
     {
+        if (!checkPermiso('doctores.is_create')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $especialidades = Especialidad::all();
         return view('pages.doctores.create', compact('especialidades'));
     }
 
     public function store(Request $request)
     {
+        if (!checkPermiso('doctores.is_create')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $validated = $request->validate([
             'nombre'             => 'required|string|max:100',
             'apellido_paterno'   => 'required|string|max:100',
@@ -59,12 +68,18 @@ class DoctorController extends Controller
 
     public function edit(Doctor $doctor)
     {
+        if (!checkPermiso('doctores.is_update')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $especialidades = Especialidad::all();
         return view('pages.doctores.edit', compact('doctor','especialidades'));
     }
 
     public function update(Request $request, Doctor $doctor)
     {
+        if (!checkPermiso('doctores.is_update')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $validated = $request->validate([
             'nombre'             => 'required|string|max:100',
             'apellido_paterno'   => 'required|string|max:100',
@@ -97,6 +112,9 @@ class DoctorController extends Controller
 
     public function destroy(Doctor $doctor)
     {
+        if (!checkPermiso('doctores.is_delete')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $doctor->delete();
         return redirect()->route('doctores.index')->with('success', 'Doctor eliminado correctamente');
     }

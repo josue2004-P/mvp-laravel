@@ -54,7 +54,7 @@
                 <div>
                     <x-form.input-label for="telefono" :value="__('Teléfono de Contacto')"/>
                     <div class="mt-1">
-                        <x-form.text-input type="text" name="telefono" placeholder="Ej. 123 456 7890" :value="old('telefono')" class="w-full" />    
+                        <x-form.text-input type="number" name="telefono" placeholder="Ej. 123 456 7890" :value="old('telefono')" class="w-full" />    
                     </div>
                     <x-form.input-error :messages="$errors->get('telefono')" class="mt-2" />
                 </div>

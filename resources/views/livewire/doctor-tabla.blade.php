@@ -129,6 +129,8 @@
                                                 Historial Médico
                                             </a> --}}
 
+                                            @if(checkPermiso('doctores.is_delete') || checkPermiso('administrador.is_delete'))
+
                                             <div class="my-1 border-t border-gray-50 dark:border-gray-800"></div>
                                             
                                             <button 
@@ -138,6 +140,7 @@
                                                 <i class="fa-solid fa-trash-can mr-3 text-red-400 group-hover/del:text-red-500 transition-colors"></i>
                                                 Eliminar Doctor
                                             </button>
+                                            @endif
                                         </div>
                                     </div>
                                 </template>

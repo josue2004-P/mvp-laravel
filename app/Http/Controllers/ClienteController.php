@@ -11,6 +11,9 @@ class ClienteController extends Controller
     // Listar clientes
     public function index()
     {
+        if (!checkPermiso('clientes.is_read')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         // Después (paginación de 10 por página)
         $clientes = Cliente::when(request('search'), function($query) {
         $query->where('nombre', 'like', '%'.request('search').'%');
@@ -22,6 +25,9 @@ class ClienteController extends Controller
 
     public function analisis(Cliente $cliente)
     {
+        if (!checkPermiso('clientes.is_update')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $analisis = $cliente->analisis()->latest()->paginate(10);
         
         // Obtenemos el último registro para la gráfica de hemograma
@@ -46,12 +52,18 @@ class ClienteController extends Controller
     // Formulario para crear cliente
     public function create()
     {
+        if (!checkPermiso('clientes.is_create')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         return view('pages.clientes.create');
     }
 
     // Guardar nuevo cliente
     public function store(Request $request)
     {
+        if (!checkPermiso('clientes.is_create')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         $validated = $request->validate([
             // Datos Personales
             'nombre'           => 'required|string|max:255|unique:clientes,nombre',
@@ -101,15 +113,21 @@ class ClienteController extends Controller
     // Formulario para editar cliente
     public function edit(Cliente $cliente)
     {
+        if (!checkPermiso('clientes.is_update')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         return view('pages.clientes.edit', compact('cliente'));
     }
 
     // Actualizar cliente
-/**
+    /**
      * Actualiza el cliente en la base de datos.
      */
     public function update(Request $request, Cliente $cliente)
     {
+        if (!checkPermiso('clientes.is_update')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
         // 1. Validación con excepción de ID para el campo único
         $validated = $request->validate([
             'nombre'           => 'required|string|max:100|unique:clientes,nombre,' . $cliente->id,
@@ -154,44 +172,51 @@ class ClienteController extends Controller
     // Eliminar cliente
     public function destroy(Cliente $cliente)
     {
+        if (!checkPermiso('clientes.is_delete')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
+        
         $cliente->delete();
 
         return redirect()->route('clientes.index')->with('success', 'Cliente eliminado correctamente');
     }
 
 
-public function generarPdf($id)
-{
-    $cliente = Cliente::findOrFail($id);
+    public function generarPdf($id)
+    {
+        if (!checkPermiso('clientes.is_read')) {
+           return redirect()->back()->with('error', 'No tienes permisos para realizar esta acción');
+        }
+        $cliente = Cliente::findOrFail($id);
 
-    // Obtenemos todos los análisis del último al primero
-    $analisisCollection = $cliente->analisis()
-        ->with([
-            'doctor', 
-            'tipoAnalisis', 
-            'hemogramas.categoria', 
-            'hemogramas.unidad'
+        // Obtenemos todos los análisis del último al primero
+        $analisisCollection = $cliente->analisis()
+            ->with([
+                'doctor', 
+                'tipoAnalisis', 
+                'hemogramas.categoria', 
+                'hemogramas.unidad'
+            ])
+            ->latest() 
+            ->get();
+
+        if ($analisisCollection->isEmpty()) {
+            return back()->with('error', 'El cliente no tiene análisis registrados.');
+        }
+
+        // El primer elemento de la colección es el último creado
+        $ultimo = $analisisCollection->first();
+        
+
+        $pdf = Pdf::loadView('pdf.reporte_general', [
+            'cliente' => $cliente,
+            'analisisCollection' => $analisisCollection,
+            'ultimo' => $ultimo,
+            'fechaUltimo' => $ultimo->created_at->format('d/m/Y H:i'),
         ])
-        ->latest() 
-        ->get();
+        ->setPaper('A4', 'portrait')
+        ->setOptions(['isRemoteEnabled' => true]);
 
-    if ($analisisCollection->isEmpty()) {
-        return back()->with('error', 'El cliente no tiene análisis registrados.');
+        return $pdf->stream('expediente_'.$cliente->id.'.pdf');
     }
-
-    // El primer elemento de la colección es el último creado
-    $ultimo = $analisisCollection->first();
-    
-
-    $pdf = Pdf::loadView('pdf.reporte_general', [
-        'cliente' => $cliente,
-        'analisisCollection' => $analisisCollection,
-        'ultimo' => $ultimo,
-        'fechaUltimo' => $ultimo->created_at->format('d/m/Y H:i'),
-    ])
-    ->setPaper('A4', 'portrait')
-    ->setOptions(['isRemoteEnabled' => true]);
-
-    return $pdf->stream('expediente_'.$cliente->id.'.pdf');
-}
 }

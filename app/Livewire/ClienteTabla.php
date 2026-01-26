@@ -41,7 +41,7 @@ class ClienteTabla extends Component
     #[On('delete-cliente')]
     public function deleteCliente($id)
     {
-        if (!checkPermiso('clientes.eliminar')) {
+        if (!checkPermiso('clientes.is_delete')) {
             $this->dispatch('swal-init', [
                 'icon'  => 'error',
                 'title' => 'Acceso Denegado',

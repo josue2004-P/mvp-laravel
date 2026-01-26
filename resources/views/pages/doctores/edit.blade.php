@@ -58,7 +58,7 @@
 
                 <div>
                     <x-form.input-label for="telefono" :value="__('Teléfono de Contacto')"/>
-                    <x-form.text-input type="text" name="telefono" :value="old('telefono', $doctor->telefono)" class="w-full mt-1" />    
+                    <x-form.text-input type="number" name="telefono" :value="old('telefono', $doctor->telefono)" class="w-full mt-1" />    
                 </div>
 
                 {{-- Sección: Profesional --}}

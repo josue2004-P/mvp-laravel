@@ -19,7 +19,6 @@ class Doctor extends Model
         'apellido_paterno',
         'apellido_materno',
         'cedula_profesional',
-        'especialidad_id',
         'email',
         'telefono',
         'is_activo',

@@ -39,7 +39,7 @@ class EspecialidadTabla extends Component
     #[On('delete-especialidad')]
     public function deleteEspecialidad($id)
     {
-        if (!checkPermiso('especialidades.eliminar')) {
+        if (!checkPermiso('esp-doctor.eliminar')) {
             $this->dispatch('swal-init', [
                 'icon'  => 'error',
                 'title' => 'Acceso Denegado',
