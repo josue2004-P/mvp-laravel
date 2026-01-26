@@ -145,73 +145,72 @@
                 @endif
             </div>
         @endif
-        <table class="tabla-resultados">
-            <thead>
-                <tr style="border-bottom: 1.5px solid #334155;">
-                    <th style="text-align: left; width: 40%;">ESTUDIO</th>
-                    <th style="text-align: center; width: 15%;">RESULTADO</th>
-                    <th style="text-align: center; width: 10%;">UNIDAD</th>
-                    <th style="text-align: right; width: 35%;">VALORES DE REFERENCIA</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach($analisis->hemogramas->groupBy('categoria.nombre') as $categoria => $hemogramas)
-                {{-- Título Principal: FORMULA ROJA, BLANCA, etc. --}}
-                <tr class="categoria-row">
-                    <td colspan="4" style="background-color: #f1f5f9; font-weight: bold; padding: 8px;">
-                        {{ strtoupper($categoria) }}
-                    </td>
-                </tr>
+<table class="tabla-resultados" style="font-size: 9px;"> {{-- Fuente base reducida --}}
+    <thead>
+        <tr style="border-bottom: 1.5px solid #334155;">
+            <th style="text-align: left; width: 40%; padding: 4px;">ESTUDIO</th>
+            <th style="text-align: center; width: 15%; padding: 4px;">RESULTADO</th>
+            <th style="text-align: center; width: 10%; padding: 4px;">UNIDAD</th>
+            <th style="text-align: right; width: 35%; padding: 4px;">VALORES DE REFERENCIA</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach($analisis->hemogramas->groupBy('categoria.nombre') as $categoria => $hemogramas)
+        {{-- Categoría Principal (Fórmula Roja/Blanca) --}}
+        <tr class="categoria-row">
+            <td colspan="4" style="background-color: #f1f5f9; font-weight: bold; padding: 5px 8px; font-size: 10px;">
+                {{ strtoupper($categoria) }}
+            </td>
+        </tr>
 
-                @php
-                    // Definimos los grupos según tus datos de MySQL (minúsculas)
-                    $grupos = [
-                        ['tipo' => null,          'label' => null],
-                        ['tipo' => 'diferencial', 'label' => 'DIFERENCIAL ( % )'],
-                        ['tipo' => 'absoluto',    'label' => 'ABSOLUTOS']
-                    ];
-                @endphp
+        @php
+            $grupos = [
+                ['tipo' => null,          'label' => null],
+                ['tipo' => 'diferencial', 'label' => 'DIFERENCIAL ( % )'],
+                ['tipo' => 'absoluto',    'label' => 'ABSOLUTOS']
+            ];
+        @endphp
 
-                @foreach($grupos as $g)
+        @foreach($grupos as $g)
+            @php 
+                $filtrados = $hemogramas->where('tipo_valor', $g['tipo']); 
+            @endphp
+
+            @if($filtrados->count() > 0)
+                {{-- Subtítulos (Diferencial / Absolutos) --}}
+                @if($g['label'])
+                    <tr class="categoria-row">
+                        <td colspan="4" style="background-color: #ffffff; font-weight: bold; padding: 4px 15px; color: #334155; border-bottom: 1px solid #dee2e6; font-size: 9px;">
+                            {{ $g['label'] }}
+                        </td>
+                    </tr>
+                @endif
+
+                @foreach($filtrados as $hemo)
                     @php 
-                        // Filtramos los hemogramas que correspondan al tipo actual
-                        $filtrados = $hemogramas->where('tipo_valor', $g['tipo']); 
+                        $resultado = $hemo->pivot->resultado;
+                        $resaltar = $isOutOfRange($hemo, $resultado);
                     @endphp
-
-                    @if($filtrados->count() > 0)
-                        {{-- Pintamos el subtítulo si existe (Diferencial o Absoluto) --}}
-                        @if($g['label'])
-                            <tr class="categoria-row">
-                                <td colspan="4" style="background-color: #ffffff; font-weight: bold; padding: 6px 15px; color: #334155; border-bottom: 1px solid #dee2e6;">
-                                    {{ $g['label'] }}
-                                </td>
-                            </tr>
-                        @endif
-
-                        {{-- Pintamos los estudios de este grupo --}}
-                        @foreach($filtrados as $hemo)
-                            @php 
-                                $resultado = $hemo->pivot->resultado;
-                                $resaltar = $isOutOfRange($hemo, $resultado);
-                            @endphp
-                            <tr>
-                                <td style="padding-left: {{ $g['tipo'] ? '30px' : '15px' }};">
-                                    {{ $hemo->nombre }}
-                                </td>
-                                <td style="text-align: center;" class="{{ $resaltar ? 'texto-negrita' : 'texto-normal' }}">
-                                    {{ $resultado }}
-                                </td>
-                                <td style="text-align: center;" class="unidad-col">{{ $hemo->unidad->nombre }}</td>
-                                <td style="text-align: right;">
-                                    <span style="font-size: 10px; color: #475569;">{{ $hemo->referencia ?? 'N/A' }}</span>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @endif
+                    <tr>
+                        <td style="padding: 3px 3px 3px {{ $g['tipo'] ? '30px' : '15px' }};">
+                            {{ $hemo->nombre }}
+                        </td>
+                        <td style="text-align: center; padding: 3px;" class="{{ $resaltar ? 'texto-negrita' : 'texto-normal' }}">
+                            {{ $resultado }}
+                        </td>
+                        <td style="text-align: center; padding: 3px; color: #64748b; font-size: 8px;">
+                            {{ $hemo->unidad->nombre }}
+                        </td>
+                        <td style="text-align: right; padding: 3px;">
+                            <span style="font-size: 8px; color: #475569;">{{ $hemo->referencia ?? 'N/A' }}</span>
+                        </td>
+                    </tr>
                 @endforeach
-            @endforeach
-            </tbody>
-        </table>
+            @endif
+        @endforeach
+    @endforeach
+    </tbody>
+</table>
     </div>
     <div class="footer"><img src="{{ $footer }}" class="logo"></div>
 </body>
