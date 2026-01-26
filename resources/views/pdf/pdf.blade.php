@@ -112,6 +112,18 @@
                 <td style="width:10%; font-weight: bold;">EDAD:</td>
                 <td style="width:25%;">{{ $analisis->cliente->edad }} AÑOS</td>
             </tr>
+            <tr>
+                <td style="width:12%; font-weight: bold;">MEDICO:</td>
+                <td style="width:53%;">{{ $analisis->doctor->getNombreCompletoAttribute() }}</td>
+                <td style="width:10%; font-weight: bold;">SEXO:</td>
+                <td style="width:25%;">{{ $analisis->cliente->sexo }} </td>
+            </tr>
+            <tr>
+                <td style="width:16%; font-weight: bold;">FECHA TOMA:</td>
+                <td style="width:14%;">{{ $analisis->fecha_toma }}</td>
+                <td style="width:20%; font-weight: bold;">FECHA REPORTE:</td>
+                <td style="width:25%;">{{ $analisis->created_at->format('d/m/Y h:i:s A') }}</td>
+            </tr>
             {{-- ... resto de filas de cabecera ... --}}
         </table>
 
