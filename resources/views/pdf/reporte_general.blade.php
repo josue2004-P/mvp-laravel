@@ -38,11 +38,12 @@
 
         {{-- SECCIÓN DINÁMICA DEL ÚLTIMO ANÁLISIS --}}
         <h3 style="color: #00B0F0; border-bottom: 2px solid #00B0F0; padding-bottom: 5px;">
-            DETALLE DEL ÚLTIMO ANÁLISIS ({{ $ultimo->created_at->format('d/m/Y') }})
+            DETALLE DEL ÚLTIMO ANÁLISIS ({{ $ultimo->created_at->format('d/m/Y h:i:s A') }})
+            
         </h3>
         <p style="font-size: 10px; margin-bottom: 5px;">
             <strong>Estudio:</strong> {{ $ultimo->tipoAnalisis->nombre }} | 
-            <strong>Médico:</strong> Dr(a). {{ $ultimo->doctor->getNombreCompletoAttribute() ?? 'N/A' }}
+            <strong>Médico:</strong> Dr(a). {{ $ultimo->doctor->getNombreCompletoAttribute() ?? 'N/A' }} 
         </p>
 
         <table class="tabla-ultimo">
@@ -81,7 +82,7 @@
             <tbody>
                 @foreach($analisisCollection as $item)
                 <tr>
-                    <td style="font-weight: bold;">{{ $item->created_at->format('d/m/Y') }}</td>
+                    <td style="font-weight: bold;">{{ $item->created_at->format('d/m/Y h:i:s A') }}</td>
                     <td>
                         <div style="font-weight: bold; color: #00B0F0;">{{ $item->tipoAnalisis->nombre }}</div>
                         <div style="font-size: 9px; color: #999;">ID: #{{ $item->id }}</div>
@@ -99,6 +100,5 @@
         </table>
     </div>
 
-    <div class="footer"><img src="{{ $footer }}" style="width:100%"></div>
 </body>
 </html>
