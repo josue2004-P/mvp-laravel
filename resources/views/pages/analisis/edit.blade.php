@@ -79,7 +79,7 @@
                             >
                                 <option value="{{ $analisi->estatus_id }}" selected>{{ $analisi->estatus->nombre }} (Actual)</option>
                                 @foreach($estatusPermitidos as $permitido)
-                                    <option value="{{ $permitido->id }}">{{ $permitido->descripcion }}</option>
+                                    <option value="{{ $permitido->id }}">{{ $permitido->nombre }}</option>
                                 @endforeach
                             </x-form.input-select>
                         </div>
