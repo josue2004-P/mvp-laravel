@@ -45,7 +45,7 @@
                     @forelse($analisis as $item)
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
                             <td class="px-6 py-4 font-bold text-gray-900 dark:text-white">#{{ $item->id }}</td>
-                            <td class="px-6 py-4 text-gray-600 dark:text-gray-400">{{ $item->created_at->format('d/m/Y') }}</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-400">{{ $item->created_at->format('d/m/Y h:i:s A') }}</td>
                             <td class="px-6 py-4">
                                 <span class="block font-medium text-gray-800 dark:text-gray-200">{{ $item->tipoAnalisis->nombre  }}</span>
                                 <span class="text-xs text-gray-500 italic">{{ 'Laboratorio Piedad' }}</span>
