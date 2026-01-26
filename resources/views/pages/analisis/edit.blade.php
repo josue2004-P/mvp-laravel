@@ -79,7 +79,7 @@
                             >
                                 <option value="{{ $analisi->estatus_id }}" selected>{{ $analisi->estatus->nombre }} (Actual)</option>
                                 @foreach($estatusPermitidos as $permitido)
-                                    <option value="{{ $permitido->id }}">{{ $permitido->nombre }}</option>
+                                    <option value="{{ $permitido->id }}">{{ strtoupper($permitido->nombre) }}</option>
                                 @endforeach
                             </x-form.input-select>
                         </div>
@@ -220,8 +220,8 @@
                             {{ $analisi->estatus->nombre }}
                         </span>
                     </div>
-                    <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Creado: {{ $analisi->created_at->format('d/m/Y H:i') }}</p>
-                    <p class="text-[10px] text-gray-500 font-medium mt-1">Ult. Act: {{ $analisi->updated_at->format('d/m/Y H:i') }}</p>
+                    <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Creado: {{ $analisi->created_at->format('d/m/Y h:i:s A') }}</p>
+                    <p class="text-[10px] text-gray-500 font-medium mt-1">Ult. Act: {{ $analisi->updated_at->format('d/m/Y h:i:s A') }}</p>
                 </div>
 
                 <x-slot:footer>
