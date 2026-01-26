@@ -129,7 +129,7 @@
                     <td class="px-4 py-4 whitespace-nowrap hidden xl:table-cell">
                         <div class="flex flex-col">
                             <span class="text-[11px] text-gray-600 dark:text-gray-400 font-medium">
-                                {{ $a->created_at->format('d/m/Y') }}
+                                {{ $a->created_at->format('d/m/Y h:i:s A') }}
                             </span>
                             <span class="text-[10px] text-gray-400 italic">
                                 Por: {{ $a->usuarioCreacion->name }}
