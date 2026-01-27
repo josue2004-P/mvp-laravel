@@ -4,22 +4,22 @@
     <div class="mb-6 flex flex-col gap-5 sm:flex-row sm:justify-between">
         <div class="w-full">
             <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-                Estadísticas del Laboratorio
+                Rendimiento Comercial
             </h3>
             <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">
-                Seguimiento de estudios clínicos y análisis de laboratorio
+                Seguimiento de ventas, conversión y métricas operativas
             </p>
         </div>
 
         <div class="flex w-full items-start gap-3 sm:justify-end">
-            <div x-data="{ selected: 'resumen' }"
+            <div x-data="{ selected: 'ventas' }"
                 class="inline-flex w-fit items-center gap-0.5 rounded-lg bg-gray-100 p-0.5 dark:bg-gray-900">
 
                 @php
                     $options = [
-                        ['value' => 'resumen', 'label' => 'Resumen'],
-                        ['value' => 'estudios', 'label' => 'Estudios'],
-                        ['value' => 'ingresos', 'label' => 'Ingresos'],
+                        ['value' => 'ventas', 'label' => 'Ventas'],
+                        ['value' => 'clientes', 'label' => 'Clientes'],
+                        ['value' => 'conversion', 'label' => 'Conversión'],
                     ];
                 @endphp
 

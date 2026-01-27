@@ -1,6 +1,6 @@
 <div>
     <div x-data>
-        {{-- Cards --}}
+        {{-- Cards de Métricas Generales --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div class="bg-white shadow-md rounded-2xl p-6 flex items-center justify-between">
                 <div>
@@ -14,87 +14,91 @@
 
             <div class="bg-white shadow-md rounded-2xl p-6 flex items-center justify-between">
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-700">Doctores</h3>
-                    <p class="text-3xl font-bold text-green-600">{{ $doctores }}</p>
+                    <h3 class="text-lg font-semibold text-gray-700">Ventas</h3>
+                    <p class="text-3xl font-bold text-emerald-600">{{ $ventas }}</p>
                 </div>
-                <div class="bg-green-100 text-green-600 p-3 rounded-full">
-                    <i class="fas fa-user-md text-2xl"></i>
+                <div class="bg-emerald-100 text-emerald-600 p-3 rounded-full">
+                    <i class="fas fa-shopping-cart text-2xl"></i>
                 </div>
             </div>
 
             <div class="bg-white shadow-md rounded-2xl p-6 flex items-center justify-between">
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-700">Análisis</h3>
-                    <p class="text-3xl font-bold text-purple-600">{{ $analisis }}</p>
+                    <h3 class="text-lg font-semibold text-gray-700">Ingresos</h3>
+                    <p class="text-3xl font-bold text-indigo-600">${{ number_format($ingresos, 2) }}</p>
                 </div>
-                <div class="bg-purple-100 text-purple-600 p-3 rounded-full">
-                    <i class="fas fa-vials text-2xl"></i>
+                <div class="bg-indigo-100 text-indigo-600 p-3 rounded-full">
+                    <i class="fas fa-hand-holding-dollar text-2xl"></i>
                 </div>
             </div>
 
-            {{-- NUEVO: Tipos de Análisis --}}
             <div class="bg-white shadow-md rounded-2xl p-6 flex items-center justify-between">
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-700">Tipos de Análisis</h3>
-                    <p class="text-3xl font-bold text-orange-600">{{ $tiposAnalisis }}</p>
+                    <h3 class="text-lg font-semibold text-gray-700">Productos</h3>
+                    <p class="text-3xl font-bold text-amber-600">{{ $productos }}</p>
                 </div>
-                <div class="bg-orange-100 text-orange-600 p-3 rounded-full">
-                    <i class="fas fa-flask text-2xl"></i>
+                <div class="bg-amber-100 text-amber-600 p-3 rounded-full">
+                    <i class="fas fa-boxes-stacked text-2xl"></i>
                 </div>
             </div>
         </div>
 
-        {{-- Gráficas con Alpine + Chart.js --}}
-        <div class="flex gap-6 mb-8">
-            <div class="w-[29rem] h-[19rem]  bg-white shadow-md rounded-2xl p-6"
+        {{-- Gráficas --}}
+        <div class="flex flex-col lg:flex-row gap-6 mb-8">
+            <div class="flex-1 bg-white shadow-md rounded-2xl p-6"
                 x-data
                 x-init="
-                    new Chart($refs.clientesChart, {
+                    new Chart($refs.ventasChart, {
                         type: 'line',
                         data: {
-                            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun','Jul','Agos','Sep','Oct'],
+                            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun','Jul','Ago','Sep','Oct'],
                             datasets: [{
-                                label: 'Clientes',
-                                data: {{ json_encode($clientesPorMes) }},
-                                borderColor: '#2563eb',
-                                backgroundColor: 'rgba(37, 99, 235, 0.3)',
+                                label: 'Ventas Realizadas',
+                                data: {{ json_encode($ventasPorMes) }},
+                                borderColor: '#10b981',
+                                backgroundColor: 'rgba(16, 185, 129, 0.2)',
                                 fill: true,
-                                tension: 0.3
+                                tension: 0.4
                             }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false
                         }
                     })
                 ">
-                <h3 class="text-lg font-semibold text-gray-700 mb-4">Clientes por Mes</h3>
-                <canvas  x-ref="clientesChart"></canvas>
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Rendimiento de Ventas</h3>
+                <div class="h-64">
+                    <canvas x-ref="ventasChart"></canvas>
+                </div>
             </div>
 
-            <div class="bg-white shadow-md rounded-2xl p-6 w-[23rem] "
+            <div class="w-full lg:w-[23rem] bg-white shadow-md rounded-2xl p-6"
                 x-data
                 x-init="
-                    new Chart($refs.analisisChart, {
+                    new Chart($refs.categoriasChart, {
                         type: 'doughnut',
                         data: {
-                            labels: {{ json_encode(array_keys($analisisCategorias)) }},
+                            labels: {{ json_encode(array_keys($ventasPorCategoria)) }},
                             datasets: [{
-                                label: 'Análisis',
-                                data: {{ json_encode(array_values($analisisCategorias)) }},
+                                data: {{ json_encode(array_values($ventasPorCategoria)) }},
                                 backgroundColor: [
-                                    '#8b5cf6',
-                                    '#10b981',
+                                    '#6366f1',
                                     '#f59e0b',
+                                    '#10b981',
                                     '#ef4444'
                                 ]
                             }]
                         }
                     })
                 ">
-                <h3 class="text-lg font-semibold text-gray-700 mb-4">Análisis por Categoría</h3>
-                <canvas x-ref="analisisChart"></canvas>
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Ventas por Categoría</h3>
+                <canvas x-ref="categoriasChart"></canvas>
             </div>
         </div>
     </div>
 
-    {{-- Font Awesome & Chart.js --}}
+    {{-- Assets --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </div>

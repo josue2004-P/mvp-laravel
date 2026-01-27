@@ -1,58 +1,58 @@
-@props(['analisis' => []])
+@props(['ventas' => []])
 
 @php
-    $defaultAnalisis = [
+    $defaultVentas = [
         [
-            'nombre' => 'Química Sanguínea 6 elementos',
-            'paciente' => 'Juan Pérez',
-            'image' => '/images/lab/analisis-01.jpg',
-            'tipo' => 'Química Sanguínea',
-            'precio' => '$450.00',
-            'estado' => 'Entregado',
+            'producto' => 'iPhone 15 Pro Max',
+            'cliente' => 'Juan Pérez',
+            'image' => 'https://via.placeholder.com/50',
+            'categoria' => 'Electrónica',
+            'total' => '$1,250.00',
+            'estado' => 'Completado',
         ],
         [
-            'nombre' => 'Biometría Hemática',
-            'paciente' => 'María López',
-            'image' => '/images/lab/analisis-02.jpg',
-            'tipo' => 'Hematología',
-            'precio' => '$280.00',
-            'estado' => 'Pendiente',
+            'producto' => 'Sudadera Oversize Beige',
+            'cliente' => 'María López',
+            'image' => 'https://via.placeholder.com/50',
+            'categoria' => 'Ropa',
+            'total' => '$45.00',
+            'estado' => 'Procesando',
         ],
         [
-            'nombre' => 'Perfil Lipídico',
-            'paciente' => 'Carlos Gómez',
-            'image' => '/images/lab/analisis-03.jpg',
-            'tipo' => 'Química Clínica',
-            'precio' => '$520.00',
-            'estado' => 'Entregado',
+            'producto' => 'Monitor Gaming 27"',
+            'cliente' => 'Carlos Gómez',
+            'image' => 'https://via.placeholder.com/50',
+            'categoria' => 'Computación',
+            'total' => '$320.00',
+            'estado' => 'Completado',
         ],
         [
-            'nombre' => 'Examen General de Orina',
-            'paciente' => 'Ana Martínez',
-            'image' => '/images/lab/analisis-04.jpg',
-            'tipo' => 'Uroanálisis',
-            'precio' => '$150.00',
+            'producto' => 'Cafetera Espresso',
+            'cliente' => 'Ana Martínez',
+            'image' => 'https://via.placeholder.com/50',
+            'categoria' => 'Hogar',
+            'total' => '$150.00',
             'estado' => 'Cancelado',
         ],
         [
-            'nombre' => 'Prueba de Glucosa',
-            'paciente' => 'Luis Hernández',
-            'image' => '/images/lab/analisis-05.jpg',
-            'tipo' => 'Química Clínica',
-            'precio' => '$120.00',
-            'estado' => 'Entregado',
+            'producto' => 'Teclado Mecánico RGB',
+            'cliente' => 'Luis Hernández',
+            'image' => 'https://via.placeholder.com/50',
+            'categoria' => 'Accesorios',
+            'total' => '$85.00',
+            'estado' => 'Completado',
         ],
     ];
 
-    $analisisList = !empty($analisis) ? $analisis : $defaultAnalisis;
+    $ventasList = !empty($ventas) ? $ventas : $defaultVentas;
 
     $getStatusClasses = function ($estado) {
         $base = 'rounded-full px-2 py-0.5 text-theme-xs font-medium';
 
         return match ($estado) {
-            'Entregado' =>
+            'Completado' =>
                 $base . ' bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500',
-            'Pendiente' =>
+            'Procesando' =>
                 $base . ' bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-orange-400',
             'Cancelado' =>
                 $base . ' bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500',
@@ -64,14 +64,13 @@
 
 <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
 
-    <!-- Header -->
     <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-                Análisis Clínicos Recientes
+                Ventas Recientes
             </h3>
             <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">
-                Últimos estudios realizados en el laboratorio
+                Resumen de las últimas transacciones realizadas
             </p>
         </div>
 
@@ -83,29 +82,28 @@
 
             <button
                 class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03]">
-                Ver todos
+                Ver historial
             </button>
         </div>
     </div>
 
-    <!-- Table -->
     <div class="max-w-full overflow-x-auto custom-scrollbar">
         <table class="min-w-full">
             <thead>
                 <tr class="border-t border-gray-100 dark:border-gray-800">
                     <th class="py-3 text-left">
                         <p class="text-theme-xs font-medium text-gray-500 dark:text-gray-400">
-                            Análisis
+                            Producto / Cliente
                         </p>
                     </th>
                     <th class="py-3 text-left">
                         <p class="text-theme-xs font-medium text-gray-500 dark:text-gray-400">
-                            Tipo
+                            Categoría
                         </p>
                     </th>
                     <th class="py-3 text-left">
                         <p class="text-theme-xs font-medium text-gray-500 dark:text-gray-400">
-                            Precio
+                            Total
                         </p>
                     </th>
                     <th class="py-3 text-left">
@@ -117,22 +115,22 @@
             </thead>
 
             <tbody>
-                @foreach ($analisisList as $item)
+                @foreach ($ventasList as $item)
                     <tr class="border-t border-gray-100 dark:border-gray-800">
                         <td class="py-3 whitespace-nowrap">
                             <div class="flex items-center gap-3">
                                 <div class="h-[50px] w-[50px] overflow-hidden rounded-md bg-gray-100">
                                     <img
                                         src="{{ $item['image'] }}"
-                                        alt="{{ $item['nombre'] }}"
+                                        alt="{{ $item['producto'] }}"
                                         class="h-full w-full object-cover">
                                 </div>
                                 <div>
                                     <p class="text-theme-sm font-medium text-gray-800 dark:text-white/90">
-                                        {{ $item['nombre'] }}
+                                        {{ $item['producto'] }}
                                     </p>
                                     <span class="text-theme-xs text-gray-500 dark:text-gray-400">
-                                        Paciente: {{ $item['paciente'] }}
+                                        Comprador: {{ $item['cliente'] }}
                                     </span>
                                 </div>
                             </div>
@@ -140,13 +138,13 @@
 
                         <td class="py-3 whitespace-nowrap">
                             <p class="text-theme-sm text-gray-500 dark:text-gray-400">
-                                {{ $item['tipo'] }}
+                                {{ $item['categoria'] }}
                             </p>
                         </td>
 
                         <td class="py-3 whitespace-nowrap">
-                            <p class="text-theme-sm text-gray-500 dark:text-gray-400">
-                                {{ $item['precio'] }}
+                            <p class="text-theme-sm font-medium text-gray-800 dark:text-white/90">
+                                {{ $item['total'] }}
                             </p>
                         </td>
 

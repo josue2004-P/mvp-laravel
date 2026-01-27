@@ -8,17 +8,5 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth')->group(function () {
     
-    Route::get('analisis/export/excel', function (Request $request) {
-        return Excel::download(
-            new AnalisisExport(
-                $request->query('search'),
-                $request->query('doctorId'),
-                $request->query('tipoAnalisisId'),
-                $request->query('tipoMuestraId'),
-                $request->query('tipoMetodoId'),
-                $request->query('perPage', 10)
-            ), 
-            'analisis_filtrado.xlsx'
-        );
-    })->name('analisis.export');
+ 
 });

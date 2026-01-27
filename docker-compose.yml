@@ -1,7 +1,7 @@
 services:
-  bd_mysql_lab_piedad:
+  bd_mysql_mvp:
     image: mysql:8.0
-    container_name: bd_mysql_lab_piedad
+    container_name: bd_mysql_mvp
     restart: always
     environment:
       TZ: "America/Mexico_City"
@@ -12,23 +12,23 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - vol_lab_piedad:/var/lib/mysql
+      - vol_mysql_mvp:/var/lib/mysql
     networks:
-      - lab_piedad_net
-      - lab_piedad_proxy
-  app_lab_piedad:
+      - mvp_net
+      - mvp_proxy
+  app_mvp:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: app_lab_piedad
+    container_name: app_mvp
     ports:
     - "8080:80"
 
 networks:
-  lab_piedad_net:
+  mvp_net:
     external: true
-  lab_piedad_proxy:
+  mvp_proxy:
     external: true
 
 volumes:
-  vol_lab_piedad:
+  vol_mysql_mvp:

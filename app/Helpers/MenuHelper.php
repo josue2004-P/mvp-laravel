@@ -13,58 +13,6 @@ class MenuHelper
                 'path' => '/dashboard',
             ],
             [
-                'icon' => 'book-medical',
-                'name' => 'Clientes',
-                'path' => '/clientes',
-                'permiso' => "clientes",
-            ],
-            [
-                'name' => 'Doctores',
-                'icon' => 'doctor',
-                'permiso' => "doctores",
-                'subItems' => [
-                    ['name' => 'Doctores', 'path' => '/doctores','permiso' => "doctores",],
-                    ['name' => 'Especialidades', 'path' => '/especialidades','permiso' => "esp-doctor",],
-                ],
-            ],
-            [
-                'name' => 'Analisis',
-                'icon' => 'analysis',
-                'permiso' => "  ",
-                'subItems' => [
-                    ['name' => 'Analisis', 'path' => '/analisis','permiso' => "analisis",],
-                    ['name' => 'Tipo de Analisis', 'path' => '/tipo_analisis','permiso' => "tipo-analisis",],
-                    ['name' => 'Tipo de Muestra', 'path' => '/tipo_muestra','permiso' => "tipo-muestra",],
-                    ['name' => 'Tipo de Metodo', 'path' => '/tipo_metodo','permiso' => "tipo-metodo",],
-                    ['name' => 'Unidades', 'path' => '/unidades','permiso' => "unidades"],
-                ],
-            ],
-            [
-                'name' => 'Hemograma Completo',
-                'icon' => 'dna',
-                'permiso' => "hemograma-completo",
-                'subItems' => [
-                    ['name' => 'Hemograma Completo', 'path' => '/hemograma_completo','permiso' => "hemograma-completo",],
-                    ['name' => 'Categoria Hemograma Completo', 'path' => '/categoria_hemograma_completo','permiso' => "categoria-hemograma-completo",],
-                ],
-            ],
-            [
-                'name' => 'Catalogo',
-                'icon' => 'catalog',
-                'permiso' => "catalogo",
-                'subItems' => [
-                    ['name' => 'Estatus Analisis', 'path' => '/estatus-analisis','permiso' => "est-als",],
-                ],
-            ],
-            [
-                'name' => 'Configuración',
-                'icon' => 'gear',
-                'permiso' => "configuraciones",
-                'subItems' => [
-                    ['name' => 'Analisis', 'path' => '/configuracion-analisis','permiso' => "confg-est-als",],
-                ],
-            ],
-            [
                 'name' => 'Usuarios',
                 'icon' => 'users',
                 'permiso' => 'usuarios', 

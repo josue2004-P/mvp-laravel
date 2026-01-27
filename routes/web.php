@@ -32,45 +32,8 @@ Route::post('/contactar', function (\Illuminate\Http\Request $request) {
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('permisos', PermisoController::class);
-    Route::resource('perfiles', PerfilController::class)->parameters([
-        'perfiles' => 'perfil'
-    ]);
-   Route::resource('unidades', UnidadController::class)->parameters([
-        'unidades' => 'unidad'
-    ]);
-
+    Route::resource('perfiles', PerfilController::class)->parameters(['perfiles' => 'perfil']);
     Route::resource('usuarios', UsuarioController::class);
-    Route::resource('clientes', ClienteController::class);
-    Route::get('clientes/{cliente}/analisis', [ClienteController::class, 'analisis'])
-    ->name('clientes.analisis.index');
-
-    Route::get('/clientes/{analisis}/analisis-pdf', [ClienteController::class, 'generarPdf'])->name('analisis-cliente.pdf');
-
-
-    Route::resource('doctores', DoctorController::class)->parameters([
-        'doctores' => 'doctor'
-        
-    ]);
-    Route::resource('especialidades', EspecialidadController::class)->parameters([
-        'especialidades' => 'especialidad'
-    ]);
-
-    Route::resource('tipo_analisis', TipoAnalisisController::class)
-        ->parameters(['tipo_analisis' => 'tipoAnalisis']);
-    Route::resource('tipo_metodo', TipoMetodoController::class);
-    Route::resource('tipo_muestra', TipoMuestraController::class);
-    Route::resource('categoria_hemograma_completo', CategoriaHemogramaCompletoController::class);
-    Route::resource('hemograma_completo', HemogramaCompletoController::class);
-
-    Route::resource('analisis', AnalisisController::class);
-    Route::get('/analisis/export/pdf', [AnalisisController::class, 'exportPdf'])->name('analisis-general.pdf');
-    Route::get('/analisis/{analisis}/pdf', [AnalisisController::class, 'generarPdf'])->name('analisis.pdf');
-
-    Route::resource('estatus-analisis', EstatusAnalisisController::class)
-     ->parameters(['estatus-analisis' => 'estatus']);
-
-    Route::resource('configuracion-analisis', ConfiguracionAnalisisController::class);
-
 });
 
 Route::get('/dashboard', function () {
