@@ -1,19 +1,19 @@
 <div
-    class="rounded-2xl border border-gray-200 bg-white px-5 pb-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
+    class="rounded-2xl border border-slate-200 bg-white px-5 pb-5 pt-5 dark:border-slate-800 dark:bg-slate-900/50 sm:px-6 sm:pt-6 transition-colors duration-300">
     
     <div class="mb-6 flex flex-col gap-5 sm:flex-row sm:justify-between">
         <div class="w-full">
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white">
                 Rendimiento Comercial
             </h3>
-            <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">
+            <p class="mt-1 text-theme-sm text-slate-500 dark:text-slate-400">
                 Seguimiento de ventas, conversión y métricas operativas
             </p>
         </div>
 
         <div class="flex w-full items-start gap-3 sm:justify-end">
             <div x-data="{ selected: 'ventas' }"
-                class="inline-flex w-fit items-center gap-0.5 rounded-lg bg-gray-100 p-0.5 dark:bg-gray-900">
+                class="inline-flex w-fit items-center gap-1 rounded-xl bg-slate-100 p-1 dark:bg-slate-800">
 
                 @php
                     $options = [
@@ -27,9 +27,9 @@
                     <button
                         @click="selected = '{{ $option['value'] }}'"
                         :class="selected === '{{ $option['value'] }}'
-                            ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-gray-800 dark:text-white'
-                            : 'text-gray-500 dark:text-gray-400'"
-                        class="rounded-md px-3 py-2 text-theme-sm font-medium hover:text-gray-900 dark:hover:text-white">
+                            ? 'bg-white text-emerald-600 shadow-sm border border-slate-200/50 dark:bg-slate-700 dark:text-emerald-400 dark:border-slate-600'
+                            : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'"
+                        class="rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200">
                         {{ $option['label'] }}
                     </button>
                 @endforeach

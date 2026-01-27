@@ -5,23 +5,27 @@
     'endIcon' => null,
     'className' => '',
     'disabled' => false,
-    'href' => null, // Agregamos la prop href
+    'href' => null,
 ])
 
 @php
-    // Mantenemos tus clases base y mapas exactamente igual
-    $base = 'inline-flex items-center justify-center font-medium gap-2 rounded-lg transition';
+    $base = 'inline-flex items-center justify-center font-bold gap-2 rounded-xl transition-all duration-200 active:scale-[0.97]';
 
     $sizeMap = [
-        'sm' => 'px-4 py-2 ',
-        'md' => 'px-5 py-3.5 text-sm',
+        'sm' => 'px-4 py-2.5 text-xs',
+        'md' => 'px-6 py-3 text-sm',
     ];
     $sizeClass = $sizeMap[$size] ?? $sizeMap['md'];
 
     $variantMap = [
-        'primary' => 'px-4 py-2 bg-blue-600 text-white rounded-lg',
-        'secondary' => 'px-4 py-2 bg-indigo-600 text-white rounded-lg', // Añadida para tu reporte
-        'outline' => 'bg-white text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03] dark:hover:text-gray-300',
+        // Principal: Emerald (Verde Esmeralda)
+        'primary' => 'bg-emerald-600 text-white shadow-sm shadow-emerald-900/10 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600',
+        
+        // Secundario: Cyan/Teal (Cian para reportes y acciones alternativas)
+        'secondary' => 'bg-cyan-600 text-white shadow-sm shadow-cyan-900/10 hover:bg-cyan-700 dark:bg-cyan-500 dark:hover:bg-cyan-600',
+        
+        // Outline: Slate (Gris azulado profesional)
+        'outline' => 'bg-white text-slate-700 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 hover:text-emerald-600 dark:bg-slate-900 dark:text-slate-400 dark:ring-slate-700 dark:hover:bg-emerald-500/5 dark:hover:text-emerald-400',
     ];
 
     $variantClass = $variantMap[$variant] ?? $variantMap['primary'];
@@ -30,7 +34,6 @@
 
     $classes = trim("{$base} {$sizeClass} {$variantClass} {$className} {$disabledClass}");
     
-    // Determinamos la etiqueta
     $tag = $href ? 'a' : 'button';
 @endphp
 
@@ -43,7 +46,6 @@
     @if($disabled && !$href) disabled @endif
     @if($disabled && $href) aria-disabled="true" @endif
 >
-    {{-- Mantenemos tu lógica de iconos intacta --}}
     @hasSection('startIcon')
         <span class="flex items-center">
             @yield('startIcon')

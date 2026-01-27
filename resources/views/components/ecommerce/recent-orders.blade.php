@@ -47,108 +47,109 @@
     $ventasList = !empty($ventas) ? $ventas : $defaultVentas;
 
     $getStatusClasses = function ($estado) {
-        $base = 'rounded-full px-2 py-0.5 text-theme-xs font-medium';
+        $base = 'rounded-lg px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide border';
 
         return match ($estado) {
             'Completado' =>
-                $base . ' bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500',
+                $base . ' bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20',
             'Procesando' =>
-                $base . ' bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-orange-400',
+                $base . ' bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20',
             'Cancelado' =>
-                $base . ' bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500',
+                $base . ' bg-rose-50 text-rose-700 border-rose-100 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20',
             default =>
-                $base . ' bg-gray-50 text-gray-600 dark:bg-gray-500/15 dark:text-gray-400',
+                $base . ' bg-slate-50 text-slate-600 border-slate-100 dark:bg-slate-500/10 dark:text-slate-400 dark:border-slate-500/20',
         };
     };
 @endphp
 
-<div class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
+<div class="overflow-hidden rounded-2xl border border-slate-200 bg-white px-4 pb-3 pt-4 dark:border-slate-800 dark:bg-slate-900/50 sm:px-6 transition-colors duration-300">
 
-    <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+    <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white">
                 Ventas Recientes
             </h3>
-            <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">
-                Resumen de las últimas transacciones realizadas
+            <p class="mt-0.5 text-sm text-slate-500 dark:text-slate-400">
+                Resumen detallado de las transacciones más recientes.
             </p>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
             <button
-                class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03]">
+                class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+                <i class="fa-solid fa-filter text-xs"></i>
                 Filtrar
             </button>
 
             <button
-                class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03]">
+                class="inline-flex items-center gap-2 rounded-xl border border-transparent bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-emerald-700">
                 Ver historial
             </button>
         </div>
     </div>
 
     <div class="max-w-full overflow-x-auto custom-scrollbar">
-        <table class="min-w-full">
+        <table class="min-w-full border-separate border-spacing-0">
             <thead>
-                <tr class="border-t border-gray-100 dark:border-gray-800">
-                    <th class="py-3 text-left">
-                        <p class="text-theme-xs font-medium text-gray-500 dark:text-gray-400">
+                <tr>
+                    <th class="border-b border-slate-100 py-4 text-left dark:border-slate-800">
+                        <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                             Producto / Cliente
                         </p>
                     </th>
-                    <th class="py-3 text-left">
-                        <p class="text-theme-xs font-medium text-gray-500 dark:text-gray-400">
+                    <th class="border-b border-slate-100 py-4 text-left dark:border-slate-800">
+                        <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                             Categoría
                         </p>
                     </th>
-                    <th class="py-3 text-left">
-                        <p class="text-theme-xs font-medium text-gray-500 dark:text-gray-400">
+                    <th class="border-b border-slate-100 py-4 text-left dark:border-slate-800">
+                        <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                             Total
                         </p>
                     </th>
-                    <th class="py-3 text-left">
-                        <p class="text-theme-xs font-medium text-gray-500 dark:text-gray-400">
+                    <th class="border-b border-slate-100 py-4 text-left dark:border-slate-800">
+                        <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                             Estado
                         </p>
                     </th>
                 </tr>
             </thead>
 
-            <tbody>
+            <tbody class="divide-y divide-slate-50 dark:divide-slate-800/50">
                 @foreach ($ventasList as $item)
-                    <tr class="border-t border-gray-100 dark:border-gray-800">
-                        <td class="py-3 whitespace-nowrap">
+                    <tr class="group transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-800/20">
+                        <td class="py-4 whitespace-nowrap">
                             <div class="flex items-center gap-3">
-                                <div class="h-[50px] w-[50px] overflow-hidden rounded-md bg-gray-100">
+                                <div class="h-12 w-12 overflow-hidden rounded-xl border border-slate-100 bg-slate-50 dark:border-slate-800 dark:bg-slate-800">
                                     <img
                                         src="{{ $item['image'] }}"
                                         alt="{{ $item['producto'] }}"
-                                        class="h-full w-full object-cover">
+                                        class="h-full w-full object-cover transition-transform group-hover:scale-110">
                                 </div>
                                 <div>
-                                    <p class="text-theme-sm font-medium text-gray-800 dark:text-white/90">
+                                    <p class="text-sm font-bold text-slate-800 dark:text-white transition-colors group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
                                         {{ $item['producto'] }}
                                     </p>
-                                    <span class="text-theme-xs text-gray-500 dark:text-gray-400">
-                                        Comprador: {{ $item['cliente'] }}
-                                    </span>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                                        {{ $item['cliente'] }}
+                                    </p>
                                 </div>
                             </div>
                         </td>
 
-                        <td class="py-3 whitespace-nowrap">
-                            <p class="text-theme-sm text-gray-500 dark:text-gray-400">
+                        <td class="py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-400">
                                 {{ $item['categoria'] }}
-                            </p>
+                            </span>
                         </td>
 
-                        <td class="py-3 whitespace-nowrap">
-                            <p class="text-theme-sm font-medium text-gray-800 dark:text-white/90">
+                        <td class="py-4 whitespace-nowrap">
+                            <p class="text-sm font-bold text-slate-800 dark:text-white">
                                 {{ $item['total'] }}
                             </p>
                         </td>
 
-                        <td class="py-3 whitespace-nowrap">
+                        <td class="py-4 whitespace-nowrap">
                             <span class="{{ $getStatusClasses($item['estado']) }}">
                                 {{ $item['estado'] }}
                             </span>
