@@ -35,7 +35,8 @@ foreach ($menuGroups as $group) {
 @endphp
 
 <aside id="sidebar"
-    class="fixed flex flex-col mt-0 top-0 px-5 left-0 bg-white dark:bg-slate-900 dark:border-slate-800 text-slate-900 h-screen transition-all duration-300 ease-in-out z-99999 border-r border-slate-200"
+    {{-- Sidebar: Blanco en Light / Slate 950 en Dark --}}
+    class="fixed flex flex-col mt-0 top-0 px-3 left-0 bg-white dark:bg-slate-950 h-screen transition-all duration-300 ease-in-out z-99999 border-r border-slate-200 dark:border-slate-800 text-slate-900"
     x-data="{
         openSubmenus: {},
         init() {
@@ -43,7 +44,6 @@ foreach ($menuGroups as $group) {
         },
         initializeActiveMenus() {
             const currentPath = '{{ $currentPath }}';
-
             @foreach ($menuFiltrado as $groupIndex => $menuGroup)
                 @foreach ($menuGroup['items'] as $itemIndex => $item)
                     @if (isset($item['subItems']))
@@ -59,7 +59,6 @@ foreach ($menuGroups as $group) {
         },
         toggleSubmenu(groupIndex, itemIndex) {
             const key = groupIndex + '-' + itemIndex;
-            
             if (this.openSubmenus[key]) {
                 this.openSubmenus = {};
             } else {
@@ -76,26 +75,34 @@ foreach ($menuGroups as $group) {
         }
     }"
     :class="{
-        'w-[290px]': $store.sidebar.isExpanded || $store.sidebar.isMobileOpen || $store.sidebar.isHovered,
-        'w-[90px]': !$store.sidebar.isExpanded && !$store.sidebar.isHovered,
+        'w-[250px]': $store.sidebar.isExpanded || $store.sidebar.isMobileOpen || $store.sidebar.isHovered,
+        'w-[70px]': !$store.sidebar.isExpanded && !$store.sidebar.isHovered,
         'translate-x-0': $store.sidebar.isMobileOpen,
         '-translate-x-full xl:translate-x-0': !$store.sidebar.isMobileOpen
     }"
     @mouseenter="if (!$store.sidebar.isExpanded) $store.sidebar.setHovered(true)"
     @mouseleave="$store.sidebar.setHovered(false)">
 
-    <div class="pt-8 pb-7 flex"
-        :class="(!$store.sidebar.isExpanded && !$store.sidebar.isHovered && !$store.sidebar.isMobileOpen) ?
-        'xl:justify-center' : 'justify-start'">
-        <a href="/">
-            <img x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen"
-                class="dark:hidden" src="/images/logo/logo.svg" alt="Logo" width="150" height="40" />
-            <img x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen"
-                class="hidden dark:block" src="/images/logo/logo-dark.svg" alt="Logo" width="150"
-                height="40" />
-            <img x-show="!$store.sidebar.isExpanded && !$store.sidebar.isHovered && !$store.sidebar.isMobileOpen"
-                src="/images/logo/logo-icon.svg" alt="Logo" width="32" height="32" />
-        </a>
+    <div class="flex flex-col transition-all duration-300 pb-6 pt-20 lg:pt-14 xl:pt-3">
+        <div class="flex items-center w-full" 
+            :class="(!$store.sidebar.isExpanded && !$store.sidebar.isHovered && !$store.sidebar.isMobileOpen) ? 'justify-center' : 'justify-start'">
+            
+            <div class="flex-shrink-0">
+                {{-- Avatar: Fondo azul sólido #001f3f siempre --}}
+                <img class="h-11 w-11 rounded-full border-2 border-[#001f3f]/10 object-cover" 
+                    src="https://ui-avatars.com/api/?name={{ auth()->user()->getNombreCompletoAttribute() }}&background=001f3f&color=fff" 
+                    alt="User">
+            </div>
+
+            <div x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen"
+                x-transition:enter="transition opacity duration-300"
+                class="ml-3 flex flex-col whitespace-nowrap overflow-hidden">
+                <span class="text-sm font-bold text-slate-800 dark:text-white leading-tight">
+                    {{ auth()->user()->getNombreCompletoAttribute() }}
+                </span>
+                <span class="text-xs text-slate-500 dark:text-slate-400">En línea</span>
+            </div>
+        </div>
     </div>
 
     <div class="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
@@ -104,8 +111,7 @@ foreach ($menuGroups as $group) {
                 @foreach ($menuFiltrado as $groupIndex => $menuGroup)
                     <div>
                         <h2 class="mb-4 text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500"
-                            :class="(!$store.sidebar.isExpanded && !$store.sidebar.isHovered && !$store.sidebar.isMobileOpen) ?
-                            'lg:justify-center' : 'justify-start px-2'">
+                            :class="(!$store.sidebar.isExpanded && !$store.sidebar.isHovered && !$store.sidebar.isMobileOpen) ? 'lg:justify-center' : 'justify-start px-2'">
                             <template x-if="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen">
                                 <span>{{ $menuGroup['title'] }}</span>
                             </template>
@@ -116,23 +122,23 @@ foreach ($menuGroups as $group) {
                                 <li>
                                     @if (isset($item['subItems']) && count($item['subItems']) > 0)
                                         <button @click.stop="toggleSubmenu({{ $groupIndex }}, {{ $itemIndex }})"
-                                            class="menu-item group w-full flex items-center px-3 py-2 rounded-lg transition-colors"
+                                            class="menu-item group w-full flex items-center px-3 py-2 rounded-lg transition-all duration-200"
                                             :class="[
                                                 isSubmenuOpen({{ $groupIndex }}, {{ $itemIndex }}) 
-                                                ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400' 
-                                                : 'text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50',
+                                                ? 'bg-[#001f3f] text-white shadow-lg shadow-[#001f3f]/20' 
+                                                : 'text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-900',
                                                 !$store.sidebar.isExpanded && !$store.sidebar.isHovered ? 'xl:justify-center' : 'xl:justify-start'
                                             ]">
-                                            <span :class="isSubmenuOpen({{ $groupIndex }}, {{ $itemIndex }}) ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 group-hover:text-emerald-500'">
+                                            <span :class="isSubmenuOpen({{ $groupIndex }}, {{ $itemIndex }}) ? 'text-white' : 'text-slate-400 group-hover:text-[#001f3f]'">
                                                 {!! MenuHelper::getIconSvg($item['icon']) !!}
                                             </span>
                                             <span x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen"
-                                                class="ml-3 font-medium text-sm">
+                                                class="ml-3 font-bold text-sm">
                                                 {{ $item['name'] }}
                                             </span>
                                             <svg x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen"
                                                 class="ml-auto w-4 h-4 transition-transform duration-200"
-                                                :class="{'rotate-180 text-emerald-600': isSubmenuOpen({{ $groupIndex }}, {{ $itemIndex }})}"
+                                                :class="{'rotate-180 text-white': isSubmenuOpen({{ $groupIndex }}, {{ $itemIndex }})}"
                                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                             </svg>
@@ -141,36 +147,32 @@ foreach ($menuGroups as $group) {
                                         <div x-show="isSubmenuOpen({{ $groupIndex }}, {{ $itemIndex }}) && ($store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen)">
                                             <ul class="mt-1 space-y-1 ml-9">
                                                 @foreach ($item['subItems'] as $subItem)
-                                                    @if(isset($subItem['path']))
-                                                        <li>
-                                                            <a href="{{ $subItem['path'] }}" 
-                                                                class="block py-2 px-3 text-sm rounded-md transition-colors"
-                                                                :class="isActive('{{ $subItem['path'] }}') 
-                                                                ? 'text-emerald-600 font-semibold dark:text-emerald-400' 
-                                                                : 'text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-300'">
-                                                                {{ $subItem['name'] }}
-                                                            </a>
-                                                        </li>
-                                                    @endif
+                                                    <li>
+                                                        <a href="{{ $subItem['path'] }}" 
+                                                            class="block py-2 px-3 text-sm rounded-md transition-colors"
+                                                            :class="isActive('{{ $subItem['path'] }}') 
+                                                            ? 'text-[#001f3f] dark:text-blue-400 font-black' 
+                                                            : 'text-slate-500 dark:text-slate-400 hover:text-[#001f3f] dark:hover:text-blue-400'">
+                                                            {{ $subItem['name'] }}
+                                                        </a>
+                                                    </li>
                                                 @endforeach
                                             </ul>
                                         </div>
                                     @elseif(isset($item['path']))
                                         <a href="{{ $item['path'] }}" 
-                                            class="menu-item group flex items-center px-3 py-2 rounded-lg transition-colors"
+                                            class="menu-item group flex items-center px-3 py-2 rounded-lg transition-all duration-200"
                                             :class="[
                                                 isActive('{{ $item['path'] }}') 
-                                                ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400' 
-                                                : 'text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50',
-                                                (!$store.sidebar.isExpanded && !$store.sidebar.isHovered && !$store.sidebar.isMobileOpen) ?
-                                                'xl:justify-center' :
-                                                'justify-start'
+                                                ? 'bg-[#001f3f] text-white shadow-lg shadow-[#001f3f]/20' 
+                                                : 'text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-900',
+                                                (!$store.sidebar.isExpanded && !$store.sidebar.isHovered && !$store.sidebar.isMobileOpen) ? 'xl:justify-center' : 'justify-start'
                                             ]">
-                                            <span :class="isActive('{{ $item['path'] }}') ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 group-hover:text-emerald-500'">
+                                            <span :class="isActive('{{ $item['path'] }}') ? 'text-white' : 'text-slate-400 group-hover:text-[#001f3f]'">
                                                 {!! MenuHelper::getIconSvg($item['icon']) !!}
                                             </span>
                                             <span x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen"
-                                                class="ml-3 font-medium text-sm">
+                                                class="ml-3 font-bold text-sm">
                                                 {{ $item['name'] }}
                                             </span>
                                         </a>

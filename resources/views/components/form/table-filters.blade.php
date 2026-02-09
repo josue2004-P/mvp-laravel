@@ -7,108 +7,105 @@
     'title' => 'Registros'
 ])
 
-<div class="rounded-3xl border border-gray-200 bg-white shadow-sm transition-all duration-300 dark:border-gray-800 dark:bg-gray-900/50">
+<div class="rounded-lg border border-slate-300 bg-white shadow-sm transition-all duration-300 dark:border-slate-800 dark:bg-slate-900/50 overflow-hidden">
     
-    {{-- BARRA SUPERIOR PREMIUM --}}
-    <div class="p-6">
+    {{-- BARRA SUPERIOR TÉCNICA --}}
+    <div class="p-5 border-b border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900">
         <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             
-            {{-- Título y Buscador Dinámico --}}
+            {{-- Título y Buscador --}}
             <div class="flex flex-col gap-5 sm:flex-row sm:items-center flex-grow">
                 <div>
-                    <h3 class="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+                    <h3 class="text-lg font-black tracking-widest text-slate-950 dark:text-white uppercase">
                         {{ $title }}
                     </h3>
                 </div>
+
                 @if($search !== null)
-                <div class="relative w-full sm:w-80 group">
-                    {{-- Tu componente personalizado --}}
-                    <x-form.text-input 
-                        wire:model.live.debounce.400ms="search" 
-                        placeholder="Buscar..." 
-                        class="h-[46px] rounded-2xl pl-12 pr-10" {{-- Forzamos el padding para el icono y el spinner --}}
-                    />
+                    <div class="relative w-full sm:w-80 group">
+                        {{-- Solo pasamos el modelo y el placeholder; el diseño ya es el formal --}}
+                        <x-form.text-input 
+                                wire:model.live.debounce.400ms="search" 
+                                placeholder="FILTRAR REGISTROS..." 
+                                class="pl-10" 
+                            />
 
-                    {{-- Icono de lupa --}}
-                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors pointer-events-none">
-                        <i class="fa-solid fa-magnifying-glass text-base"></i>
-                    </div>
+                        {{-- Icono Lupa --}}
+                        <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#001f3f] dark:group-focus-within:text-white transition-colors pointer-events-none">
+                            <i class="fa-solid fa-search text-[10px]"></i>
+                        </div>
 
-                    {{-- Spinner de búsqueda sutil --}}
-                    <div wire:loading wire:target="search" class="absolute right-4 top-1/2 -translate-y-1/2">
-                        <div class="h-4 w-4 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent"></div>
+                        {{-- Spinner --}}
+                        <div wire:loading wire:target="search" class="absolute right-3 top-1/2 -translate-y-1/2">
+                            <div class="h-3 w-3 animate-spin rounded-full border-2 border-[#001f3f] border-t-transparent dark:border-white"></div>
+                        </div>
                     </div>
-                </div>
                 @endif
             </div>
 
             {{-- Acciones Estratégicas --}}
             <div class="flex flex-wrap items-center gap-3">
                 
-                {{-- Controles de Exportación Glassmorphism --}}
-                <div class="flex items-center gap-1 rounded-2xl bg-gray-100/80 p-1.5 dark:bg-white/[0.03] border border-gray-200 dark:border-gray-800">
-                    @if($exportPdf)
-                        <a href="{{ $exportPdf }}" target="_blank" 
-                           class="flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 transition-all hover:bg-white hover:text-red-600 hover:shadow-sm dark:hover:bg-gray-800">
-                            <i class="fa-solid fa-file-pdf"></i>
-                        </a>
-                    @endif
-                    @if($exportExcel)
-                        <a href="{{ $exportExcel }}" 
-                           class="flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 transition-all hover:bg-white hover:text-green-600 hover:shadow-sm dark:hover:bg-gray-800">
-                            <i class="fa-solid fa-file-excel"></i>
-                        </a>
-                    @endif
-                </div>
+                {{-- Controles de Exportación --}}
+                @if($exportPdf || $exportExcel)
+                    <div class="flex h-9 items-center gap-1 rounded border border-slate-300 bg-slate-50 px-1 dark:border-slate-700 dark:bg-slate-800">
+                        @if($exportPdf)
+                            <a href="{{ $exportPdf }}" target="_blank" 
+                            class="flex h-7 w-7 items-center justify-center rounded text-slate-500 transition-all hover:bg-slate-900 hover:text-white dark:hover:bg-slate-100 dark:hover:text-slate-950">
+                                <i class="fa-solid fa-file-pdf text-[10px]"></i>
+                            </a>
+                        @endif
+                        @if($exportExcel)
+                            <a href="{{ $exportExcel }}" 
+                            class="flex h-7 w-7 items-center justify-center rounded text-slate-500 transition-all hover:bg-slate-900 hover:text-white dark:hover:bg-slate-100 dark:hover:text-slate-950">
+                                <i class="fa-solid fa-file-excel text-[10px]"></i>
+                            </a>
+                        @endif
+                    </div>
+                @endif
 
                 @if($perPage !== null)
                 <div class="relative">
-                    <select 
-                        wire:model.live="perPage" 
-                        class="h-[46px] appearance-none rounded-2xl border-gray-200 bg-white pl-4 pr-10 text-xs font-bold tracking-wide text-gray-600 transition-all focus:ring-4 focus:ring-indigo-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
-                    >
-                        <option value="7">7 Filas</option>
-                        <option value="25">25 Filas</option>
-                        <option value="50">50 Filas</option>
+                    <select wire:model.live="perPage" 
+                        class="h-9 appearance-none rounded border border-slate-300 bg-slate-50 pl-3 pr-8 text-[10px] font-black uppercase tracking-widest text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                        <option value="7">7 REGISTROS</option>
+                        <option value="25">25 REGISTROS</option>
+                        <option value="50">50 REGISTROS</option>
                     </select>
-                    <div class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
-                        <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    <div class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400">
+                        <i class="fa-solid fa-chevron-down text-[8px]"></i>
                     </div>
                 </div>
                 @endif
 
                 @if(isset($filters) && $filters->isNotEmpty())
-                <button 
-                    @click="$dispatch('toggle-filtros')" 
-                    class="group inline-flex h-[46px] items-center rounded-2xl border border-indigo-100 bg-indigo-50/50 px-5 text-sm font-bold text-indigo-700 transition-all hover:bg-indigo-100 dark:border-indigo-500/20 dark:bg-indigo-500/5 dark:text-indigo-400"
-                >
-                    <i class="fa-solid fa-sliders mr-2.5 transition-transform group-hover:rotate-12"></i>
-                    Filtros Avanzados
+                <button @click="$dispatch('toggle-filtros')" 
+                    class="inline-flex h-9 items-center rounded border border-slate-300 bg-white px-4 text-[10px] font-black uppercase tracking-widest text-slate-900 hover:bg-slate-900 hover:text-white dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-white dark:hover:text-slate-900 transition-all">
+                    <i class="fa-solid fa-sliders text-[9px] mr-2"></i>
+                    FILTROS
                 </button>
                 @endif
 
                 @if($createRoute)
-                    <x-form.button-primary 
-                        tag="a" 
-                        href="{{ $createRoute }}" 
-                        class="h-[46px] !rounded-2xl px-6 shadow-lg shadow-indigo-500/20"
+                    <x-ui.button 
+                        :href="$createRoute" 
+                        variant="primary" 
+                        size="md"
                     >
-                        <i class="fa-solid fa-plus mr-2 text-xs"></i>
-                        {{ __('Nuevo Registro') }}
-                    </x-form.button-primary>
+                        <x-slot:startIcon>
+                            <i class="fa-solid fa-plus"></i>
+                        </x-slot:startIcon>
+                        
+                        NUEVO REGISTRO
+                    </x-ui.button>
                 @endif
             </div>
         </div>
     </div>
 
-    <div 
-        x-data="{ show: false }" 
-        @toggle-filtros.window="show = !show"
-        x-show="show"
-        x-cloak
-        x-collapse
-        class="border-t border-gray-200 bg-gray-50/50 dark:border-gray-800 dark:bg-gray-900/50"
-    >
+    {{-- FILTROS DESPLEGABLES --}}
+    <div x-data="{ show: false }" @toggle-filtros.window="show = !show" x-show="show" x-cloak x-collapse
+        class="border-b border-slate-300 bg-slate-50/50 dark:border-slate-800">
         <div class="px-6 py-6 lg:px-8">
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-12">
                 {{ $filters }}
@@ -116,42 +113,18 @@
         </div>
     </div>
 
-    {{-- AREA DE TABLA CON LOADING STATE --}}
-    <div class="relative min-h-[200px]">
-        <div wire:loading.delay.longest class="absolute inset-0 z-20 flex items-center justify-center bg-white/60 backdrop-blur-[2px] dark:bg-gray-900/60 transition-all">
+    {{-- ÁREA DE TABLA --}}
+    <div class="relative min-h-[250px]">
+        {{-- Loading Overlay --}}
+        <div wire:loading.delay.longest class="absolute inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-[1px] dark:bg-slate-950/60">
             <div class="flex flex-col items-center">
-                <div class="h-10 w-10 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent shadow-lg shadow-indigo-500/20"></div>
-                <span class="mt-3 text-xs font-bold uppercase tracking-widest text-indigo-600 animate-pulse">Sincronizando...</span>
+                <div class="h-6 w-6 animate-spin rounded-full border-2 border-slate-950 border-t-transparent dark:border-white"></div>
+                <span class="mt-3 text-[9px] font-black uppercase tracking-[0.3em] text-slate-950 dark:text-white">ACTUALIZANDO REGISTROS</span>
             </div>
         </div>
         
-        <div class="overflow-x-auto overflow-y-hidden rounded-b-3xl">
+        <div class="overflow-x-auto p-6">
             {{ $slot }}
         </div>
     </div>
 </div>
-
-@push('scripts')
-<script>
-    document.addEventListener('livewire:navigated', () => {
-        const initSelect2 = () => {
-            $('.select2-dynamic').each(function () {
-                const $el = $(this);
-                if ($el.data('select2')) return; // Evitar reinicio innecesario
-
-                $el.select2({
-                    placeholder: $el.data('placeholder') || 'Seleccionar...',
-                    allowClear: true,
-                    width: '100%',
-                    containerCssClass: 'premium-select2'
-                }).on('change', function() {
-                    @this.set($el.data('model'), $(this).val());
-                });
-            });
-        };
-
-        initSelect2();
-        Livewire.on('reinit-select2', () => setTimeout(initSelect2, 50));
-    });
-</script>
-@endpush

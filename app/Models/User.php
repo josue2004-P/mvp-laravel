@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -19,10 +20,15 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'usuario',
         'name',
+        'apellido_paterno',
+        'apellido_materno',
         'email',
         'password',
         'is_activo',
+        'foto',
+        'firma',
     ];
 
     /**
@@ -59,4 +65,18 @@ class User extends Authenticatable
     {
         return $this->perfiles()->where('nombre', $perfilNombre)->exists();
     }
+
+    public function getNombreCompletoAttribute(): string
+    {   
+        $nombreCompleto = "{$this->name} {$this->apellido_paterno} {$this->apellido_materno}";
+    
+        return Str::title($nombreCompleto);
+    }
+
+    // METODO NOMBRE EN MAYUSCULA
+    public function getNombreCompletoUpperAttribute(): string
+    {
+        return Str::upper("{$this->name} {$this->apellido_paterno} {$this->apellido_materno}");
+    }
+
 }

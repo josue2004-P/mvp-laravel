@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Dashboard') | La Piedad</title>
+    <title>@yield('title', 'Dashboard') | {{ config('app.name') }}</title>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css',
@@ -60,10 +60,10 @@
 
             Alpine.store('sidebar', {
                 // Initialize based on screen size
-                isExpanded: window.innerWidth >= 1280,
+                isExpanded: false,
                 isMobileOpen: false,
                 isHovered: false,
-                isApplicationMenuOpen: false, // <-- 1. Agregamos el estado del Header aquí
+                isApplicationMenuOpen: false, 
 
                 toggleExpanded() {
                     this.isExpanded = !this.isExpanded;
@@ -82,8 +82,10 @@
 
                 // 3. Nueva función para controlar el Header desde el mismo Store
                 toggleApplicationMenu() {
+                    // 1. Cambia el estado del menú del header
                     this.isApplicationMenuOpen = !this.isApplicationMenuOpen;
-                    // SI SE ABRE EL HEADER, CERRAMOS EL SIDEBAR automáticamente
+                    
+                    // 2. Si se abre el menú del header, CERRAMOS el sidebar móvil por fuerza
                     if (this.isApplicationMenuOpen) {
                         this.isMobileOpen = false;
                     }
@@ -111,30 +113,31 @@
             const theme = savedTheme || systemTheme;
             if (theme === 'dark') {
                 document.documentElement.classList.add('dark');
-                document.body.classList.add('dark', 'bg-gray-900');
+                document.body.classList.add('dark', 'bg-gray-950');
             } else {
                 document.documentElement.classList.remove('dark');
-                document.body.classList.remove('dark', 'bg-gray-900');
+                document.body.classList.remove('dark', 'bg-gray-950');
             }
         })();
     </script>
     @livewireStyles  
 </head>
 
-<body
-    x-data="{ 'loaded': true}"
-    x-init="$store.sidebar.isExpanded = window.innerWidth >= 1280;
-    const checkMobile = () => {
-        if (window.innerWidth < 1280) {
-            $store.sidebar.setMobileOpen(false);
-            $store.sidebar.isExpanded = false;
-        } else {
-            $store.sidebar.isMobileOpen = false;
-            $store.sidebar.isExpanded = true;
-        }
-    };
-    window.addEventListener('resize', checkMobile);">
-
+<body x-data="{ 'loaded': true }"
+    class="antialiased bg-gray-50 dark:bg-slate-950 transition-colors duration-300"
+    x-init="
+        $store.sidebar.isExpanded = false; 
+        const checkMobile = () => {
+            if (window.innerWidth < 1280) {
+                $store.sidebar.setMobileOpen(false);
+                $store.sidebar.isExpanded = false;
+            } else {
+                $store.sidebar.isMobileOpen = false;
+                $store.sidebar.isApplicationMenuOpen = false; // Añade esto
+            }
+        };
+        window.addEventListener('resize', checkMobile);
+    ">
     {{-- preloader --}}
     <x-common.preloader/>
     {{-- preloader end --}}
@@ -145,8 +148,8 @@
 
         <div class="flex-1 transition-all duration-300 ease-in-out"
             :class="{
-                'xl:ml-[290px]': $store.sidebar.isExpanded || $store.sidebar.isHovered,
-                'xl:ml-[90px]': !$store.sidebar.isExpanded && !$store.sidebar.isHovered,
+                'xl:ml-[250px]': $store.sidebar.isExpanded || $store.sidebar.isHovered,
+                'xl:ml-[70px]': !$store.sidebar.isExpanded && !$store.sidebar.isHovered,
                 'ml-0': $store.sidebar.isMobileOpen
             }">
             <!-- app header start -->

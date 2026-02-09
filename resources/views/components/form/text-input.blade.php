@@ -17,17 +17,18 @@
 
         {{ $attributes->merge([
             'class' => "
-                dark:bg-slate-900 shadow-theme-xs
-                /* Cambiado focus:brand a focus:emerald */
-                focus:border-emerald-500 focus:ring-emerald-500/10 dark:focus:border-emerald-400
-                h-11 w-full rounded-lg border
+                /* Layout Técnico y Color Base #001f3f */
+                h-9 w-full rounded-md border text-[10px] font-black uppercase tracking-widest
+                transition-all duration-200 focus:outline-hidden focus:ring-0
+                bg-slate-50 dark:bg-[#001f3f]/50
+                
+                /* Lógica de Bordes y Colores de Estado */
                 " . ($messages 
-                    ? 'border-error-300 text-error-600 focus:border-error-500 focus:ring-error-500/10' 
-                    : 'border-gray-300 text-gray-800 dark:border-gray-700 dark:bg-gray-900') . "
-                bg-transparent px-4 py-2.5 pr-11 text-sm placeholder:text-gray-400
-                focus:ring-3 focus:outline-hidden 
-                transition-all duration-200
-                dark:text-white/90 dark:placeholder:text-white/30
+                    ? 'border-red-500 text-red-600 focus:border-red-600' 
+                    : 'border-[#001f3f]/30 text-slate-950 dark:border-slate-700 dark:text-white focus:border-[#001f3f]') . "
+                
+                /* Espaciado interno estándar */
+                px-4 py-2 placeholder:text-slate-400 dark:placeholder:text-white/20
             "
         ]) }}
     >
@@ -36,9 +37,9 @@
         <button 
             type="button"
             @click="showPassword = !showPassword"
-            class="absolute top-1/2 right-4 z-30 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+            class="absolute top-1/2 right-3 z-30 -translate-y-1/2 cursor-pointer text-slate-400 hover:text-[#001f3f] dark:hover:text-white transition-colors"
         >
-            <x-svg.svg-password-view x-bind:show-password="showPassword"/>
+            <x-svg.svg-password-view x-bind:show-password="showPassword" class="w-4 h-4"/>
         </button>
     @endif
 </div>

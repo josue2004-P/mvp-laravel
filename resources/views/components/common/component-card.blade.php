@@ -2,22 +2,29 @@
     'title',
     'desc' => '',
     'grid' => null, 
-    'padding' => 'p-4 sm:p-6',
+    'padding' => 'p-6 sm:p-8',
 ])
 
 <div
     {{ $attributes->merge([
-        'class' => 'rounded-2xl border border-gray-200 bg-white shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-gray-800 dark:bg-white/[0.03] flex flex-col'
+        'class' => '
+            flex flex-col rounded-lg border border-slate-300 dark:border-slate-800 
+            bg-white dark:bg-slate-900/50 shadow-sm transition-all duration-300
+            
+            hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700
+        '
     ]) }}
 >
     @isset($title)
-        <div class="px-6 py-5 border-b border-gray-100 dark:border-gray-800">
-            <h3 class="text-lg font-semibold leading-tight text-gray-800 dark:text-white/90">
+        <div class="px-6 py-5 border-b border-slate-300 dark:border-slate-800/50">
+            {{-- Título con tracking empresarial --}}
+            <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-900 dark:text-white">
                 {{ $title }}
             </h3>
 
             @if($desc)
-                <p class="mt-1.5 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+                {{-- Descripción técnica --}}
+                <p class="mt-2 text-[10px] font-bold leading-relaxed uppercase tracking-widest text-slate-400 dark:text-slate-500">
                     {{ $desc }}
                 </p>
             @endif
@@ -31,13 +38,14 @@
         'gap-6' => $grid,
         'grid-cols-1' => $grid,
         "md:grid-cols-{$grid}" => $grid,
-        'space-y-5' => !$grid,
+        'space-y-6' => !$grid,
     ])>
         {{ $slot }}
     </div>
 
     @isset($footer)
-        <div class="px-6 py-4 bg-gray-50/50 dark:bg-gray-800/20 border-t border-gray-100 dark:border-gray-800 rounded-b-2xl">
+        {{-- Footer limpio con sutil cambio de fondo --}}
+        <div class="px-6 py-4 bg-slate-50/50 dark:bg-black/20 border-t border-slate-300 dark:border-slate-800">
             {{ $footer }}
         </div>
     @endisset

@@ -4,7 +4,17 @@
 
 <a href="{{ $href }}" 
     {{ $attributes->merge([
-        'class' => "text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 transition-colors duration-200"
+        'class' => "
+            /* Tipografía Técnica */
+            text-[10px] font-black uppercase tracking-widest
+            transition-colors duration-200
+            
+            /* Colores modo claro: Azul Institucional */
+            text-[#001f3f] hover:text-slate-700
+            
+            /* Colores modo oscuro: Azul vibrante para contraste */
+            dark:text-blue-400 dark:hover:text-white
+        "
     ]) }}>
     {{ $slot }}
 </a>

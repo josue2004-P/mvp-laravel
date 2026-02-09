@@ -1,7 +1,7 @@
 services:
-  bd_mysql_mvp:
+  bd_mysql_controlmantenimiento:
     image: mysql:8.0
-    container_name: bd_mysql_mvp
+    container_name: bd_mysql_controlmantenimiento
     restart: always
     environment:
       TZ: "America/Mexico_City"
@@ -12,23 +12,23 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - vol_mysql_mvp:/var/lib/mysql
+      - vol_mysql_controlmantenimiento:/var/lib/mysql
     networks:
-      - mvp_net
-      - mvp_proxy
-  app_mvp:
+      - controlmantenimiento_net
+      - controlmantenimiento_proxy
+  app_controlmantenimiento:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: app_mvp
+    container_name: app_controlmantenimiento
     ports:
     - "8080:80"
 
 networks:
-  mvp_net:
+  controlmantenimiento_net:
     external: true
-  mvp_proxy:
+  controlmantenimiento_proxy:
     external: true
 
 volumes:
-  vol_mysql_mvp:
+  vol_mysql_controlmantenimiento:

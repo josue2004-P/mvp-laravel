@@ -81,21 +81,21 @@ class MenuHelper
     public static function getIconSvg($iconName)
     {
         $icons = [
-            'dashboard' => '<i class="text-xl fa-solid fa-gauge-high"></i>',
+            'dashboard' => '<i class="text-lg fa-solid fa-gauge-high"></i>',
 
-            'book-medical' => '<i class="text-xl fa-solid fa-book-medical"></i>',
+            'book-medical' => '<i class="text-lg fa-solid fa-book-medical"></i>',
 
-            'users' => '<i class="text-xl fa-solid fa-user"></i>',
+            'users' => '<i class="text-lg fa-solid fa-user"></i>',
 
-            'analysis' => '<i class=" text-xl fa-solid fa-flask"></i>',
+            'analysis' => '<i class=" text-lg fa-solid fa-flask"></i>',
 
-            'dna' => '<i class="text-xl fa-solid fa-dna"></i>',
+            'dna' => '<i class="text-lg fa-solid fa-dna"></i>',
 
-            'doctor' => '<i class="text-xl fa-solid fa-user-doctor"></i>',
+            'doctor' => '<i class="text-lg fa-solid fa-user-doctor"></i>',
 
-            'gear' => '<i class="text-xl fa-solid fa-gear"></i>',
+            'gear' => '<i class="text-lg fa-solid fa-gear"></i>',
 
-            'catalog' => '<i class=" text-xl  fa-solid fa-square-poll-horizontal"></i>',
+            'catalog' => '<i class=" text-lg  fa-solid fa-square-poll-horizontal"></i>',
 
         ];
 

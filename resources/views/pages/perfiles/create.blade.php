@@ -3,86 +3,99 @@
 @section('title', 'Nuevo Perfil de Sistema')
 
 @section('content')
-<div class="max-w-4xl mx-auto transition-colors duration-300">
-    {{-- Encabezado con Icono Temático Emerald --}}
-    <div class="mb-8 flex items-center gap-4">
-        <div class="h-12 w-12 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-500/20 shadow-sm">
-            <i class="fa-solid fa-shield-halved text-xl"></i>
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+    
+    <div class="mb-8 sm:mb-10 flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
+        <div class="h-14 w-14 flex-shrink-0 rounded-lg bg-[#001f3f] flex items-center justify-center text-white border border-[#001f3f] shadow-lg shadow-[#001f3f]/10 transition-transform hover:scale-105">
+            <i class="fa-solid fa-user-gear text-xl"></i>
         </div>
-        <div>
-            <h1 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Nuevo Perfil de Acceso</h1>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Establece las bases para la jerarquía de permisos del sistema.</p>
+        
+        <div class="w-full">
+            <h1 class="text-lg sm:text-xl font-black text-slate-950 dark:text-white uppercase tracking-[0.2em]">
+                Arquitectura de Roles de Acceso
+            </h1>
+            <div class="flex flex-col sm:flex-row items-center gap-2 mt-1">
+                <span class="hidden sm:block h-[1px] w-8 bg-[#001f3f]/30"></span>
+                <p class="text-[9px] sm:text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <i class="fa-solid fa-microchip text-[9px] text-[#001f3f]/50"></i>
+                    Protocolo de Jerarquías de Seguridad
+                </p>
+            </div>
         </div>
     </div>
 
     <form id="form-perfiles" action="{{ route('perfiles.store') }}" method="POST">
         @csrf
-        <x-common.component-card title="Arquitectura del Rol" desc="El nombre debe ser único y descriptivo para facilitar la administración." class="shadow-xl border-slate-200 dark:border-slate-800">
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <x-common.component-card 
+            title="Especificación del Nuevo Rol" 
+            desc="Configure la identidad base del perfil antes de proceder a la asignación de la matriz de permisos." 
+        >
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 sm:gap-y-8 py-2 sm:py-4">
                 
                 {{-- Nombre del Perfil --}}
                 <div class="col-span-1">
-                    <x-form.input-label for="nombre" :value="__('Nombre Clave')" required class="font-bold text-slate-700 dark:text-slate-300"/>
-                    <div class="mt-1 relative group">
+                    <x-form.input-label for="nombre" :value="__('Identificador Nominal')" required class="text-[9px] sm:text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest"/>
+                    <div class="mt-2 relative group">
                         <x-form.text-input
                             id="nombre"
                             type="text"
                             name="nombre"
-                            placeholder="ej: administrador, tecnico_lab"
+                            placeholder="ej: administrador, supervisor_lab"
                             :value="old('nombre')"
-                            class="lowercase w-full font-mono text-emerald-600 dark:text-emerald-400 focus:ring-emerald-500/20"
-                            :messages="$errors->get('nombre')"
+                            class="lowercase w-full font-mono text-[#001f3f] dark:text-blue-400"
                         />
-                        <div class="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-focus-within:opacity-100 transition-opacity">
-                            <i class="fa-solid fa-fingerprint text-xs text-emerald-500"></i>
+                        <div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#001f3f] transition-colors">
+                            <i class="fa-solid fa-fingerprint text-xs"></i>
                         </div>
                     </div>
                     <x-form.input-error :messages="$errors->get('nombre')" class="mt-2" />
-                    <p class="mt-2 text-[10px] text-slate-400 uppercase font-bold tracking-widest">
-                        <i class="fa-solid fa-circle-info mr-1 text-emerald-500"></i> Se normalizará a minúsculas
+                    <p class="mt-2 text-[8px] sm:text-[9px] text-slate-400 dark:text-slate-500 uppercase font-black tracking-widest flex items-center gap-1">
+                        <i class="fa-solid fa-circle-info text-[#001f3f]/40"></i> Normalización: Solo minúsculas y guiones bajos
                     </p>
                 </div>
 
                 {{-- Descripción --}}
                 <div class="col-span-1">
-                    <x-form.input-label for="descripcion" :value="__('Descripción Funcional')" class="font-bold text-slate-700 dark:text-slate-300" />
-                    <div class="mt-1">
+                    <x-form.input-label for="descripcion" :value="__('Alcance Funcional')" class="text-[9px] sm:text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest" />
+                    <div class="mt-2">
                         <x-form.text-input
                             id="descripcion"
                             type="text"
                             name="descripcion"
-                            placeholder="Ej. Acceso total a reportes"
+                            placeholder="EJ. ACCESO TOTAL A MÓDULOS TÉCNICOS"
                             :value="old('descripcion')"
-                            class="w-full"
-                            :messages="$errors->get('descripcion')"
+                            class="w-full font-mono uppercase text-[11px]"
                         />
                     </div>
                     <x-form.input-error :messages="$errors->get('descripcion')" class="mt-2" />
                 </div>
 
-                {{-- Banner Informativo de Seguridad Emerald Style --}}
+                {{-- Banner Informativo --}}
                 <div class="col-span-1 md:col-span-2">
-                    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-emerald-500/5 border border-dashed border-slate-200 dark:border-emerald-500/20 flex items-start gap-4 transition-all">
-                        <div class="mt-1 text-emerald-500">
-                            <i class="fa-solid fa-lock-open text-sm"></i>
+                    <div class="flex flex-col sm:flex-row items-start gap-4 p-5 border border-slate-200 bg-slate-50/50 dark:bg-white/[0.03] dark:border-slate-800 transition-all">
+                        <div class="mt-1 flex-shrink-0 text-[#001f3f] dark:text-blue-400">
+                            <i class="fa-solid fa-shield-halved text-sm"></i>
                         </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                            Al crear un nuevo perfil, este no tendrá permisos asignados por defecto. Deberás dirigirte a la sección de <span class="font-bold text-emerald-600 dark:text-emerald-400">Matriz de Permisos</span> para configurar qué módulos podrá ver o editar.
-                        </p>
+                        <div>
+                            <h4 class="text-[9px] sm:text-[10px] font-black text-[#001f3f] dark:text-blue-400 uppercase tracking-widest">Estado Inicial del Rol</h4>
+                            <p class="mt-1 text-[10px] sm:text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
+                                Al confirmar el registro, el perfil se inicializará con <span class="font-bold text-slate-950 dark:text-white underline decoration-[#001f3f]/30">Cero Permisos</span>. Deberá configurar la <span class="font-bold">Matriz de Acceso</span> posteriormente.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <x-slot:footer>
-                <div class="flex items-center justify-between py-2">
-                    <a href="{{ route('perfiles.index') }}"
-                        class="text-sm font-bold text-slate-400 hover:text-rose-500 transition-colors flex items-center group">
-                        <i class="fa-solid fa-xmark mr-2 transition-transform group-hover:rotate-90"></i> Cancelar Operación
-                    </a>
-                    
-                    <x-ui.button size="sm" type="submit" form="form-perfiles" class="shadow-emerald-900/20">
-                        <i class="fa-solid fa-shield-check mr-2"></i> Registrar Perfil
+                <div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 py-2">
+                    <x-form.link href="{{ route('perfiles.index') }}" class="flex items-center group !text-slate-400 hover:!text-rose-600">
+                        <i class="fa-solid fa-chevron-left mr-2 transition-transform group-hover:-translate-x-1 text-[8px]"></i> 
+                        Abortar Registro
+                    </x-form.link>
+                    <x-ui.button size="MD" type="submit" form="form-perfiles" class="w-full sm:w-auto">
+                        <i class="fa-solid fa-gears mr-2"></i>
+                        Consolidar Perfil
                     </x-ui.button>
                 </div>
             </x-slot:footer>

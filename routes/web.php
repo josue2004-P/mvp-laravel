@@ -19,16 +19,16 @@ use App\Http\Controllers\EspecialidadController;
 
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'pages.welcome')->name('home');
+// Route::view('/', 'pages.welcome')->name('home');
 
-Route::post('/contactar', function (\Illuminate\Http\Request $request) {
-    $request->validate([
-        'nombre' => 'required|string|max:100',
-        'email' => 'required|email',
-        'mensaje' => 'required|string|max:1000',
-    ]);
-    return back()->with('success', 'Mensaje enviado correctamente.');
-})->name('contactar');
+// Route::post('/contactar', function (\Illuminate\Http\Request $request) {
+//     $request->validate([
+//         'nombre' => 'required|string|max:100',
+//         'email' => 'required|email',
+//         'mensaje' => 'required|string|max:1000',
+//     ]);
+//     return back()->with('success', 'Mensaje enviado correctamente.');
+// })->name('contactar');
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('permisos', PermisoController::class);

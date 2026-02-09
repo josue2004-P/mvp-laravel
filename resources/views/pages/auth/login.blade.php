@@ -10,20 +10,19 @@
 @csrf
     <div class="space-y-5">
 
-        <!-- Email -->
+        <!-- Usuario -->
         <div>
-            <x-form.input-label for="email" required :value="__('Email')" />
+            <x-form.input-label for="usuario" required :value="__('Usuario')" />
             <x-form.text-input
-                type="email"
-                name="email"
-                placeholder="info@gmail.com"
-                :value="old('email')"
-                :messages="$errors->get('email')"
+                type="text"
+                name="usuario"
+                placeholder="Ingresa tu usuario"
+                :value="old('usuario')"
+                :messages="$errors->get('usuario')"
                 required 
             autocomplete="current-password" 
             />
-            <x-form.input-error :messages="$errors->get('email')" class="mt-2" />
-            
+            <x-form.input-error :messages="$errors->get('usuario')" class="mt-2" />
         </div>
 
         <!-- Password -->
@@ -51,10 +50,19 @@
         </div>
 
         <!-- Button -->
-        <div>
-            <x-form.button-primary>
+        <div class="pt-2">
+            <x-ui.button 
+                type="submit" 
+                variant="primary" 
+                size="lg" 
+                full="true"
+            >
+                <x-slot:endIcon>
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </x-slot:endIcon>
+                
                 Iniciar Sesión
-            </x-form.button-primary>
+            </x-ui.button>
         </div>
     </div>
 </form>
