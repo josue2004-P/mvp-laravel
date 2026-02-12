@@ -1,5 +1,5 @@
 <x-form.table-filters 
-    title="Jerarquía de Perfiles"
+    title="Listado de Perfiles"
     :search="$search"
     :perPage="$perPage"
     :createRoute="route('perfiles.create')"
@@ -12,8 +12,8 @@
             <thead>
                 <tr class="bg-slate-50 dark:bg-[#001f3f]/20">
                     <th scope="col" class="border border-slate-200 dark:border-slate-800 px-4 py-3 text-center text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] dark:text-slate-400 w-16">#</th>
-                    <th scope="col" class="border border-slate-200 dark:border-slate-800 px-6 py-3 text-start text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] dark:text-slate-400">Nombre del Perfil</th>
-                    <th scope="col" class="border border-slate-200 dark:border-slate-800 px-6 py-3 text-start text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] dark:text-slate-400">Descripción / Alcance Operativo</th>
+                    <th scope="col" class="border border-slate-200 dark:border-slate-800 px-6 py-3 text-start text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] dark:text-slate-400">Nombre</th>
+                    <th scope="col" class="border border-slate-200 dark:border-slate-800 px-6 py-3 text-start text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] dark:text-slate-400">Descripción </th>
                     <th scope="col" class="border border-slate-200 dark:border-slate-800 px-6 py-3 text-center text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] dark:text-slate-400 w-40">Acciones</th>
                 </tr>
             </thead>
@@ -23,7 +23,8 @@
                         {{-- ID con formato industrial --}}
                         <td class="border border-slate-200 dark:border-slate-800 px-4 py-4 text-center whitespace-nowrap">
                             <span class="font-mono text-[11px] font-black text-slate-400 dark:text-slate-600 tracking-tighter">
-                                {{ str_pad($perfil->id, 2, '0', STR_PAD_LEFT) }}
+                                {{ $loop->iteration + ($perfiles->currentPage() - 1) * $perfiles->perPage() }}
+
                             </span>
                         </td>
                         <td class="border border-slate-200 dark:border-slate-800 px-6 py-4 whitespace-nowrap">

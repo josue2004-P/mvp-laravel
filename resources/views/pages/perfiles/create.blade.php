@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Nuevo Perfil de Sistema')
+@section('title', 'Crear Perfil')
 
 @section('content')
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 transition-colors duration-300">
@@ -12,7 +12,7 @@
         
         <div class="w-full">
             <h1 class="text-lg sm:text-xl font-black text-slate-950 dark:text-white uppercase tracking-[0.2em]">
-                Arquitectura de Roles de Acceso
+                Crear Perfil
             </h1>
             <div class="flex flex-col sm:flex-row items-center gap-2 mt-1">
                 <span class="hidden sm:block h-[1px] w-8 bg-[#001f3f]/30"></span>
@@ -35,7 +35,7 @@
                 
                 {{-- Nombre del Perfil --}}
                 <div class="col-span-1">
-                    <x-form.input-label for="nombre" :value="__('Identificador Nominal')" required class="text-[9px] sm:text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest"/>
+                    <x-form.input-label for="nombre" :value="__('Nombre')" required class="text-[9px] sm:text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest"/>
                     <div class="mt-2 relative group">
                         <x-form.text-input
                             id="nombre"
@@ -57,13 +57,13 @@
 
                 {{-- Descripción --}}
                 <div class="col-span-1">
-                    <x-form.input-label for="descripcion" :value="__('Alcance Funcional')" class="text-[9px] sm:text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest" />
+                    <x-form.input-label for="descripcion" :value="__('Descripción')" class="text-[9px] sm:text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest" />
                     <div class="mt-2">
                         <x-form.text-input
                             id="descripcion"
                             type="text"
                             name="descripcion"
-                            placeholder="EJ. ACCESO TOTAL A MÓDULOS TÉCNICOS"
+                            placeholder="Descripcion"
                             :value="old('descripcion')"
                             class="w-full font-mono uppercase text-[11px]"
                         />
@@ -91,11 +91,14 @@
                 <div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 py-2">
                     <x-form.link href="{{ route('perfiles.index') }}" class="flex items-center group !text-slate-400 hover:!text-rose-600">
                         <i class="fa-solid fa-chevron-left mr-2 transition-transform group-hover:-translate-x-1 text-[8px]"></i> 
-                        Abortar Registro
+                       Descartar 
                     </x-form.link>
                     <x-ui.button size="MD" type="submit" form="form-perfiles" class="w-full sm:w-auto">
-                        <i class="fa-solid fa-gears mr-2"></i>
-                        Consolidar Perfil
+                        <x-slot:startIcon>
+                            <i class="fa-solid text-lg fa-floppy-disk"></i>
+                        </x-slot:startIcon>
+                        
+                        Guardar Registro
                     </x-ui.button>
                 </div>
             </x-slot:footer>

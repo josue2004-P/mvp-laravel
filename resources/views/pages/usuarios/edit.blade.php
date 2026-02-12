@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Configurar Expediente')
+@section('title', 'Editar Usuario')
 
 {{-- Definición de Identidad Técnica --}}
 @section('header-icon') <i class="fa-solid fa-user-gear text-xl"></i> @endsection
-@section('header-title', 'Actualización de Expediente')
+@section('header-title', 'Editar Perfil')
 @section('header-subtitle', 'Modificación de Credenciales y Perfiles de Acceso')
 
 @section('content')
@@ -176,7 +176,7 @@
                         <div class="flex flex-row items-center justify-between w-full py-2">
                             <x-form.link href="{{ route('usuarios.index') }}" class="group !text-slate-400 hover:!text-rose-600 flex items-center gap-2">
                                 <i class="fa-solid fa-chevron-left text-[8px] group-hover:-translate-x-1 transition-transform"></i>
-                                <span class="text-[10px] font-black uppercase tracking-widest">Regresar</span>
+                                <span class="text-[10px] font-black uppercase tracking-widest">Descartar Cambios</span>
                             </x-form.link>
 
                             <div class="flex items-center gap-4">
@@ -185,8 +185,8 @@
                                         Eliminar Nodo
                                     </button>
                                 @endif
-                                <x-ui.button size="md" type="submit" form="form-usuarios" class="min-w-[160px]">
-                                    <i class="fa-solid fa-floppy-disk mr-2"></i> Actualizar Expediente
+                                <x-ui.button size="md" type="submit" form="form-usuarios" class="w-full">
+                                    <i class="fa-solid text-lg fa-floppy-disk mr-2"></i>  Actualizar Registro
                                 </x-ui.button>
                             </div>
                         </div>

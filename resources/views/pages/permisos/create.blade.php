@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Registrar Nuevo Permiso')
+@section('title', 'Crear Perfil')
 
 @section('content')
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 transition-colors duration-300">
@@ -11,13 +11,13 @@
         
         <div class="w-full">
             <h1 class="text-lg sm:text-xl font-black text-slate-950 dark:text-white uppercase tracking-[0.15em] sm:tracking-[0.2em]">
-                Registro de Llaves de Acceso
+                Crear Permiso
             </h1>
             <div class="flex flex-col sm:flex-row items-center gap-2 mt-1">
                 <span class="hidden sm:block h-[1px] w-8 bg-[#001f3f]/30"></span>
                 <p class="text-[9px] sm:text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
                     <i class="fa-solid fa-microchip text-[9px] text-[#001f3f]/50"></i>
-                    Protocolo de Seguridad de Núcleo
+                    Protocolo de Seguridad
                 </p>
             </div>
         </div>
@@ -32,14 +32,14 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 sm:gap-y-8 py-2 sm:py-4">
                 {{-- Identificador --}}
                 <div class="col-span-1">
-                    <x-form.input-label for="nombre" :value="__('Código Identificador (Key)')" required class="text-[9px] sm:text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest"/>
+                    <x-form.input-label for="nombre" :value="__('Nombre')" required class="text-[9px] sm:text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest"/>
                     <div class="mt-2 relative group">
                         {{-- Tu x-form.text-input ya tiene el diseño base azul por defecto --}}
                         <x-form.text-input
                             id="nombre"
                             type="text"
                             name="nombre"
-                            placeholder="MODULO.ACCION"
+                            placeholder="MODULO"
                             :value="old('nombre')"
                             class="font-mono w-full"
                         />
@@ -49,19 +49,19 @@
                     </div>
                     <x-form.input-error :messages="$errors->get('nombre')" class="mt-2" />
                     <p class="mt-2 text-[8px] sm:text-[9px] text-slate-400 dark:text-slate-500 uppercase font-black tracking-widest flex items-center gap-1">
-                        <i class="fa-solid fa-circle-info text-[#001f3f]/40 dark:text-blue-500/40"></i> Estructura: objeto.método
+                        <i class="fa-solid fa-circle-info text-[#001f3f]/40 dark:text-blue-500/40"></i> Estructura: objeto
                     </p>
                 </div>
 
                 {{-- Descripción --}}
                 <div class="col-span-1">
-                    <x-form.input-label for="descripcion" :value="__('Descripción de Alcance')" class="text-[9px] sm:text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest" />
+                    <x-form.input-label for="descripcion" :value="__('Descripción')" class="text-[9px] sm:text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest" />
                     <div class="mt-2">
                         <x-form.text-input
                             id="descripcion"
                             type="text"
                             name="descripcion"
-                            placeholder="DESCRIPCIÓN DEL PRIVILEGIO"
+                            placeholder="DESCRIPCIÓN"
                             :value="old('descripcion')"
                            class="font-mono w-full"
                         />
@@ -89,7 +89,7 @@
                 <div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 py-2 bg-slate-50/30 dark:bg-transparent">
                     <a href="{{ route('permisos.index') }}"
                         class="w-full sm:w-auto text-center text-[9px] sm:text-[10px] font-black text-slate-400 hover:text-rose-700 dark:text-slate-500 dark:hover:text-rose-500 uppercase tracking-widest transition-colors duration-200 flex items-center justify-center group">
-                        <i class="fa-solid fa-chevron-left mr-2 transition-transform group-hover:-translate-x-1 text-[8px]"></i> Descartar
+                        <i class="fa-solid fa-chevron-left mr-2 transition-transform group-hover:-translate-x-1 text-[8px]"></i> Descartar 
                     </a>
                     <x-ui.button 
                         type="submit" 
@@ -99,10 +99,10 @@
                         class="w-full sm:w-auto"
                     >
                         <x-slot:startIcon>
-                            <i class="fa-solid fa-floppy-disk"></i>
+                            <i class="fa-solid text-lg fa-floppy-disk"></i>
                         </x-slot:startIcon>
                         
-                        Procesar Registro
+                        Guardar Registro
                     </x-ui.button>
                 </div>
             </x-slot:footer>

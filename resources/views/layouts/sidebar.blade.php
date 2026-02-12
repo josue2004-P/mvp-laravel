@@ -36,7 +36,7 @@ foreach ($menuGroups as $group) {
 
 <aside id="sidebar"
     {{-- Sidebar: Blanco en Light / Slate 950 en Dark --}}
-    class="fixed flex flex-col mt-0 top-0 px-3 left-0 bg-white dark:bg-slate-950 h-screen transition-all duration-300 ease-in-out z-99999 border-r border-slate-200 dark:border-slate-800 text-slate-900"
+    class="fixed flex flex-col mt-0 top-0 px-3 left-0 bg-gray-200 dark:bg-slate-950 h-screen transition-all duration-300 ease-in-out z-99999 border-r border-slate-300 dark:border-slate-800 text-slate-900"
     x-data="{
         openSubmenus: {},
         init() {
@@ -129,7 +129,7 @@ foreach ($menuGroups as $group) {
                                                 : 'text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-900',
                                                 !$store.sidebar.isExpanded && !$store.sidebar.isHovered ? 'xl:justify-center' : 'xl:justify-start'
                                             ]">
-                                            <span :class="isSubmenuOpen({{ $groupIndex }}, {{ $itemIndex }}) ? 'text-white' : 'text-slate-400 group-hover:text-[#001f3f]'">
+                                            <span :class="isSubmenuOpen({{ $groupIndex }}, {{ $itemIndex }}) ? 'text-white' : 'text-slate-500 group-hover:text-[#001f3f]'">
                                                 {!! MenuHelper::getIconSvg($item['icon']) !!}
                                             </span>
                                             <span x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen"
@@ -168,7 +168,7 @@ foreach ($menuGroups as $group) {
                                                 : 'text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-900',
                                                 (!$store.sidebar.isExpanded && !$store.sidebar.isHovered && !$store.sidebar.isMobileOpen) ? 'xl:justify-center' : 'justify-start'
                                             ]">
-                                            <span :class="isActive('{{ $item['path'] }}') ? 'text-white' : 'text-slate-400 group-hover:text-[#001f3f]'">
+                                            <span :class="isActive('{{ $item['path'] }}') ? 'text-white' : 'text-slate-500 group-hover:text-[#001f3f]'">
                                                 {!! MenuHelper::getIconSvg($item['icon']) !!}
                                             </span>
                                             <span x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen"

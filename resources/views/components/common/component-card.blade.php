@@ -9,7 +9,7 @@
     {{ $attributes->merge([
         'class' => '
             flex flex-col rounded-lg border border-slate-300 dark:border-slate-800 
-            bg-white dark:bg-slate-900/50 shadow-sm transition-all duration-300
+            bg-gray-50 dark:bg-slate-900/50 shadow-sm transition-all duration-300
             
             hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700
         '

@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Registro de Personal')
+@section('title', 'Crear Usuario')
 
 @section('header-icon') <i class="fa-solid fa-user-plus text-xl"></i> @endsection
-@section('header-title', 'Alta de Expediente de Usuario')
+@section('header-title', 'Crear Usuario')
 @section('header-subtitle', 'Protocolo de Autenticación y Perfilamiento')
 
 @section('content')
@@ -131,18 +131,16 @@
                                 class="group !text-slate-400 hover:!text-rose-600 transition-colors flex items-center gap-2"
                             >
                                 <i class="fa-solid fa-chevron-left text-[8px] transition-transform group-hover:-translate-x-1"></i>
-                                <span class="text-[10px] font-black uppercase tracking-widest">Abortar Operación</span>
+                                <span class="text-[10px] font-black uppercase tracking-widest">Descartar Cambios</span>
                             </x-form.link>
 
                             <div class="flex items-center gap-4">
-                                <x-ui.button 
-                                    size="md" 
-                                    type="submit" 
-                                    form="form-usuarios" 
-                                    class="min-w-[160px] shadow-lg shadow-[#001f3f]/10"
-                                >
-                                    <i class="fa-solid fa-user-check mr-2 text-[11px]"></i> 
-                                    <span class="uppercase">Consolidar Usuario</span>
+                                <x-ui.button size="MD" type="submit" form="form-usuarios" class="w-full sm:w-auto">
+                                    <x-slot:startIcon>
+                                        <i class="fa-solid text-lg fa-floppy-disk"></i>
+                                    </x-slot:startIcon>
+                                    
+                                    Guardar Registro
                                 </x-ui.button>
                             </div>
                         </div>

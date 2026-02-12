@@ -42,7 +42,7 @@ class UsuarioController extends Controller
             'email'             => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
             'password'          => ['required', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()],
             'foto'              => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
-            'firma'             => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'firma'             => ['nullable|image|mimes:jpeg,png,jpg,webp|max:2048'],
             'perfiles'          => ['nullable', 'array'],
             'perfiles.*'        => ['exists:perfiles,id'],
         ]);
@@ -102,7 +102,6 @@ class UsuarioController extends Controller
             'is_activo'         => 'nullable|boolean',
             'foto'              => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'firma'             => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            
             'perfiles'          => 'nullable|array',
             'perfiles.*'        => 'exists:perfiles,id'
         ]);

@@ -1,5 +1,5 @@
 <header
-    class="sticky top-0 flex w-full bg-white border-slate-200 z-99999 dark:border-slate-800 dark:bg-slate-950 xl:border-b transition-all duration-300"
+    class="sticky top-0 flex w-full bg-gray-200 border-slate-300 z-99999 dark:border-slate-800 dark:bg-slate-950 xl:border-b transition-all duration-300"
     x-data="{}">
     <div class="flex flex-col items-center justify-between grow xl:flex-row xl:px-6">
         <div

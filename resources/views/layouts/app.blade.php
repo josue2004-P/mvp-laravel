@@ -124,7 +124,7 @@
 </head>
 
 <body x-data="{ 'loaded': true }"
-    class="antialiased bg-gray-50 dark:bg-slate-950 transition-colors duration-300"
+    class="antialiased bg-gray-100 dark:bg-slate-950 transition-colors duration-300"
     x-init="
         $store.sidebar.isExpanded = false; 
         const checkMobile = () => {

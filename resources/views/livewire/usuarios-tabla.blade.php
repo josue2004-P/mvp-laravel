@@ -1,5 +1,5 @@
 <x-form.table-filters 
-    title="Directorio de Personal"
+    title="Listado de usuarios"
     :search="$search"
     :perPage="$perPage"
     :createRoute="route('usuarios.create')"

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Configurar Perfil de Seguridad')
+@section('title', 'Editar Perfil')
 
 @section('content')
 <div class="max-w-7xl mx-auto transition-colors duration-300 px-4 sm:px-6">
@@ -11,7 +11,7 @@
                 <i class="fa-solid fa-gears text-2xl"></i>
             </div>
             <div>
-                <h1 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-[0.2em]">Arquitectura de Accesos</h1>
+                <h1 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-[0.2em]">Editar Perfil</h1>
                 <p class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.15em] mt-1 flex items-center gap-2">
                     <span class="h-1 w-4 bg-[#001f3f]/30"></span>
                     Definiendo capacidades: <span class="text-[#001f3f] dark:text-blue-400 font-mono">{{ $perfil->nombre }}</span>
@@ -35,7 +35,7 @@
                 <x-common.component-card title="Identidad del Rol" desc="Especificaciones administrativas del perfil en el núcleo.">
                     <div class="space-y-6 py-2">
                         <div>
-                            <x-form.input-label for="nombre" :value="__('Nombre Clave (Key)')" required class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest" />
+                            <x-form.input-label for="nombre" :value="__('Nombre ')" required class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest" />
                             <div class="mt-2 relative group">
                                 <x-form.text-input
                                     type="text"
@@ -52,12 +52,12 @@
                         </div>
 
                         <div>
-                            <x-form.input-label for="descripcion" :value="__('Descripción Funcional')" class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest" />
+                            <x-form.input-label for="descripcion" :value="__('Descripción ')" class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest" />
                             <x-form.text-input
                                 type="text"
                                 name="descripcion"
                                 id="descripcion"
-                                placeholder="PROPÓSITO DEL ROL"
+                                placeholder="Descripción"
                                 class="w-full mt-2 font-mono uppercase text-[11px]"
                                 :value="old('descripcion', $perfil->descripcion)"
                             />    
@@ -67,7 +67,7 @@
 
                     <x-slot:footer>
                         <x-ui.button size="md" type="submit" form="form-perfiles" class="w-full">
-                            <i class="fa-solid fa-microchip mr-2"></i> Guardar Configuración
+                            <i class="fa-solid text-lg fa-floppy-disk mr-2"></i>  Actualizar Registro
                         </x-ui.button>
                     </x-slot:footer>
                 </x-common.component-card>

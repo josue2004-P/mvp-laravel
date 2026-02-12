@@ -7,10 +7,10 @@
     'title' => 'Registros'
 ])
 
-<div class="rounded-lg border border-slate-300 bg-white shadow-sm transition-all duration-300 dark:border-slate-800 dark:bg-slate-900/50 overflow-hidden">
+<div class="rounded-lg border border-slate-300 bg-gray-50 shadow-sm transition-all duration-300 dark:border-slate-800 dark:bg-slate-900/50 overflow-hidden">
     
     {{-- BARRA SUPERIOR TÉCNICA --}}
-    <div class="p-5 border-b border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900">
+    <div class="p-5 border-b border-slate-300 dark:border-slate-800 bg-gray-50 dark:bg-slate-900">
         <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             
             {{-- Título y Buscador --}}
@@ -52,7 +52,7 @@
                         @if($exportPdf)
                             <a href="{{ $exportPdf }}" target="_blank" 
                             class="flex h-7 w-7 items-center justify-center rounded text-slate-500 transition-all hover:bg-slate-900 hover:text-white dark:hover:bg-slate-100 dark:hover:text-slate-950">
-                                <i class="fa-solid fa-file-pdf text-[10px]"></i>
+                                <i class="fa-solid  fa-file-pdf text-[10px]"></i>
                             </a>
                         @endif
                         @if($exportExcel)
@@ -93,7 +93,7 @@
                         size="md"
                     >
                         <x-slot:startIcon>
-                            <i class="fa-solid fa-plus"></i>
+                            <i class="fa-solid text-lg fa-plus"></i>
                         </x-slot:startIcon>
                         
                         NUEVO REGISTRO
